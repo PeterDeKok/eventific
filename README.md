@@ -1,0 +1,4 @@
+eventific
+=========
+
+Event Management
