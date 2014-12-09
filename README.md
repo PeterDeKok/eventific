@@ -14,7 +14,7 @@ Event Management system for event managers and event explorers.
 ##Database settings
 1. Install MySQL.
 2. Login as root.
-3. Run the `webtechgroup5.sql` on your database.
+3. Run the [eventific/webtechgroup5.sql](eventific/webtechgroup5.sql) on your database. 
 4. Create a new user:
     - Username: webtech
     - Password: KKll55
