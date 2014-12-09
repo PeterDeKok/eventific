@@ -4,7 +4,7 @@ Event Management system for event managers and event explorers.
 
 ##Sync with repository
 1. Create gitHub account.
-2. Send username to @PeterDeKok.
+2. Send username to @peterdekok.
 3. Download gitHub GUI and login with your gitHub account:
     - [Windows](windows.gihub.com)
     - [OS X](mac.github.com)
