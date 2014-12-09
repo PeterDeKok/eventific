@@ -9,7 +9,8 @@ Event Management system for event managers and event explorers.
     - [Windows](windows.gihub.com)
     - [OS X](mac.github.com)
 4. Once added to the repository, clone the repository from github (+ sign at top left).
-5. Don't forget to Sync your local repository to the gitHub repository at every logical moment.
+5. Create a new branch for new features and merge it back to master once it is done.
+6. Don't forget to Sync your local repository to the gitHub repository at every logical moment.
 
 ##Database settings
 1. Install MySQL.
