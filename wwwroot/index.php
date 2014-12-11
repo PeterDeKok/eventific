@@ -421,57 +421,68 @@ if (login_check($mysqli) == true) {
 		</section><!-- section -->
 		
 		<div class="container" id="contact" name="contact">
-			<div class="row">
-			<br>
-				<div class="col-lg-4">
-					<h3>Contact Information</h3>
-					<p><span class="icon icon-home"></span> TU Eindhoven<br/>
-						<span class="icon icon-phone"></span> +31 111 111 111 <br/>
-						<span class="icon icon-mobile"></span> +31 101 101 101 <br/>
-						<span class="icon icon-envelop"></span> <a href="#"> project@name.com</a> <br/>
-						<span class="icon icon-twitter"></span> <a href="#"> @projectname </a> <br/>
-						<span class="icon icon-facebook"></span> <a href="#"> PROJECTNAME </a> <br/>
-					</p>
-				</div><!-- col -->
-				
-				<div class="col-lg-4">
-					<h3>Subscribe</h3>
-					<p>Register to our newsletter and be updated with the latests information regarding PROJECTNAME.</p>
-					<p>
-						<form class="form-horizontal" role="form">
-						  <div class="form-group">
-						    <label for="inputEmail1" class="col-lg-4 control-label"></label>
-						    <div class="col-lg-10">
-						      <input type="email" class="form-control" id="inputEmail1" placeholder="Email">
-						    </div>
-						  </div>
-						  <div class="form-group">
-						    <label for="text1" class="col-lg-4 control-label"></label>
-						    <div class="col-lg-10">
-						      <input type="text" class="form-control" id="text1" placeholder="Your Name">
-						    </div>
-						  </div>
-						  <div class="form-group">
-						    <div class="col-lg-10">
-						      <button type="submit" class="btn btn-success">Subscribe</button>
-						    </div>
-						  </div>
-					   </form><!-- form -->
-					</p>
-				</div><!-- col -->
-				
-				<div class="col-lg-4">
-					<h3>Contact Us</h3>
-					<p>Please, write to us if you have any questions according our event management and e-ticketing web application.</p>
-				</div><!-- col -->
-
-			</div><!-- row -->
-		
+		<div class="col-lg-8">
+			 <div class="container">
+			            <div class="row">
+			                <div class="col-lg-12 text-center">
+			                    <h2>Contact</h2>
+			                    <hr class="star-primary">
+			                </div>
+			            </div>
+			            <div class="row">
+			                <div class="col-lg-8 col-lg-offset-2">
+			                    <form name="sentMessage" id="contactForm" validate>
+			                        <div class="row control-group">
+			                            <div class="form-group col-xs-12 floating-label-form-group controls">
+			                                <label>Name</label>
+			                                <input type="text" class="form-control contact_val" placeholder="Name" id="name" required data-validation-required-message="Vul een naam in.">
+			                                <p class="help-block text-danger"></p>
+			                            </div>
+			                        </div>
+			                        <div class="row control-group">
+			                            <div class="form-group col-xs-12 floating-label-form-group controls">
+			                                <label>Email Address</label>
+			                                <input type="email" class="form-control contact_val" placeholder="Email Address" id="email" required data-validation-required-message="Vul een e-mailadres in.">
+			                                <p class="help-block text-danger"></p>
+			                            </div>
+			                        </div>
+			                        <div class="row control-group">
+			                            <div class="form-group col-xs-12 floating-label-form-group controls">
+			                                <label>Phonenummer</label>
+			                                <input type="tel" class="form-control contact_val" placeholder="Phonenumber" id="phone" required data-validation-required-message="Vul een telefoonnummer in.">
+			                                <p class="help-block text-danger"></p>
+			                            </div>
+			                        </div>
+			                        <div class="row control-group">
+			                            <div class="form-group col-xs-12 floating-label-form-group controls">
+			                                <label>Message</label>
+			                                <textarea rows="5" class="form-control contact_val" placeholder="Message" id="message" required data-validation-required-message="Vul een bericht in."></textarea>
+			                                <p class="help-block text-danger"></p>
+			                            </div>
+			                        </div>
+			                        <br>
+			                        <div id="success"></div>
+			                        <div class="row">
+			                            <div class="form-group col-xs-12">
+			                                <button type="submit" class="btn btn-success btn-lg">Submit</button>
+			                            </div>
+			                        </div>
+			                    </form>
+			                </div>
+			            </div>
+			        </div>
+				</div><!-- col -->		
 		</div><!-- container -->
 
 		<div id="footerwrap">
 			<div class="container">
-				<h4></a>PROJECTNAME - Copyright 2014  ©</h4>
+						<span class="icon icon-home"></span> TU Eindhoven<br/>
+						<span class="icon icon-phone"></span> +31 111 111 111 <br/>
+						<span class="icon icon-mobile"></span> +31 101 101 101 <br/>
+						<h4></a>PROJECTNAME - Copyright 2014  ©</h4>
+						<span class="icon icon-envelop"></span> <a href="#"> project@name.com</a> <br/>
+						<span class="icon icon-twitter"></span> <a href="#"> @projectname </a> <br/>
+						<span class="icon icon-facebook"></span> <a href="#"> PROJECTNAME </a> <br/>
 			</div>
 		</div>
 
@@ -482,8 +493,11 @@ if (login_check($mysqli) == true) {
 
 	<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="assets/js/retina.js"></script>
+	<script type="text/javascript" src="assets/js/classie.js"></script>
 	<script type="text/javascript" src="assets/js/jquery.easing.1.3.js"></script>
     <script type="text/javascript" src="assets/js/smoothscroll.js"></script>
 	<script type="text/javascript" src="assets/js/jquery-func.js"></script>
+	<script type="text/javascript" src="assets/js/jqBootstrapValidation.js"></script>
+	<script type="text/javascript" src="assets/js/contact_us.js"></script>
   </body>
 </html>
