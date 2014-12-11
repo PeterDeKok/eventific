@@ -455,12 +455,8 @@ if (login_check($mysqli) == true) {
 			                        </div>
 			                        <div class="row control-group">
 			                            <div class="form-group col-xs-12 floating-label-form-group controls">
-<<<<<<< HEAD
 			                                <label>Message</label>
-=======
-			                                <label>Bericht</label>
->>>>>>> origin/master
-			                                <textarea rows="5" class="form-control contact_val" placeholder="Message" id="message" required data-validation-required-message="Vul een bericht in."></textarea>
+											 <textarea rows="5" class="form-control contact_val" placeholder="Message" id="message" required data-validation-required-message="Vul een bericht in."></textarea>
 			                                <p class="help-block text-danger"></p>
 			                            </div>
 			                        </div>
@@ -468,11 +464,7 @@ if (login_check($mysqli) == true) {
 			                        <div id="success"></div>
 			                        <div class="row">
 			                            <div class="form-group col-xs-12">
-<<<<<<< HEAD
 			                                <button type="submit" class="btn btn-success btn-lg">Submit</button>
-=======
-			                                <button type="submit" class="btn btn-success btn-lg">Verzenden</button>
->>>>>>> origin/master
 			                            </div>
 			                        </div>
 			                    </form>
