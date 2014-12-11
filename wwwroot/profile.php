@@ -44,34 +44,37 @@ if (login_check($mysqli) == true) {
   </head>
 
   <body data-spy="scroll" data-offset="0" data-target="#navbar-main">
-  
-  
-  	<div id="navbar-main">
-      <!-- Fixed navbar -->
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon icon-shield" style="font-size:30px; color:#3498db;"></span>
-          </button>
-          <a class="navbar-brand hidden-xs hidden-sm" href="index.php#home"><span class="icon icon-lamp" style="font-size:18px; color:#3498db;"></span></a>
-        </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="index.php#home" class="smoothScroll">Home</a></li>
-			<li> <a href="index.php#about" class="smoothScroll"> About Us</a></li>
-			<li> <a href="index.php#services" class="smoothScroll"> E-ticketing</a></li>
-			<li> <a href="index.php#team" class="smoothScroll"> Team</a></li>
-			<li> <a href="index.php#blog" class="smoothScroll"> Stories</a></li>
-			<li> <a href="index.php#contact" class="smoothScroll"> Contact</a></li>
-		  </ul>
-		  <ul class="nav navbar-nav pull-right">
-			<li><a href="#"> Welcome <?php echo $_SESSION['username']; ?></a></li>
-			<li><a href="/assets/includes/logout.php">Log out</a></li>
-		  </ul>
-        </div><!--/.nav-collapse -->
+   <div id="navbar-main">
+        <!-- Fixed navbar -->
+      <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="icon icon-shield" style="font-size:30px; color:#3498db;"></span>
+            </button>
+            <a class="navbar-brand hidden-xs hidden-sm" href="index.php#home"><span class="icon icon-lamp" style="font-size:18px; color:#3498db;"></span></a>
+          </div>
+          <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li><a href="index.php#home" class="smoothScroll">Home</a></li>
+              <li><a href="index.php#about" class="smoothScroll"> About Us</a></li>
+              <li><a href="index.php#services" class="smoothScroll"> E-ticketing</a></li>
+              <li><a href="index.php#team" class="smoothScroll"> Team</a></li>
+              <li><a href="index.php#blog" class="smoothScroll"> Stories</a></li>
+              <li><a href="index.php#contact" class="smoothScroll"> Contact</a></li>
+              <li role="presentation" class="divider"></li>
+              <?php
+              if ($logged=='in') {
+              ?>
+              <li><a href="/profile.php"> Welcome <?php echo $_SESSION['username']; ?></a></li>
+              <li><a href="/assets/includes/logout.php">Log out</a></li>
+              <?php 
+                }
+              ?>
+              </ul>
+            </div><!--/.nav-collapse -->
+          </div>
       </div>
-    </div>
     </div>  
 
     <!-- ==== ABOUT ==== -->

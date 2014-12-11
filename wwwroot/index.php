@@ -35,6 +35,14 @@ if (login_check($mysqli) == true) {
 	<script type="text/javascript" src="assets/js/modernizr.custom.js"></script>
 	<script type="text/javascript" src="assets/js/forms.js"></script>
 	<script type="text/javascript" src="assets/js/sha512.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function(){
+	    //Handles menu drop down
+	    $('.dropdown-menu').find('form').click(function (e) {
+	        e.stopPropagation();
+	    });
+	});
+	</script>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="assets/js/html5shiv.js"></script>
@@ -43,8 +51,6 @@ if (login_check($mysqli) == true) {
   </head>
 
   <body data-spy="scroll" data-offset="0" data-target="#navbar-main">
-  
-  
   	<div id="navbar-main">
       <!-- Fixed navbar -->
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -58,16 +64,15 @@ if (login_check($mysqli) == true) {
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li><a href="index.php#home" class="smoothScroll">Home</a></li>
-						<li><a href="index.php#about" class="smoothScroll"> About Us</a></li>
-						<li><a href="index.php#services" class="smoothScroll"> E-ticketing</a></li>
-						<li><a href="index.php#team" class="smoothScroll"> Team</a></li>
-						<li><a href="index.php#blog" class="smoothScroll"> Stories</a></li>
-						<li><a href="index.php#contact" class="smoothScroll"> Contact</a></li>
-		  </ul>
+			<li><a href="index.php#about" class="smoothScroll"> About Us</a></li>
+			<li><a href="index.php#services" class="smoothScroll"> E-ticketing</a></li>
+			<li><a href="index.php#team" class="smoothScroll"> Team</a></li>
+			<li><a href="index.php#blog" class="smoothScroll"> Stories</a></li>
+			<li><a href="index.php#contact" class="smoothScroll"> Contact</a></li>
+			<li role="presentation" class="divider"></li>
 		  <?php
 		  if (!($logged=='in')) {
 		  ?>
-		  <ul class="nav navbar-nav pull-right">
 			<li><a href="/signup.php">Sign Up</a></li>
             <li class="divider-vertical"></li>
 			<li class="dropdown">
@@ -76,18 +81,14 @@ if (login_check($mysqli) == true) {
 					<form method="post" action="/assets/includes/process_login.php" name="login_form" id="login-form" accept-charset="UTF-8">
 						<input style="margin-bottom: 15px;" type="text" placeholder="Email" id="email" name="email">
 						<input style="margin-bottom: 15px;" type="password" placeholder="Password" id="password" name="password">
-						<input style="float: left; margin-right: 10px;" type="checkbox" name="remember-me" id="remember-me" value="1">
-						<label class="string optional" for="user_remember_me"> Remember me</label>
 						<input type="submit" id="sign-in" class="btn btn-primary btn-block" value="Sign in" onclick="formhash(this.form, this.form.password);">
 					</form>
 				</div>
 			</li>
-		  </ul>
 		  <?php 
 		  	} else {  
 		  ?>
-		  <ul class="nav navbar-nav pull-right">
-			<li><a href="#"> Welcome <?php echo $_SESSION['username']; ?></a></li>
+			<li><a href="/profile.php"> Welcome <?php echo $_SESSION['username']; ?></a></li>
 			<li><a href="/assets/includes/logout.php">Log out</a></li>
 		  </ul>
 		  <?php 
