@@ -84,9 +84,9 @@ if (isset($_POST['username'], $_POST['email'], $_POST['p'])) {
             $insert_stmt->bind_param('ssss', $username, $email, $password, $random_salt);
             // Execute the prepared query.
             if (! $insert_stmt->execute()) {
-                header('Location: '.$root.'pages/error.php?err=Registration failure: INSERT');
+                header('Location: /error.php?err=Registration failure: INSERT');
             }
         }
-        header('Location: '.$root.'pages/register_success.php');
+        header('Location: /register_success.php');
     }
 }
