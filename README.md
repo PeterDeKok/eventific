@@ -24,3 +24,9 @@ Event Management system for event managers and event explorers.
 ##Server settings
 1. Make sure the wwwroot folder in the repository is your document root folder of your server setup.
 2. This will make sure that all other folders and files in the first level of the repository will be protected against direct access.
+
+##Configure Secure Sessions
+1. Create Database table and seperate user and limit it's permissions. (see secureSessionDB.sql)
+2. Install MCrypt extension for php (if not installed)
+    - [Windows](http://www.myoddweb.com/2010/11/18/install-mcrypt-for-php-on-windows/)
+    - [OS X](http://coolestguidesontheplanet.com/install-mcrypt-php-mac-osx-10-10-yosemite-development-server/)
