@@ -1,8 +1,24 @@
 <?php
+
 $root = $_SERVER['DOCUMENT_ROOT']."/..";
-include_once $root. '/assets/includes/db_connect.php';
+require_once($root . '/assets/includes/psl-config.php'); 
+
+if(DEBUG) {
+	ini_set("display_errors", "1");
+	error_reporting(E_ALL);
+}
+
+require_once($root . '/assets/includes/classes/MysqliDb.class.php');
+require_once($root . '/assets/includes/classes/session.class.php');
+
+include_once $root . '/assets/includes/db_connect.php';
 include_once $root . '/assets/includes/functions.php';
-sec_session_start();
+
+// Prepare Session
+$session = new session(SESS_HOST, SESS_USER, SESS_PASSWORD, SESS_DATABASE);
+// Start Session: true for https, false for http !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+$session->start_session('_s', false);
+
 if (login_check($mysqli) == true) {
     $logged = 'in';
 } else {
