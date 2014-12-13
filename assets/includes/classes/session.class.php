@@ -12,7 +12,7 @@
  * @author    Peter de Kok <info@peterdekok.nl>
  * @copyright 2014 peterdekok.nl
  * @version   0.9
- * @uses			../variables.php (SessionExaple package, for database authorization)
+ * @uses			../psl-config.php (for database authorization)
  * @uses 			MysqliDb.class.php
  */
 
