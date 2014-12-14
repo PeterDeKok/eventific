@@ -26,10 +26,11 @@ if (isset($_POST['email'], $_POST['p'])) {
  
     if (login($email, $password, $mysqli) == true) {
         // Login success 
-        header('Location: /profile.php');
+		header("Refresh: 0; url=/profile.php");
     } else {
         // Login failed 
-        header('Location: /error.php?err=1');
+		echo "<script> alert('Login failed! Try again');</script>";
+		header("Refresh: 0; url=/index.php");
     }
 } else {
     // The correct POST variables were not sent to this page. 

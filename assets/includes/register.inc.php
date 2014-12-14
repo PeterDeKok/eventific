@@ -96,10 +96,14 @@ if (isset($_POST['username'], $_POST['email'], $_POST['p'])) {
             $insert_stmt->bind_param('ssss', $username, $email, $password, $random_salt);
             // Execute the prepared query.
             if (! $insert_stmt->execute()) {
-                header('Location: /error.php?err=Registration failure: INSERT');
+				echo "<script> alert('Registration failed! Try to sign up again');</script>";
+				header("Refresh: 0; url=signup.php");
             }
+			else {
+				echo "<script> alert('Registration successful! You can sign in now');</script>";
+				header("Refresh: 0; url=index.php");
+			}
         }
-        header('Location: /register_success.php');
     }
 }
 ?>
