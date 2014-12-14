@@ -11,8 +11,8 @@ if(DEBUG) {
 require_once($root . '/assets/includes/classes/MysqliDb.class.php');
 require_once($root . '/assets/includes/classes/session.class.php');
 
-include_once $root . '/assets/includes/functions.php';
-include_once $root . '/assets/includes/register.inc.php';
+require_once($root . '/assets/includes/functions.php');
+require_once($root . '/assets/includes/register.inc.php');
 
 // Prepare Session
 $session = new session(SESS_HOST, SESS_USER, SESS_PASSWORD, SESS_DATABASE);

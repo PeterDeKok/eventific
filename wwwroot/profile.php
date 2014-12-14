@@ -1,6 +1,7 @@
 <?php
 
 $root = $_SERVER['DOCUMENT_ROOT']."/..";
+
 require_once($root . '/assets/includes/psl-config.php'); 
 
 if(DEBUG) {
@@ -11,9 +12,9 @@ if(DEBUG) {
 require_once($root . '/assets/includes/classes/MysqliDb.class.php');
 require_once($root . '/assets/includes/classes/session.class.php');
 
-include_once $root . '/assets/includes/db_connect.php';
-include_once $root . '/assets/includes/functions.php';
-include_once $root . '/assets/includes/register.inc.php';
+require_once($root . '/assets/includes/db_connect.php');
+require_once($root . '/assets/includes/functions.php');
+require_once($root . '/assets/includes/register.inc.php');
 
 // Prepare Session
 $session = new session(SESS_HOST, SESS_USER, SESS_PASSWORD, SESS_DATABASE);
@@ -114,17 +115,15 @@ if (login_check($mysqli) == true) {
 			</div><!-- col-lg-4 -->	
 		</div><!-- row -->
 	</div><!-- container -->
-
-	 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-		
+	
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->	
 
 	<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="assets/js/retina.js"></script>
 	<script type="text/javascript" src="assets/js/jquery.easing.1.3.js"></script>
-    <script type="text/javascript" src="assets/js/smoothscroll.js"></script>
+  <script type="text/javascript" src="assets/js/smoothscroll.js"></script>
 	<script type="text/javascript" src="assets/js/jquery-func.js"></script>
   </body>
 </html>

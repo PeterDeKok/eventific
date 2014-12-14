@@ -1,8 +1,19 @@
 <?php
 
-include_once 'psl-config.php'; 
-
 $root = $_SERVER['DOCUMENT_ROOT']."/..";
+
+require_once($root . '/assets/includes/psl-config.php'); 
+
+if(DEBUG) {
+	ini_set("display_errors", "1");
+	error_reporting(E_ALL);
+}
+
+require_once($root . '/assets/includes/classes/MysqliDb.class.php');
+require_once($root . '/assets/includes/classes/session.class.php');
+
+require_once($root . '/assets/includes/db_connect.php');
+require_once($root . '/assets/includes/functions.php');
 
 function login($email, $password, $mysqli) {
     // Using prepared statements means that SQL injection is not possible. 

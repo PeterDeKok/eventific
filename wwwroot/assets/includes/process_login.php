@@ -1,6 +1,7 @@
 <?php
 
 $root = $_SERVER['DOCUMENT_ROOT']."/..";
+
 require_once($root . '/assets/includes/psl-config.php'); 
 
 if(DEBUG) {
@@ -8,11 +9,11 @@ if(DEBUG) {
 	error_reporting(E_ALL);
 }
 
-require_once($root. '/assets/includes/classes/MysqliDb.class.php');
-require_once($root. '/assets/includes/classes/session.class.php');
+require_once($root . '/assets/includes/classes/MysqliDb.class.php');
+require_once($root . '/assets/includes/classes/session.class.php');
 
-include_once $root. '/assets/includes/db_connect.php';
-include_once $root. '/assets/includes/functions.php';
+require_once($root . '/assets/includes/db_connect.php');
+require_once($root . '/assets/includes/functions.php');
 
 // Prepare Session
 $session = new session(SESS_HOST, SESS_USER, SESS_PASSWORD, SESS_DATABASE);

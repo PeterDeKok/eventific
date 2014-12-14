@@ -1,9 +1,21 @@
 <?php
-include_once 'db_connect.php';
-include_once 'psl-config.php';
+
+$root = $_SERVER['DOCUMENT_ROOT']."/..";
+
+require_once($root . '/assets/includes/psl-config.php'); 
+
+if(DEBUG) {
+	ini_set("display_errors", "1");
+	error_reporting(E_ALL);
+}
+
+require_once($root . '/assets/includes/classes/MysqliDb.class.php');
+require_once($root . '/assets/includes/classes/session.class.php');
+
+require_once($root . '/assets/includes/db_connect.php');
+require_once($root . '/assets/includes/functions.php');
  
 $error_msg = "";
-$root = $_SERVER['DOCUMENT_ROOT'];
  
 if (isset($_POST['username'], $_POST['email'], $_POST['p'])) {
     // Sanitize and validate the data passed in
