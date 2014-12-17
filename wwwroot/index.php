@@ -35,7 +35,7 @@ if (login_check($mysqli) == true) {
     <meta name="author" content="Web Technology Group 5">
     <link rel="shortcut icon" href="assets/ico/favicon.ico">
 
-    <title> Event Management System</title>
+    <title> Eventific</title>
 
     <!-- Bootstrap core CSS -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
@@ -105,7 +105,7 @@ if (login_check($mysqli) == true) {
 		  <?php 
 		  	} else {  
 		  ?>
-			<li><a href="/profile.php"> Welcome <?php echo $_SESSION['username']; ?></a></li>
+			<li><a href="/profile.php"> My Profile</a></li>
 			<li><a href="/assets/includes/logout.php">Log out</a></li>
 		  </ul>
 		  <?php 

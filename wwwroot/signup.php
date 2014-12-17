@@ -116,9 +116,7 @@ if (login_check($mysqli) == true) {
 		                method="post" 
 		                name="registration_form">
 		        		<table>
-		                <tr><td>Username:</td> <td><input type='text' 
-		                name='username' 
-		                id='username' /><br></td></tr>
+		                <tr><td>Username:</td> <td><input type='text' name='username' id='username' /><br></td></tr>
 		                <tr><td>Email: </td> <td><input type="text" name="email" id="email" /><br></td></tr>
 		                <tr><td>Password: </td><td><input type="password"
 		                             name="password" 
