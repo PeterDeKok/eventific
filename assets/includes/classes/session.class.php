@@ -93,7 +93,11 @@ class session {
 	function read($id) {
 		$this->db->where("id", $id);
 		$data = $this->db->getOne("sessions", "data");
-		$data = $data["data"];
+		if(isset($data["data"])) {
+			$data = $data["data"];
+		} else {
+			header('Location: '.$_SERVER['REQUEST_URI']);
+		}
 		
 		$key = $this->getkey($id);
 		$data = $this->decrypt($data, $key);

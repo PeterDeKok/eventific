@@ -15,9 +15,9 @@ require_once($root . '/assets/includes/classes/session.class.php');
 require_once($root. '/assets/includes/functions.php');
 
 // Prepare Session
-$session = new session(SESS_HOST, SESS_USER, SESS_PASSWORD, SESS_DATABASE);
+$custom_session = new session(SESS_HOST, SESS_USER, SESS_PASSWORD, SESS_DATABASE);
 // Start Session: true for https, false for http !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-$session->start_session('_s', false);
+$custom_session->start_session('_s', false);
  
 // Unset all session values 
 $_SESSION = array();

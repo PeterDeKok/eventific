@@ -2,8 +2,6 @@
 
 $root = $_SERVER['DOCUMENT_ROOT']."/..";
 
-require_once($root . '/assets/includes/psl-config.php'); 
-
 if(DEBUG) {
 	ini_set("display_errors", "1");
 	error_reporting(E_ALL);
@@ -178,4 +176,96 @@ function esc_url($url) {
         return $url;
     }
 }
+
+function fbDatabaseEntry($name, $id, $email, $mysqli) {
+    //Already an normal account
+    if (login_check($mysqli) == true) {
+        $user_id = $_SESSION['user_id'];
+
+        if ($stmt = $mysqli->prepare("SELECT id, fbid 
+                                      FROM members 
+                                      WHERE id = ? LIMIT 1")) {
+            // Bind "$user_id" to parameter. 
+            $stmt->bind_param('i', $user_id);
+            $stmt->execute();   // Execute the prepared query.
+            $stmt->bind_result($member_id, $fbid);
+            $stmt->fetch();
+            $stmt->close();
+            //Account already linked with FB ID
+            if (!$fbid == 0) {
+                if (!$member_id==$user_id) {
+                    header("Location: /redirect.php?action=FBset");
+                    exit;
+                }  
+            //No FB ID on account
+            } else {
+                //Check is FB ID already registerd
+                if ($fbid_stmt = $mysqli->prepare("SELECT id, fbid 
+                                      FROM members 
+                                      WHERE fbid = ? LIMIT 1")) {
+                    $fbid_stmt->bind_param('i', $id);
+                    $fbid_stmt->execute();   // Execute the prepared query.
+                    $fbid_stmt->store_result();
+                    //ID already registred
+                    if (!$fbid_stmt->num_rows == 0) {
+                        $fbid_stmt->bind_result($member_id, $member_fbid);
+                        $fbid_stmt->fetch();
+                        $fbid_stmt->close();
+                        //Inlogging person isn't the one with the Facebook ID
+                        if (!($member_id==$user_id)) {
+                            header("Location: /redirect.php?action=duplicateFB");
+                            exit;
+                        }
+                    } else {
+                        //Insert FB ID
+                        if ($insert_stmt = $mysqli->prepare("UPDATE members 
+                                                    SET fbid = ?
+                                                  WHERE id = ? LIMIT 1")) {
+                            // Bind "$user_id" to parameter. 
+                            $insert_stmt->bind_param('si', $id, $user_id);
+                            $insert_stmt->execute();   // Execute the prepared query.
+                            $insert_stmt->store_result();
+                            $insert_stmt->close();
+                        }
+                    }
+                }
+            } 
+        }
+    //New entry
+    } else {
+        //If FB ID exists
+        if ($stmt = $mysqli->prepare("SELECT id, fbid 
+                                      FROM members 
+                                      WHERE fbid = ? LIMIT 1")) {
+                    $stmt->bind_param('i', $id);
+                    $stmt->execute();   // Execute the prepared query.
+                    $stmt->store_result();
+                    //ID already registred
+                    if (!$stmt->num_rows == 0) {
+                        $stmt->close();
+                        header("Location: profile.php");
+                        exit;
+                    } else {
+                        //ID doens't exsits, create user in DB.
+                        $password = "none";
+                        $random_salt = "none";
+                        if ($insert_stmt = $mysqli->prepare("INSERT INTO members (username, email, password, salt, fbid) VALUES (?, ?, ?, ?, ?)")) {
+                            $insert_stmt->bind_param('sssss', $name, $email, $password, $random_salt, $id);
+                            // Execute the prepared query.
+                            if (!$insert_stmt->execute()) {
+                                header("Location: /redirect.php?action=FBfail");
+                                exit;
+                            }
+                            else {
+                                echo "<script> alert('Registration successful! You are logged in');</script>";
+                                header("Location: /profile.php");
+                            }
+                        }
+                    }
+
+        }
+    }
+
+}
+
 ?>

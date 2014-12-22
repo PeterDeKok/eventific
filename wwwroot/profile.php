@@ -17,15 +17,26 @@ require_once($root . '/assets/includes/functions.php');
 require_once($root . '/assets/includes/register.inc.php');
 
 // Prepare Session
-$session = new session(SESS_HOST, SESS_USER, SESS_PASSWORD, SESS_DATABASE);
+$custom_session = new session(SESS_HOST, SESS_USER, SESS_PASSWORD, SESS_DATABASE);
 // Start Session: true for https, false for http !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-$session->start_session('_s', false);
+$custom_session->start_session('_s', false);
 
-if (login_check($mysqli) == true) {
+if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSION['valid'])))) {
     $logged = 'in';
+    $_SESSION['login_type'] = "Default";
+} elseif ((isset($_SESSION['FB']) && isset($_SESSION['valid']))) { 
+	if (($_SESSION['FB'] == true && $_SESSION['valid'] == true)) {
+		if (login_check($mysqli)) {
+			$logged='in';
+			$_SESSION['login_type'] = "Both";
+		} else {
+			$logged='in';
+			$_SESSION['login_type'] = "FB";
+		}
+	}	
 } else {
     $logged = 'out';
-    //header('location: /index.php');
+    header("Location: /signup.php");
 }
 ?>
 <!DOCTYPE html>
@@ -62,73 +73,74 @@ if (login_check($mysqli) == true) {
   </head>
 
   <body data-spy="scroll" data-offset="0" data-target="#navbar-main">
-   <div id="navbar-main">
-        <!-- Fixed navbar -->
-      <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-              <span class="icon icon-shield" style="font-size:30px; color:#3498db;"></span>
-            </button>
-            <a class="navbar-brand hidden-xs hidden-sm" href="index.php#home"><span class="icon icon-lamp" style="font-size:18px; color:#3498db;"></span></a>
-          </div>
-          <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-              <li><a href="index.php#home" class="smoothScroll">Home</a></li>
-              <li><a href="index.php#about" class="smoothScroll"> About Us</a></li>
-              <li><a href="index.php#services" class="smoothScroll"> E-ticketing</a></li>
-              <li><a href="index.php#team" class="smoothScroll"> Team</a></li>
-              <li><a href="index.php#blog" class="smoothScroll"> Stories</a></li>
-              <li><a href="index.php#contact" class="smoothScroll"> Contact</a></li>
-              <li role="presentation" class="divider"></li>
-              <?php
-              if ($logged=='in') {
-              ?>
-              <li><a href="/profile.php"> My Profile</a></li>
-              <li><a href="/assets/includes/logout.php">Log out</a></li>
-              <?php 
-                }
-              ?>
-              </ul>
-            </div><!--/.nav-collapse -->
-          </div>
-      </div>
-    </div>  
-	 <!-- MODAL SHOW THE PORTFOLIO IMAGE. In this demo, all links point to this modal. You should create
-						      a modal for each of your projects. -->
-						      
-						  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-						    <div class="modal-dialog">
-						      <div class="modal-content">
-						        <div class="modal-header">
-						          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						          <h4 class="modal-title">User details</h4>
-						        </div>
-						        <div class="modal-body">
-						          <p><img class="img-responsive" src="http://placehold.it/600x400" alt=""></p>
-								  <form action="/upload.php" method="post" enctype="multipart/form-data">
-						          <p><b>Upload new</b></p>
-									<input type="file" name="fileToUpload" id="fileToUpload" >
-									<input type="submit" value="Upload Image" name="submit">
-								  </form>
-									<ul>
-									<li>Username: <strong><?php echo $_SESSION['username']; ?></strong></li>
-									<li>E-mail: <strong></strong></li>
-									<li>Phone: <strong></strong></li>
-									<li>Location: <strong></strong></li>
-									</ul>
-						          <p><b><a href="#">Edit details</a></b></p>
-							      <p><b><a href="#">Change password</a></b></p>
-						        </div>
-						        <div class="modal-footer">
-						          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						        </div>
-						      </div><!-- /.modal-content -->
-						    </div><!-- /.modal-dialog -->
-						  </div><!-- /.modal -->
+	   <div id="navbar-main">
+	        <!-- Fixed navbar -->
+	      <div class="navbar navbar-inverse navbar-fixed-top">
+	        <div class="container">
+	          <div class="navbar-header">
+	            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	              <span class="icon icon-shield" style="font-size:30px; color:#3498db;"></span>
+	            </button>
+	            <a class="navbar-brand hidden-xs hidden-sm" href="index.php#home"><span class="icon icon-lamp" style="font-size:18px; color:#3498db;"></span></a>
+	          </div>
+	          <div class="navbar-collapse collapse">
+	            <ul class="nav navbar-nav">
+	              <li><a href="index.php#home" class="smoothScroll">Home</a></li>
+	              <li><a href="index.php#about" class="smoothScroll"> About Us</a></li>
+	              <li><a href="index.php#services" class="smoothScroll"> E-ticketing</a></li>
+	              <li><a href="index.php#team" class="smoothScroll"> Team</a></li>
+	              <li><a href="index.php#blog" class="smoothScroll"> Stories</a></li>
+	              <li><a href="index.php#contact" class="smoothScroll"> Contact</a></li>
+	              <li role="presentation" class="divider"></li>
+	              <?php
+	              if ($logged=='in') {
+	              ?>
+	              <li><a href="/profile.php"> My Profile</a></li>
+	              <li><a href="/redirect.php?action=logout">Log out</a></li>
+	              <?php 
+	                }
+	              ?>
+	              </ul>
+	            </div><!--/.nav-collapse -->
+	          </div>
+	      </div>
+	    </div>  
+		 <!-- MODAL SHOW THE PORTFOLIO IMAGE. In this demo, all links point to this modal. You should create
+							      a modal for each of your projects. -->
+							      
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">User details</h4>
+					</div>
+					<div class="modal-body">
+						<p><img class="img-responsive" src="http://placehold.it/600x400" alt=""></p>
+						<form action="/upload.php" method="post" enctype="multipart/form-data">
+							<p><b>Upload new</b></p>
+							<input type="file" name="fileToUpload" id="fileToUpload" >
+							<input type="submit" value="Upload Image" name="submit">
+						</form>
+						<ul>
+							<li>Username: <strong><?php echo $_SESSION['username']; ?></strong></li>
+							<li>E-mail: <strong></strong></li>
+							<li>Phone: <strong></strong></li>
+							<li>Location: <strong></strong></li>
+						</ul>
+						<p><b><a href="#">Edit details</a></b></p>
+						<p><b><a href="#">Change password</a></b></p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
 				
-			<div id="headerwrap" id="home" name="home">
-				<p>Welcome to your Eventific account <?php echo $_SESSION['username']; ?></p>
+		<div id="headerwrap" id="home" name="home">
+			<p>Welcome to your Eventific account <?php echo $_SESSION['username']; ?></p>
+			<p>Login type: <?php echo $_SESSION['login_type']; ?></p>
 			<div class="container">
 				<div class="row">
 				<div class="col-lg-offset-2 col-lg-8">
@@ -151,10 +163,16 @@ if (login_check($mysqli) == true) {
 					<a href="#"><span class="icon icon-plus"></span></a>
 					<h2 class="text-center">Create an event</h2>
 				</div>
+				<?php
+					if ((!isset($_SESSION['FB']))) { 
+				?>
 				<div class="col-lg-4 callout">
-					<a href="#"><span class="icon icon-facebook"></span></a>
+					<a href="/loginFB.php"><span class="icon icon-facebook"></span></a>
 					<h2 class="text-center">Link a Facebook account</h2>
 				</div><!-- col-lg-4 -->	
+				<?php
+					}
+				?>
 				<div class="col-lg-4 callout">
 					<a href="#"><span class="icon icon-star"></span></a>
 					<h2 class="text-center">Favorite spots</h2>

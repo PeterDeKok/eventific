@@ -15,12 +15,13 @@ require_once($root . '/assets/includes/functions.php');
 require_once($root . '/assets/includes/register.inc.php');
 
 // Prepare Session
-$session = new session(SESS_HOST, SESS_USER, SESS_PASSWORD, SESS_DATABASE);
+$custom_session = new session(SESS_HOST, SESS_USER, SESS_PASSWORD, SESS_DATABASE);
 // Start Session: true for https, false for http !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-$session->start_session('_s', false);
+$custom_session->start_session('_s', false);
 
 if (login_check($mysqli) == true) {
     $logged = 'in';
+    header('Location: /index.php');
 } else {
     $logged = 'out';
 }

@@ -16,12 +16,22 @@ require_once($root . '/assets/includes/db_connect.php');
 require_once($root . '/assets/includes/functions.php');
 
 // Prepare Session
-$session = new session(SESS_HOST, SESS_USER, SESS_PASSWORD, SESS_DATABASE);
+$custom_session = new session(SESS_HOST, SESS_USER, SESS_PASSWORD, SESS_DATABASE);
 // Start Session: true for https, false for http !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-$session->start_session('_s', false);
+$custom_session->start_session('_s', false);
 
-if (login_check($mysqli) == true) {
+if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSION['valid'])))) {
     $logged = 'in';
+    $_SESSION['login_type'] = "Default";
+} elseif ((isset($_SESSION['FB']) && isset($_SESSION['valid']))) { 
+	if (($_SESSION['FB'] == true && $_SESSION['valid'] == true)) {
+		if (login_check($mysqli)) {
+			$logged='in';
+			$_SESSION['login_type'] = "Both";
+		} else {
+			$_SESSION['login_type'] = "FB";
+		}
+	}	
 } else {
     $logged = 'out';
 }
@@ -100,13 +110,17 @@ if (login_check($mysqli) == true) {
 						<input style="margin-bottom: 15px;" type="password" placeholder="Password" id="password" name="password">
 						<input type="submit" id="sign-in" class="btn btn-primary btn-block" value="Sign in" onclick="formhash(this.form, this.form.password);">
 					</form>
+				<label style="text-align:center;">or</label>
+				<form action="/loginFB.php">
+           			<button class="btn btn-primary btn-block" type="submit" id="sign-in-fb">Sign in with Facebook</button>
+           		</form>
 				</div>
 			</li>
 		  <?php 
 		  	} else {  
 		  ?>
 			<li><a href="/profile.php"> My Profile</a></li>
-			<li><a href="/assets/includes/logout.php">Log out</a></li>
+			<li><a href="/redirect.php?action=logout">Log out</a></li>
 		  </ul>
 		  <?php 
 			}

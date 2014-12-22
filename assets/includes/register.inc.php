@@ -95,8 +95,8 @@ if (isset($_POST['username'], $_POST['email'], $_POST['p'])) {
         if ($insert_stmt = $mysqli->prepare("INSERT INTO members (username, email, password, salt) VALUES (?, ?, ?, ?)")) {
             $insert_stmt->bind_param('ssss', $username, $email, $password, $random_salt);
             // Execute the prepared query.
-            if (! $insert_stmt->execute()) {
-				echo "<script> alert('Registration failed! Try to sign up again');</script>";
+            if (!$insert_stmt->execute()) {
+				echo "<script> alert('Registration failed! ".$username . $password . $email . $random_salt."Try to sign up again');</script>";
 				header("Refresh: 0; url=signup.php");
             }
 			else {
