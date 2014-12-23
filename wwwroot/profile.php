@@ -171,6 +171,21 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 					<h2 class="text-center">Link a Facebook account</h2>
 				</div><!-- col-lg-4 -->	
 				<?php
+					} else {
+				?>
+				<div class="col-lg-4 callout">
+					<h2 class="text-center">Facebook account</h2>
+					<p>Name: <?php echo $_SESSION['username']; ?><br />
+					ID: <?php echo $_SESSION['id']; ?></p>
+					<?php
+					$friends = $_SESSION['user_friends'];
+					echo "Friends: <br />";
+					foreach ($friends as $i => $row) {
+                        echo $row['name'] ."</p>";
+                    }
+					?>
+				</div><!-- col-lg-4 -->	
+				<?php
 					}
 				?>
 				<div class="col-lg-4 callout">
