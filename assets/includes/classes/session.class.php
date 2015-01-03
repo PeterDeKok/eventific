@@ -82,12 +82,18 @@ class session {
 	function open() {
 		$LD_sessDB = new MysqliDb($this->sess_class_db_host, $this->sess_class_db_user, $this->sess_class_db_pass, $this->sess_class_db_name, $this->sess_class_db_port);
 		$this->db = $LD_sessDB;
-		return true;
+		if($this->db) {
+			return true;
+		}
+		return false;
 	}
 	
 	function close() {
 		unset($this->db);
-		return true;
+		if(!isset($this->db)) {
+			return true;
+		}
+		return false;
 	}
 	
 	function read($id) {
@@ -96,7 +102,12 @@ class session {
 		if(isset($data["data"])) {
 			$data = $data["data"];
 		} else {
-			header('Location: '.$_SERVER['REQUEST_URI']);
+			if(!headers_sent()) {
+				header('Location: '.$_SERVER['REQUEST_URI']);
+				exit;
+			} else {
+				$data = '';
+			}
 		}
 		
 		$key = $this->getkey($id);
@@ -114,16 +125,21 @@ class session {
 		$time = time();
 		
 		$params = array($id, $time, $data, $key);
-		$this->db->rawQuery("REPLACE INTO sessions (id, set_time, data, session_key) VALUES (?, ?, ?, ?)", $params);
+		$result = $this->db->rawQuery("REPLACE INTO sessions (id, set_time, data, session_key) VALUES (?, ?, ?, ?)", $params);
 		
-    return true;
+		if($result) {
+			return true;
+		}
+    return false;
 	}
 	
 	function destroy($id) {
 		$this->db->where('id', $id);
-		$this->db->delete('sessions');
+		if($this->db->delete('sessions')) {
+			return true;
+		}
 		
-		return true;
+		return false;
 	}
 	
 	function gc($max) {
