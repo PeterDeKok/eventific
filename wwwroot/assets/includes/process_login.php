@@ -21,19 +21,19 @@ $custom_session = new session(SESS_HOST, SESS_USER, SESS_PASSWORD, SESS_DATABASE
 $custom_session->start_session('_s', false);
 
 if (isset($_POST['email'], $_POST['p'])) {
-    $email = $_POST['email'];
-    $password = $_POST['p']; // The hashed password.
- 
-    if (login($email, $password, $mysqli) == true) {
-        // Login success 
+  $email = $_POST['email'];
+  $password = $_POST['p']; // The hashed password.
+	
+  if (login($email, $password, $mysqli) == true) {
+    // Login success 
 		header("Refresh: 0; url=/profile.php");
-    } else {
-        // Login failed 
+  } else {
+    // Login failed 
 		echo "<script> alert('Login failed! Try again');</script>";
-		header("Refresh: 0; url=/index.php");
-    }
+		echo '<script>window.location = "/index.php";</script>';
+  }
 } else {
-    // The correct POST variables were not sent to this page. 
-    echo 'Invalid Request';
+  // The correct POST variables were not sent to this page. 
+  echo 'Invalid Request';
 }
 ?>

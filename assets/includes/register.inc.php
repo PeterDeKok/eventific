@@ -97,11 +97,11 @@ if (isset($_POST['username'], $_POST['email'], $_POST['p'])) {
             // Execute the prepared query.
             if (!$insert_stmt->execute()) {
 				echo "<script> alert('Registration failed! ".$username . $password . $email . $random_salt."Try to sign up again');</script>";
-				header("Refresh: 0; url=signup.php");
+				echo '<script>window.location = "/signup.php";</script>';
             }
 			else {
 				echo "<script> alert('Registration successful! You can sign in now');</script>";
-				header("Refresh: 0; url=index.php");
+				echo '<script>window.location = "/index.php";</script>';
 			}
         }
     }
