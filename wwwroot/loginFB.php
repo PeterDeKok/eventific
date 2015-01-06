@@ -36,7 +36,7 @@ use Facebook\GraphUser;
     //Set Facebook session
     FacebookSession::setDefaultApplication( '608927005878535','3322412829577633697ed1fdbc6f8c34' );
     //Login helper
-    $helper = new FacebookRedirectLoginHelper('http://eventific.dev/loginFB.php' );
+    $helper = new FacebookRedirectLoginHelper('http://eventific.peterdekok.nl/loginFB.php' );
 
     // see if a existing session exists
     if (isset($_SESSION) && isset($_SESSION['fb_token'])) {

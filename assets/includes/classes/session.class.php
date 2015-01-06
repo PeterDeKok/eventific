@@ -103,8 +103,7 @@ class session {
 			$data = $data["data"];
 		} else {
 			if(!headers_sent()) {
-				header('Location: '.$_SERVER['REQUEST_URI']);
-				exit;
+				$data = '';
 			} else {
 				$data = '';
 			}

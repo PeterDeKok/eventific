@@ -29,6 +29,7 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 			$logged='in';
 			$_SESSION['login_type'] = "Both";
 		} else {
+			$logged='in';
 			$_SESSION['login_type'] = "FB";
 		}
 	}
