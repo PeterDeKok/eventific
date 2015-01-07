@@ -43,6 +43,8 @@ if((isset($_POST['name'])) && (isset($_POST['time'])) && (isset($_POST['duration
             $stmt->store_result();
             // get variables from result.
             $stmt->bind_result($creator_id);
+            $stmt->fetch();
+            $stmt->close();
             if (!(isset($creator_id))) {
                 header("Location: /redirect.php?action=errorSession");
                 exit;
