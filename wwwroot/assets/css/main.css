@@ -695,3 +695,157 @@ form .row:first-child .floating-label-form-group {
     color: #212121;
 }
 
+/*************************
+ ** Soundcloud controls **
+ *************************/
+
+#soundcloudWrapper a img {
+	background: none;
+}
+#soundcloudWrapper .btn {
+	position: relative;
+	margin-left: 3px;
+	
+	background: transparent !important;
+	border-color: #f50 !important;
+	color: #f50 !important;
+	
+	-webkit-transition: all 0.2s ease-out;
+	   -moz-transition: all 0.2s ease-out;
+	    -ms-transition: all 0.2s ease-out;
+	     -o-transition: all 0.2s ease-out;
+	        transition: all 0.2s ease-out;
+}
+#soundcloudWrapper .btn span {
+	vertical-align: middle;
+}
+#soundcloudWrapper .btn .icon {
+	position: relative;
+	font-size: 1.7em;
+	font-weight: normal;
+	top: -0.1em;
+	margin-right: .5em;
+}
+#soundcloudWrapper .btn .icon:only-child {
+	margin-right: 0px;
+}
+#soundcloudWrapper .btn:hover {
+	background-color: #f50 !important;
+	border-color: transparent !important;
+	color: #f5f5f5 !important;
+}
+#soundcloudWrapper .avatar {
+	width: 100px; height: 100px;
+	border: solid 2px #f50;
+	
+	overflow: hidden;
+	
+	-webkit-border-radius: 5px;
+		 -moz-border-radius: 5px;
+		 			border-radius: 5px;
+}
+#soundcloudWrapper #sc_user_playlists div {
+	text-align: left;
+}
+#soundcloudWrapper .playlist_item {
+	margin-top: 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	
+	text-align: left;
+	
+	-webkit-transition: all 0.2s ease-out;
+	   -moz-transition: all 0.2s ease-out;
+	    -ms-transition: all 0.2s ease-out;
+	     -o-transition: all 0.2s ease-out;
+	        transition: all 0.2s ease-out;
+}
+#soundcloudWrapper .playlist_item:hover {
+	background-color: #f50;
+	color: #f5f5f5;
+}
+#soundcloudWrapper .playlist_item:hover .playlist_artwork > img {
+	border: solid 2px #f5f5f5;
+}
+#soundcloudWrapper .playlist_artwork > img {
+	width: 100%;
+	border: solid 2px #f50;
+	
+	overflow: hidden;
+	
+	-webkit-border-radius: 5px;
+		 -moz-border-radius: 5px;
+		 			border-radius: 5px;
+	
+	-webkit-transition: all 0.2s ease-out;
+	   -moz-transition: all 0.2s ease-out;
+	    -ms-transition: all 0.2s ease-out;
+	     -o-transition: all 0.2s ease-out;
+	        transition: all 0.2s ease-out;
+}
+#soundcloudWrapper .playlist_item .title {
+	width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+#soundcloudWrapper .playlist_item .tracks {
+	font-size: 0.8em;
+}
+#soundcloudWrapper .playlist_item_more {
+	padding: 5px;
+	background-color: #f50;
+	
+	color: #f5f5f5;
+}
+#soundcloudWrapper .playlist_item.active {
+	background-color: #f50;
+	color: #f5f5f5;
+}
+#soundcloudWrapper .playlist_item.active .playlist_artwork > img {
+	border: solid 2px #f5f5f5;
+}
+#soundcloudWrapper .playlist_item_more .btn {
+	position: relative;
+	margin-left: 3px;
+	
+	background: transparent !important;
+	border-color: #f5f5f5 !important;
+	color: #f5f5f5 !important;
+	
+	-webkit-transition: all 0.2s ease-out;
+	   -moz-transition: all 0.2s ease-out;
+	    -ms-transition: all 0.2s ease-out;
+	     -o-transition: all 0.2s ease-out;
+	        transition: all 0.2s ease-out;
+}
+#soundcloudWrapper .playlist_item_more .btn:hover {
+	background-color: #f5f5f5 !important;
+	border-color: transparent !important;
+	color: #f50 !important;
+}
+#soundcloudWrapper .playlist_item_more.no-bg {
+	padding: 5px;
+	background-color: transparent;
+	
+	color: #555;
+}
+#soundcloudWrapper .playlist_item_more.no-bg .btn {
+	position: relative;
+	margin-left: 3px;
+	
+	background: transparent !important;
+	border-color: #f50 !important;
+	color: #f50 !important;
+	
+	-webkit-transition: all 0.2s ease-out;
+	   -moz-transition: all 0.2s ease-out;
+	    -ms-transition: all 0.2s ease-out;
+	     -o-transition: all 0.2s ease-out;
+	        transition: all 0.2s ease-out;
+}
+#soundcloudWrapper .playlist_item_more.no-bg .btn:hover {
+	background-color: #f50 !important;
+	border-color: transparent !important;
+	color: #f5f5f5 !important;
+}

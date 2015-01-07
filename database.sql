@@ -55,6 +55,11 @@ CREATE TABLE `members` (
   `password` varchar(128) NOT NULL,
   `salt` char(128) NOT NULL,
   `fbid` varchar(128) NOT NULL DEFAULT '0',
+  `scuser` int(32) unsigned DEFAULT NULL,
+  `sctoken` varchar(32) DEFAULT NULL,
+  `scusername` varchar(32) DEFAULT NULL,
+  `scpermalink_url` varchar(64) DEFAULT NULL,
+  `scavatar_url` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -65,8 +70,8 @@ CREATE TABLE `members` (
 
 LOCK TABLES `members` WRITE;
 /*!40000 ALTER TABLE `members` DISABLE KEYS */;
-INSERT INTO `members` VALUES (1,'NickBraat','nickbraat@planet.nl','8f7a2fea4f7195c0cf2a264fe7a82e855e078b99040614a1694de23f8764c3399c434b225a8d33f9dce221bf2817780c9eabac5896970f8868e8bac14e2d93cd','dae98046f4f2665ebcd52d5a29d6e04bbe71e7549395a0f329cfe8138360dabe3e31877bb33fe266151b6427292a11e109fc1534c959d45e727dc384626e8caf','0');
-INSERT INTO `members` VALUES (2,'Peter','p.j.s.d.kok@gmail.com','589a2e3178a0005993fe7ffdb4015140444a62ba43044ff90b60172fb388470e3573f1a97b559a47af6c59237cd0de8b31155939824cb6e91c977e406ccdef29','e8783656aa34ccdcae48866b8a7d15e8722c682a99d7f390b1b4c02e2d33650998cdb844275a879e68898ddc2ee1c03bdf5c67f58090edcc461cbc44ca1ea448','837289849647805');
+INSERT INTO `members` VALUES (1,'NickBraat','nickbraat@planet.nl','8f7a2fea4f7195c0cf2a264fe7a82e855e078b99040614a1694de23f8764c3399c434b225a8d33f9dce221bf2817780c9eabac5896970f8868e8bac14e2d93cd','dae98046f4f2665ebcd52d5a29d6e04bbe71e7549395a0f329cfe8138360dabe3e31877bb33fe266151b6427292a11e109fc1534c959d45e727dc384626e8caf','0',NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `members` VALUES (2,'Peter','p.j.s.d.kok@gmail.com','589a2e3178a0005993fe7ffdb4015140444a62ba43044ff90b60172fb388470e3573f1a97b559a47af6c59237cd0de8b31155939824cb6e91c977e406ccdef29','e8783656aa34ccdcae48866b8a7d15e8722c682a99d7f390b1b4c02e2d33650998cdb844275a879e68898ddc2ee1c03bdf5c67f58090edcc461cbc44ca1ea448','837289849647805',19674541,'1-110922-19674541-5c0581cdc951a6','Peter de Kok','http://soundcloud.com/peter-de-kok','https://i1.sndcdn.com/avatars-000047723823-ckr5qc-large.jpg');
 /*!40000 ALTER TABLE `members` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -92,13 +97,49 @@ CREATE TABLE `sessions` (
 
 LOCK TABLES `sessions` WRITE;
 /*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
-INSERT INTO `sessions` VALUES ('5dp5h2icid22nvtbmbr191mrmov9hn3c64te40f2hn07frtrmjqf4i3ovf4b54170ts80k0plv9rgnpr5ii0c3bvbv5t10e6dcknjl1','1418492146','GnrktiTPZeBBWdzZEPV1s9bZO1bsFMXl8J7J7Jw9m0Y=','a0e3a984fe6187334c0e76dfa16f8fe1c77d9b7b55fdba174d2e036138667891d0b7ed845568d6db95bfa698a006bf15adf36131f8d39fb9f61c5a543b1d7a98');
-INSERT INTO `sessions` VALUES ('5p3pbl812ickp9od547i7vso0pf91j2bhe2lfoj3ag8k5bm7chtf061mkta8e2qsm5vc3np26893gve26av2nnqa6sos106c7ppmt80','1420284551','V1N+J7++k2hVzLe9yKVkM2qRNREkSZJ0W1A62/Qjqtmj/szMcLUNuSUy/BCsHl49Y9r4KceKHo8TulICukoPcMacE79TLmfwruvt2PTf8ETYRJroFw7dWQURnsluDanX4VgjN4Xqb2H1EqklUFlSYCaazTEDNi+TToyZ6ZKILBSue5uTizgRAtLW+HUiDTHmLgkfJP6YQs6aZLQ2AhVIG6RzssTmuUixlDKtP+3EPN1XJewRD8MejzJQazZR6d7uIkZ/JIJMSbMmZoBCJGDTCMPPan0NnLvKbj16QQSmo4rr2k4paCfHxTdEuiOZOa6C18zorVBZnhGAvsC8kDKWg1Buzp4rtrZFokDhgg92ijEV1w0oIQuT4EArjkVxEorzvCBhTigSGeD8zOK5j26OL9Eko4tuwYrTAjKnTBVwbMeEc+jpUz+DLozYUEVARIBBPUHJ6KsMKEI7aD3NEmHWgCxWhblNym50luieZSliC1tUdGN7mUQLVjRkxZPWTWR/p9sYpLHrL7yO8VABF2PlBPwpGjomI9WIGJO90YSb9+A+5eTwY0hdezE21wXHqcHlMgHWxPUXGoVb0ctWWOALP+rIYd8HU4mkavoD+uXBp2hJjRYEjVRUzt66GqQcXyaM7Pq4T1OFMLu4yYRretlcHY6fcw1+xZ4XnvR4BnXHOvUmCPHHyerRBGQAAmgHxgCtAV5h+AUkHNluJTbjKu6IotQ2Ojja9rdjShpKApsEtDJPFnAEUyDrqU1glo8iM5vTdqwpinv2Yv+ssZQQy1eE9qUMktvEdDAfErm3Yq/iRUg=','3a9a18f31607343b3dcf9f379664360124b015e8828d9303f2855d0e733c5dbc43281a0dd5c2b59b39b4ecfeabcd1ce9441ea537702ba7a2966c9d9e2dc4bf7f');
-INSERT INTO `sessions` VALUES ('cd2jrv1isag92k460r3iv3aspf9g0rb2f4d2ts2iieb8iprd0qd2b3hd25doqfa6o4o0nkas6ifiklqk80j861l4a9doa6v6257c073','1418491673','Y84ECs+olzE0jZuYVCAQHhGUnIVLLnZRwZEGyyxXaUw=','8262465b17063016e85558a2f0fea0e6a4c07f76b10a35158ae681e2c5fe6b5c0d87d91a8dea3a87ae1b2fdcb5a0269ac8810be684e428aa7f0df928194e0ea9');
-INSERT INTO `sessions` VALUES ('hm9dgsuhfrkm210vp1no4kq2asgh7c5gp1504034el5f1ogv1n9k1of4vmuqajasmeprhk3qaek79a2fdsqqdm4ia30r1a5gennhk40','1419025745','VjRsEYgnVc1vi/lZPLgiy/BDiDEgzHESs/pLZtnWz+k=','b0339736a55238da51c7bf461bfbec21711560d7f255f219c076d9f3725f5b6dda09b3e70abac195d8a376771a5d397d52473faf2b1116b3e9d96ac2eabb67b4');
-INSERT INTO `sessions` VALUES ('tun60k1890c9h45h9id5tp8gr40qt6u53be6h1c08vpl9t87cpvilanhipp8b6cu6i4km8guldj7qi93eb3v5cogia14bb5cf179po1','1420205104','6pIhSK4Z9al6OwZ5t0RKtSS1J2lGtMDCKpJPRy6ygDith7dUeRnhFwRlWp43ri3ThO63MQT3aAsiCmQ0uixdv9r2MgqcE38FOr0y4lPsLfrzy0g4e7FcAR3k8dIqgb1t8AxYmDPuIr65yXon+VtWz8gMwewYezT9eoU6ctwqWEbJjanwF1Bi3AGe3f+TI5sPaiBcqvER1bcrhVHgW8uyIgriiqHS0tGKB2p+qPtVRf9RKZpu25Hh1sciCR/WKNrnSJhakwKi9aEiats8wKUi6mohCRcBdiI3xJyH9x2/XStyIgBKHJnL30M1ntnup6himX8PF4Y3L320YiW3sWkBp7Qzv1zS9bS4qdMz5wfZ0diJSUQJuHaDd8z6pNfhh9YwYf1DpNqaOP1dObP6OTu0zlfoWD45pXZDeqrlrQXQtx2AzwPAtgu4MajHS2gWlhddkbhpYVbar4sILQ1mcyTW6WLRQXuayoBc6YZKInsh5fHR989o4ndydNfJDTq1NC+w8BxEldX8oZumrTJCFfbOYsaqPV9pnM5GBgciSwUAfy6T3y2d+7ry4fZoqI5OK1VTf9umk8Bm4kdenXz7ciFyqZFIZEybsXJiE29QZvENYe4UzhSa4qN6xzMpQltO3z1dlteqdgjJF+iv4aDvQQyJXC8s3lb0FLAV4S1eHrPLVy9cK2Df3a6Z4ucS5DnmoVlU+AdaO+obfyd+6lEloe/QPA+nSA+NLm1G//oFPL+OiTl1vDQuMPmxxE6iIeVBMNivOfM69BDot0PVWkB6nyP9d4jBA5m3MfjzRu6YlzEVu/1IFoH7wOJ8fnnXuiyoNx1LPyZwz7hVBiYVrYPWXN6K5SBM7Ns1P53/stCQxzXCn2VXojZxr/Ca9qrIBRKfb++p/X38uKwl7RhQ3/bA5L7vxw1f2H4yRUr2TzpWXzt2fPs=','ee0fd677c1b74e17220973b6e11206465ba3d7c48f415b65621832f852c12edd27547009a494c1affe96639b8edddd815cd9f7817de68144a7fea5e87b03765f');
-INSERT INTO `sessions` VALUES ('ubek50u0i5qq388hcgbhfr96jpafehqbk8of59m14rc9plm0u8n4bthbpe4968qh18hhgk3kitr96jao6g7rm65hn2sumqnca149c42','1418916799','2L8U6+3TsceEIf6XCaTBfcXZ56ehEVvs0tnQQFkN9W+nzVNz1OJr2U7m0vlVXHO0xgaEawq7EsbrPRJc4nvUR/yHPhu7CtBL62HTQeawtjteCim/eLvBojp27nmAYqRDkd8SkNyqCj6YEo00m0LTOzzyjNJaA0nSk0QJCwDm+My+nqEf1LiXph/VdV+ELJirKJ/673im36z72uYwh6uhk9IOWf6a+8EfSGIn+ziEuQt7hLrYiUI9pR+wgachRN/B','d2fc59fbefeb0d772cea4c91e64cd2cc444f88bd8152ed7e35dd12c0e00356e42009546f52252bdd7c4dd531b506b91a92e91c61153bd7dd8c88e921182da72a');
+INSERT INTO `sessions` VALUES ('9fsj63vns042vnhkl0t5qatrlnkhgplcdkuc2iuhadrl7e33mftvt3kk4jv48ejfkmimob70ds39rukut768d7t7v1oa2sfstrgq7k0','1420617047','/58yhxMPXNthcwtFy4vEzNVzPHOjXlU/ZNJG6YbRdLWcpucGmWc1ONz3TG8rr+kjmkL0NbGR9BTbfd8Ya2ecmh76SQdhY1SeAxzXBaDX7Vqut8EILxlP32y0fmGhJJ1YccRHn47wujHazbMUpK4tUXQ4dki5COAxQZPgA1U7ab43dvxTm+LiaFS/pEmc4zeN0Lq6UUER5w1h86Oe5w87MWKm1ZpZhXXwOfFTAMkMX8Gc118ntol4Imq7gDHWoWtMRjTB/0I0q0qt9iMWevElbnLC3/+6iSzpse93rQjLKYSqE6YnQ0A2k/e0R/VdmbfnCS8xbuKECx/hn1XhqQTvzoxhcpuxLHlpB4Ikr1/iz+IXwniDrYjOLp8RXX56gsA4P150LjfirTGJ/qCUyx/pF3DWIEBNEJjcAEJ9ZWvz7B4ZLPYP62+pZ28n84irvDZ/9k57Hvwi7XjQa73fJn/XrnZDdonKwvwxhEWegHYIpdYiI166BzOwYiCz1sxuQ9mVHwsytTWExYBZofjtKUxXsvhHZ3kYQNT5ap2blJ/Vl9P1b+2tyZ34XrknzJgOLFj3MwnCBXL6dn1XYXeNFDksMfbe2d5/fGPuxYz2gHGPvLoDF3GkkRtirQuMDqO42fDpJ3lrouzURfn21YmkdjTI3LCblE3B3VieSiUQuHn5kFM20di1FludOt3LDjxbEuTuLe2qfvMedb75XPsAMK38fk4UdTn+GMj/2jSbJ7EgQqC2uQzRlLd7vIbWOyupNtl+nPI6/EYYDEXKwAkwnYVXPEc1FpX0EaIrEaBccNTDYL9LH54jUKus0OtdGNLOfscBh/LjJyVqMitFPL8Krr2eo+OZIkwtH1rsmou/Oej1j3gWdKVVj6hUdRnbqKrM5iibq9uinAUEahSVga7lh7rtTO8pGEf5SVdqvL65doAEKWY3B5hPgwvjL6pupom45fcwvUu1o9ZSuChMtg/kI48JTZ8XwyQR7MrFElN5Eq9XFv6Ueps5hi/IiPee0l43NZVheYOj36VMeDZY5epItIa1Mto01hOuXdXsaloIFgRiHDTetcZak/k3vaMAz0D1feDp7jU23qLO6K9KGBj/QZ8lT0V++GAZWlnWod9YI7C3u8vFoRaNmCdxn2Zqv1LMSYGC8z1IxNHh4bfiPk/lBnc0hZgj+BM5LdCZVYuhJVwRXhk=','2d70bff32cf36a54a291beb6e357bc7d5a71a1ee0ce0dea842120c0505056acc54cc9946c9eabf0c43edacbee9f8ef44bb2dbb0e6d14dcf3ac57c8c231f310b6');
+INSERT INTO `sessions` VALUES ('k0i3vn6mhgu36i4t6hp15n4497vpjkiqat9urb2i4h7ch92fnqk3tafnodmdvs8b3ke155k62c324pnadfknp5vt0ibqur022uempn2','1420583853','QjwNN79/+4hTNGpw0mnvnLPcFiUSg1iN8Xrwy2Ocvt6fHjlJ73EuF4TtLg9ahQ/cQi47jZBwW1whBuQlQRuV9fDzg34+brGhHK8Rb7ERN2wUbkB4g5fI1Ev+FrR3icIRI+VprmdN8XlzxQbVs8fPB6p8nMazhXYJPWJ1DRsteg9IsSZTjD645Zx0A5IzGL3j80/c9mOgHLw1Go3O8hDSRNoTUdkN4RvXQmVPw7flr/4Ie423hoSiYKdP5Wyhe409twxWtpDFlbwyPjU+U+5Jc/jrJCrQi8tYEesmx7bQbhDHeO2NIl06AHDU91M+0JI3dxN+TeI7SQmgrGX7rI/zs+IpkSr9CyJ6AwL790iAKu7d1dJs2+TKfaMEUM+HEEEO0Xft6uQHiEh5gzUfKu3BWm+Es7E4XSFvGPN9CyflnAxKg+SVHaEZa5wZ8tYZxzj8MTV+URDC8ZDBMBNvhEORvwj6jtohNkV8G5E8ooE/Rl5eJH4eh3qwwdV8abCnHHsP','2ac4b781220de0b4264cc22346a70fec68a7acccdd3c44522a46f9598a421b217570aa4308ee17ce31c9a151a43ee33c1a37b99fb0300929f5ed2a6fd45be647');
+INSERT INTO `sessions` VALUES ('k6m7g1crpttv8qvg4og0l4kbrb39r1tcpd5ohi0529kosm38ntv1g0dvks055d5m9056fuktiqbil5j3st0u5olop5o6ieh7jemuhd1','1420639549','er62Hry1DhoUHlLEt3ExnP3JXv8wihwI/xMiT8CbOQ8mFS41vWlqz6jMHg5al8kajY8BSVFL+j7g/P6NNpb/yBfJ1RDJ+lJ5ew0OCTB+XjFoz5HgC2zmrjzvCkvZZ0Hm0qVb6QbYVcBvMI5tl/x8pFDOFf+yd6SdKQs3nyTcuYC2zwgspRKIh8Bges6810B0RBp25BViSZPSH95UlmRs7qP3WTtHEIdMpIZS7GyXxpnHs6aUTI83BDFNlxn12i3iy+ftYa3eqjvFqJSklHtty4ifUao8iL/A2z8QntbmHKcRE1FCpGafiW5t6K1EgwK0pUz+VQ55aXQTeQJVCyCxTRLPSapyqeF+Jj8exJ/QQw61gRdO4Hxgm4Ca9tpVuxFIKHSyJGDPYrIktBgAs7kkg0kq/+eLN4qtpqn/tx56sEOcR2F+UeXxYQ5Y7YEr5e62OBYdnma1hdbBN4/lhLFdWQ==','17c3591cb611bef173566c67c55c69f45bebba65eb7086e9626cb4e95837138bb78241a30a8e84a1d850d5a4e9429d87868409689aa2fefb6282e992d8c833ef');
+INSERT INTO `sessions` VALUES ('l3hcfeqjs9bpki7qi11qfj1v205u93rhh2hqfak22la6gicojc7iv5bpkhvuaqniucddg43eaj4an5v9jp9j8lhdutbionjt446a9n3','1420552956','heoTf2nZcLOSeAEPa5GvIB6Pr2Oo1KEHEeHfbBA7an8aCDrkq0KPP2i19djzk+TTz2Schray04IUaUWYXBf7eeZfnVmiLNgLFgFQUALsruk6MfUuQDGQzqP5X0HSmADAbeCjGpt83tIqsbwcWG3G4XJPNKKWs90AAMOc7fkvxsYgFJGBn9jUx2g2zF/GfjacIdDPuMsvBcbZo6n5nDcpAZq75lijIp8GwUrGfgKuo1FzRQ3GZObqpa+OB1Xdjr5pRLWuzcwt3cl/Up5eijY3D3I337/7HXL9td+K5VeQmlgktTSeG0IVMJosLlQRtooXJ6VTBwgTrNQMYphCbywVPcjQK+yZIA+EZhwQftwhkIlYV3oEjAtJWvhuBYXI1eBeBUxxYVZn1pitB5t8jbIxlo/JT2T5n+Fx7pwxHw6zfXMg9KozPR3QSRckFY6TgojkBWlG6P8wYttLp9850CFNY9Fj6dKJ5npCMcz51kyzy2CjFc/0jBvU4yHI5PJ1pnnzCe7kpnFChj25+MG4NX7eOKtkLa/tf6lNiTUHVlbOIVHd1oXHs5W4CbQVtRteajeg1qE777Ze1fOCQI5NYSuEFnRe5rgruGUJq6AOxvfw0DlGUVr01MaL2gGwUvmHIaQugx0MAENKryI+/RtIJeIoHeCzGRV5lswDwZNUN3I8n5PNQ02Mwxl61veIpUJC3+gfJR2tnZlrP53RNHJeaFSS70hBfmDZ9ajknlADINrKPEB6277JYtcqJAdLH0avUOvqJk1YF6gY0bBIGRX0/vSylg03sOEVJEwWIErZ9UAcpUkD0Qs78gukWPERsr49G7iP6zPDpLODW3h5i5iYh+vOdxKmZNUB/jybm3JBLippEQ1VqW/iXdn4Yhip56WEt/o8ipqwMDaFBgwrwLWcK5HjMRGD//M+EI7f5L7DmZkQn2aXThVoymM5pKNdlWddkG7F/9N4X36wXNf/H10cHTtxHOhFNv0W1tgsUvCdnInaX/NAVUnHawhW+t+hdFMSXChCjTFL3dzml4S/O4fSZiQD2eSNl5j6U7Hdvt7J62VGZu2ZTelUR6fc8cqOGaeKWs8HVvcN4TDZh/NT+FIQ6CxLt333WYgMgS56Zquax6A/99mb/4lf9O0cIl1YXQQCxCyISwGM/koRqxehhPRZjEpYwkg9GPEQ7nzxltdxGIYtL7w7g0woKrpFSuakfND24I7yj17SMVH/lFC+IgJqQ96MpQp1PrIaCkMyQnN8CYPFo/2CdELBksri8dqzGBi04n+d','51dd4149d0911e7902efa405fdf3b394d69bf575c656ca7abc79dbfd61cbb95adb6948211fe25e9c0e2b5476871626287d0ffb2ace6478bb353c0451d61fa4a7');
+INSERT INTO `sessions` VALUES ('lttl31sjnrh8kskh442chj0nu89ujg4dlc2j93ri1h4i54dnrf4636p3grnc00bl6ruofbi2t3gobfljopgaus06ucnne0siaq4rrn1','1420575444','zMb7tdEGNkXbTFy6C9LVm+8Su+leUFds9/wv9yHxkGwU5iQNlfVZSR4JEb/ZXacNDpqc+jwc/ARNKLM4jAMHbkD+w6EfBgvXdh1EJt1IXqkOK+fD3Dba3soWH7esHlNBDpwcC6cFLWrsm+Px2EoyHzazO1yV5FlgoDI3xAOtgQOMRv2k+NE5+M/FpeMrZ0SKCt1lt9+iFcAXCT6h9vkxHzroWCKRmGjTQsGesmG3uD2t/9uM2nTUp4rVzikZ41+GJzGwoKhrCMT1zIK7mlvYDez5Lo+3WZqTCoRgGt+HmWLo/t5rx4ChMm30WwA6XZ9twx+vS7X4N7zVBQxDvIShTLxQqG32kbJUyCxdKozX/Cea9uwpWmldPb2gxqDKuDKUtBDXRzRcq3FOlB4quErMVaHqeBPkvjBny8hslEJtLbuWlvZam9YspvsmoC1nhyzyhQ8qALsk7u6HnyHfVm/azzvIRdPhjT7idD6eRWmesee/jVJUF4yMvC/5ctYMFZXN','a3845e47a011b0f46067f26bad1176e04af5d58fd33141d88d397eeb5128aa0304c7aafaae589e797efdefebd9f9c767c5ffff286449952e51755bdc9721f040');
 /*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `soundcloud`
+--
+
+DROP TABLE IF EXISTS `soundcloud`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `soundcloud` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `event_id` int(11) unsigned DEFAULT NULL,
+  `member_id` int(11) unsigned DEFAULT NULL,
+  `sc_id` int(11) unsigned DEFAULT NULL,
+  `type` varchar(16) DEFAULT NULL,
+  `addedAt` datetime DEFAULT NULL,
+  `permalink_url` varchar(128) DEFAULT NULL,
+  `artwork_url` varchar(128) DEFAULT NULL,
+  `title` varchar(128) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `soundcloud`
+--
+
+LOCK TABLES `soundcloud` WRITE;
+/*!40000 ALTER TABLE `soundcloud` DISABLE KEYS */;
+INSERT INTO `soundcloud` VALUES (1,9999999,2,7880687,'playlist','2015-01-07 09:54:00',NULL,NULL,NULL);
+INSERT INTO `soundcloud` VALUES (2,9999999,2,7880687,'playlist','2015-01-07 09:58:05',NULL,NULL,NULL);
+INSERT INTO `soundcloud` VALUES (3,9999999,2,7880687,'playlists','2015-01-07 10:26:15','http://soundcloud.com/peter-de-kok/sets/concert-at-sea-2013-favorites',NULL,NULL);
+INSERT INTO `soundcloud` VALUES (4,9999999,2,7880687,'playlists','2015-01-07 11:22:29','http://soundcloud.com/peter-de-kok/sets/concert-at-sea-2013-favorites','https://i1.sndcdn.com/artworks-000053124820-dwch5j-large.jpg',NULL);
+INSERT INTO `soundcloud` VALUES (5,9999999,2,7880687,'playlists','2015-01-07 11:36:50','http://soundcloud.com/peter-de-kok/sets/concert-at-sea-2013-favorites','https://i1.sndcdn.com/artworks-000053124820-dwch5j-large.jpg',NULL);
+INSERT INTO `soundcloud` VALUES (6,9999999,2,74517736,'tracks','2015-01-07 12:35:53','http://soundcloud.com/go-apr-s-ski/feest-dj-ruud-gas-op-die','https://i1.sndcdn.com/artworks-000038074113-ecxxwk-large.jpg','FEEST DJ RUUD - Gas Op Die Lollie');
+INSERT INTO `soundcloud` VALUES (7,9999999,2,7880361,'playlists','2015-01-07 12:36:14','http://soundcloud.com/peter-de-kok/sets/kutmuziek-stampen-gek','https://i1.sndcdn.com/artworks-000044122008-pxdkpa-large.jpg','Kutmuziek, stampen gek!');
+/*!40000 ALTER TABLE `soundcloud` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -110,4 +151,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-01-03 12:38:13
+-- Dump completed on 2015-01-07 15:07:09
