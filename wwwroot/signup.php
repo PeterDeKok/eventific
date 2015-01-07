@@ -15,13 +15,12 @@ require_once($root . '/assets/includes/functions.php');
 require_once($root . '/assets/includes/register.inc.php');
 
 // Prepare Session
-$custom_session = new session(SESS_HOST, SESS_USER, SESS_PASSWORD, SESS_DATABASE);
+$session = new session(SESS_HOST, SESS_USER, SESS_PASSWORD, SESS_DATABASE);
 // Start Session: true for https, false for http !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-$custom_session->start_session('_s', false);
+$session->start_session('_s', false);
 
 if (login_check($mysqli) == true) {
     $logged = 'in';
-    header('Location: /index.php');
 } else {
     $logged = 'out';
 }
@@ -35,7 +34,7 @@ if (login_check($mysqli) == true) {
     <meta name="author" content="Web Technology Group 5">
     <link rel="shortcut icon" href="assets/ico/favicon.ico">
 
-    <title> Event Management System</title>
+    <title> Eventific</title>
 
     <!-- Bootstrap core CSS -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
@@ -61,7 +60,6 @@ if (login_check($mysqli) == true) {
 
   <body data-spy="scroll" data-offset="0" data-target="#navbar-main">
   
-  
   	<div id="navbar-main">
       <!-- Fixed navbar -->
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -85,21 +83,23 @@ if (login_check($mysqli) == true) {
       </div>
     </div>
     </div>  
-
-    <!-- ==== ABOUT ==== -->
+	
 	<div class="container" id="about" name="about">
-		<div class="row white">
-		<br>
-			<h1 class="centered">REGISTER WITH US</h1>
+			<div class="row white">
+	<h1 class="centered">REGISTER WITH US</h1>
 			<hr>
-			<div class="col-lg-12">
-		        <?php
+			</div>    
+		      <?php
 		        if (!empty($error_msg)) {
 		            echo $error_msg;
 		        }
 
 		        if (!($logged=='in')) {
 		        ?>
+				    <form action="<?php echo esc_url($_SERVER['PHP_SELF']); ?>" 
+                        method="post" 
+                        name="registration_form"
+                        id="signup">
 		        <ul>
 		            <li>Usernames may contain only digits, upper and lower case letters and underscores</li>
 		            <li>Emails must have a valid email format</li>
@@ -112,44 +112,51 @@ if (login_check($mysqli) == true) {
 		                </ul>
 		            </li>
 		            <li>Your password and confirmation must match exactly</li>
-		        </ul>
-		        <form action="<?php echo esc_url($_SERVER['PHP_SELF']); ?>" 
-		                method="post" 
-		                name="registration_form">
-		        		<table>
-		                <tr><td>Username:</td> <td><input type='text' name='username' id='username' /><br></td></tr>
-		                <tr><td>Email: </td> <td><input type="text" name="email" id="email" /><br></td></tr>
-		                <tr><td>Password: </td><td><input type="password"
-		                             name="password" 
-		                             id="password"/><br></td></tr>
-		                <tr><td>Confirm password: </td><td><input type="password" 
-		                                     name="confirmpwd" 
-		                                     id="confirmpwd" /><br></td></tr>
-		                 <tr><td></td>
-		                 <td><input type="button" 
-		                   value="Register" 
-		                   onclick="return regformhash(this.form,
-		                                   this.form.username,
-		                                   this.form.email,
-		                                   this.form.password,
-		                                   this.form.confirmpwd);" /></td></tr></table>
-		        </form>
-		        <p>Return to the <a href="index.php">Home page</a>.</p>
-			        <?php 
-			    	} else {
-			    		header('location:index.php');
-			    	}
-			    	?>
-			</div><!-- col-lg-12 -->	
-		</div><!-- row -->
-	</div><!-- container -->
+		        </ul>		
+                    <div class="inputs">
+                        <table>
+                        <tr><td><input type='text' name='username' id='username' placeholder="Username"/></td></tr>
+                        <tr><td><input type="text" name="email" id="email" placeholder="Email"/></td></tr>
+                        <tr><td><input type="password"
+                                     name="password" 
+                                     id="password" placeholder="Password"/><br></td></tr>
+                        <tr><td><input type="password" 
+                                             name="confirmpwd" 
+                                             id="confirmpwd" placeholder="Password"/></td></tr>
+                         <tr><td>                     
+                         <input type="button" 
+                                           value="Register" 
+                                           onclick="return regformhash(this.form,
+                                                           this.form.username,
+                                                           this.form.email,
+                                                           this.form.password,
+                                                           this.form.confirmpwd);" /> </td></tr>
 
-	 
+            		      </table>
+                    </div>
+                    <br />
+                    <p>Return to the <a href="index.php">Home page</a>.</p>
+                  </form>
+                    </div>
+            			     <?php 
+            			    	} else {
+            			    		header('location:index.php');
+            			    	}
+            			    	?>
+            		<div id="footerwrap">
+            			<div class="container">
+            						<span class="icon icon-home"></span> TU Eindhoven<br/>
+            						<span class="icon icon-phone"></span> +31 111 111 111 <br/>
+            						<span class="icon icon-mobile"></span> +31 101 101 101 <br/>
+            						<h4></a>Eventific - Copyright 2014  ©</h4>
+            						<span class="icon icon-envelop"></span> <a href="#"> info@eventific.com</a> <br/>
+            						<span class="icon icon-twitter"></span> <a href="#"> @eventific </a> <br/>
+            						<span class="icon icon-facebook"></span> <a href="#"> Eventific </a> <br/>
+            			</div>
+            		</div>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-		
-
 	<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="assets/js/retina.js"></script>
 	<script type="text/javascript" src="assets/js/jquery.easing.1.3.js"></script>

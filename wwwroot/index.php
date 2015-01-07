@@ -2,7 +2,7 @@
 
 $root = $_SERVER['DOCUMENT_ROOT']."/..";
 
-require_once($root . '/assets/includes/psl-config.php'); 
+require_once($root . '/assets/includes/psl-config.php');
 
 if(DEBUG) {
 	ini_set("display_errors", "1");
@@ -23,7 +23,7 @@ $custom_session->start_session('_s', false);
 if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSION['valid'])))) {
     $logged = 'in';
     $_SESSION['login_type'] = "Default";
-} elseif ((isset($_SESSION['FB']) && isset($_SESSION['valid']))) { 
+} elseif ((isset($_SESSION['FB']) && isset($_SESSION['valid']))) {
 	if (($_SESSION['FB'] == true && $_SESSION['valid'] == true)) {
 		if (login_check($mysqli)) {
 			$logged='in';
@@ -32,7 +32,7 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 			$logged='in';
 			$_SESSION['login_type'] = "FB";
 		}
-	}	
+	}
 } else {
     $logged = 'out';
 }
@@ -49,16 +49,16 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
     <title> Eventific</title>
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="assets/css/bootstrap.css">
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link rel="stylesheet" href="assets/css/main.css">
+    <link href="assets/css/main.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/icomoon.css">
-    <link rel="stylesheet" href="assets/css/animate-custom.css">
+    <link href="assets/css/animate-custom.css" rel="stylesheet">
 
     <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
-    
+
     <script src="assets/js/jquery.min.js"></script>
 	<script type="text/javascript" src="assets/js/modernizr.custom.js"></script>
 	<script type="text/javascript" src="assets/js/forms.js"></script>
@@ -117,25 +117,28 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
            		</form>
 				</div>
 			</li>
-		  <?php 
-		  	} else {  
+		  <?php
+		  	} else {
 		  ?>
 			<li><a href="/profile.php"> My Profile</a></li>
 			<li><a href="/redirect.php?action=logout">Log out</a></li>
 		  </ul>
-		  <?php 
+		  <?php
 			}
 		  ?>
         </div><!--/.nav-collapse -->
       </div>
     </div>
-    </div>  
-  
+    </div>
+
 		<!-- ==== HEADERWRAP ==== -->
 	    <div id="headerwrap" id="home" name="home">
 			<header class="clearfix">
-	  		 	<p>Your friendly Event Management system.</p>
-	  		</header>	    
+	  		 	<p>Eventific</p><br>
+					<p style="font-size:1.1em">User friendly,</p><br>
+					<p style="font-size:1.1em">integrated</p><br>
+					<p style="font-size:1.1em">event management.</p><br>
+	  		</header>
 	    </div><!-- /headerwrap -->
 
 		<!-- ==== GREYWRAP ==== -->
@@ -144,51 +147,55 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 				<div class="col-lg-4 callout">
 					<span class="icon icon-stack"></span>
 					<h2>Easy event management</h2>
-					<p>Don't miss anything!</p>
+					<p>Everything you need for full planning and control.</p>
 				</div><!-- col-lg-4 -->
-					
+
+				<div class="col-lg-4 callout">
+					<span style="content:url(/assets/img/Ticket-icon.png);"></span>
+					<h2>E-ticket sale and purchase</h2>
+					<p>Creation and trade of e-tickets has never been easier.</p>
+				</div><!-- col-lg-4 -->
+
 				<div class="col-lg-4 callout">
 					<span class="icon icon-mobile"></span>
 					<h2>Scalable</h2>
-					<p>You can use this application on all of your devices. </p>
-				</div><!-- col-lg-4 -->	
-				
-				<div class="col-lg-4 callout">
-					<span class="icon icon-clock"></span>
-					<h2>Buy your tickets</h2>
-					<p>Get them now!</p>
-				</div><!-- col-lg-4 -->	
+					<p>Useable on all devices.</p>
+				</div><!-- col-lg-4 -->
 			</div><!-- row -->
 		</div><!-- greywrap -->
-		
+
 		<!-- ==== ABOUT ==== -->
 		<div class="container" id="about" name="about">
 			<div class="row white">
 			<br>
-				<h1 class="centered">ABOUT THE PROJECT</h1>
+				<h1 class="centered">ABOUT EVENTIFIC</h1>
 				<hr>
-				
+
 				<div class="col-lg-6">
-					<p>HERE COMES THE MOTIVATION TEXT HERE COMES THE MOTIVATION TEXT HERE COMES THE MOTIVATION TEXT HERE COMES THE MOTIVATION TEXT </p>
+					<p>Eventific is a platform specifically designed to grant the user the functions and overview to create, organize, plan and execute an event in perfect sequence. Its intuitive design and integrated features make sure the user need not go anywhere else looking for the ultimate event management tools.</p>
 				</div><!-- col-lg-6 -->
-				
+
 				<div class="col-lg-6">
-					<p>HERE COMES THE MOTIVATION TEXT HERE COMES THE MOTIVATION TEXT HERE COMES THE MOTIVATION TEXT HERE COMES THE MOTIVATION TEXT </p>
+					<p>The platform allows for event managers to create e-tickets, track sales, check attendance, list requirements, plan dates and market their event. </p>
+				</div><!-- col-lg-6 -->
+
+				<div class="col-lg-6">
+					<p>Users only looking for events will find Eventific to contain all the needed information on any event. They can search for events and buy their e-tickets on the platform. </p>
 				</div><!-- col-lg-6 -->
 			</div><!-- row -->
 		</div><!-- container -->
-		
+
 		<!-- ==== SECTION DIVIDER1 -->
 		<section class="section-divider textdivider divider1">
 			<div class="container">
 			</div><!-- container -->
 		</section><!-- section -->
-		
-		
+
+
 		<!-- ==== SERVICES ==== -->
 		<div class="container" id="services" name="services">
 			<br>
-			
+
 			<div class="row">
 				<h2 class="centered">USER-FIRST ORIENTED THINKING</h2>
 				<hr>
@@ -198,7 +205,7 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 				</div><!-- col -->
 			</div><!-- row -->
 		</div><!-- container -->
-  		
+
 		<!-- ==== PORTFOLIO ==== -->
 		<div class="container" id="portfolio" name="portfolio">
 		<br>
@@ -210,12 +217,12 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 				<br>
 			</div><!-- /row -->
 			<div class="container">
-			<div class="row">	
-			
-			
+			<div class="row">
+
+
 						 <!-- MODAL SHOW THE PORTFOLIO IMAGE. In this demo, all links point to this modal. You should create
 						      a modal for each of your projects. -->
-						      
+
 						  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						    <div class="modal-dialog">
 						      <div class="modal-content">
@@ -234,7 +241,7 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 						      </div><!-- /.modal-content -->
 						    </div><!-- /.modal-dialog -->
 						  </div><!-- /.modal -->
-				
+
 							<!-- PORTFOLIO IMAGE 1 -->
 				<div class="col-md-4 ">
 			    	<div class="grid mask">
@@ -247,8 +254,8 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 						</figure><!-- /figure -->
 			    	</div><!-- /grid-mask -->
 				</div><!-- /col -->
-				
-		
+
+
 				<!-- PORTFOLIO IMAGE 2 -->
 				<div class="col-md-4">
 			    	<div class="grid mask">
@@ -261,7 +268,7 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 						</figure><!-- /figure -->
 			    	</div><!-- /grid-mask -->
 				</div><!-- /col -->
-				
+
 				<!-- PORTFOLIO IMAGE 3 -->
 				<div class="col-md-4">
 			    	<div class="grid mask">
@@ -277,7 +284,7 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 			</div><!-- /row -->
 
 				<!-- PORTFOLIO IMAGE 4 -->
-			<div class="row">	
+			<div class="row">
 				<div class="col-md-4 ">
 			    	<div class="grid mask">
 						<figure>
@@ -289,7 +296,7 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 						</figure><!-- /figure -->
 			    	</div><!-- /grid-mask -->
 				</div><!-- /col -->
-				
+
 				<!-- PORTFOLIO IMAGE 5 -->
 				<div class="col-md-4">
 			    	<div class="grid mask">
@@ -302,7 +309,7 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 						</figure><!-- /figure -->
 			    	</div><!-- /grid-mask -->
 				</div><!-- /col -->
-				
+
 				<!-- PORTFOLIO IMAGE 6 -->
 				<div class="col-md-4">
 			    	<div class="grid mask">
@@ -344,7 +351,7 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 					<a href="#" class="icon icon-facebook"></a>
 					<p>Nick combines an expert technical knowledge in web technology.</p>
 				</div><!-- col-lg-3 -->
-				
+
 				<div class="col-lg-3 centered">
 					<img class="img img-circle" src="http://placehold.it/150x150" height="120px" width="120px" alt="">
 					<br>
@@ -353,7 +360,7 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 					<a href="#" class="icon icon-facebook"></a>
 					<p>Sanir combines an expert technical knowledge in web technology.</p>
 				</div><!-- col-lg-3 -->
-				
+
 				<div class="col-lg-3 centered">
 					<img class="img img-circle" src="http://placehold.it/150x150" height="120px" width="120px" alt="">
 					<br>
@@ -362,7 +369,7 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 					<a href="#" class="icon icon-facebook"></a>
 					<p>Peter combines an expert technical knowledge in web technology.</p>
 				</div><!-- col-lg-3 -->
-				
+
 				<div class="col-lg-3 centered">
 					<img class="img img-circle" src="http://placehold.it/150x150" height="120px" width="120px" alt="">
 					<br>
@@ -371,7 +378,7 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 					<a href="#" class="icon icon-facebook"></a>
 					<p>Yashar combines an expert technical knowledge in web technology.</p>
 				</div><!-- col-lg-3 -->
-				
+
 			</div><!-- row -->
 		</div><!-- container -->
 
@@ -386,19 +393,19 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 						<h2>Sponsor Us!</h2>
 						<p>Do you want to be part of it?</p>
 						<p><a href="#contact" class="btn btn-success">Contact Us</a></p>
-					</div>					
+					</div>
 				</div><!-- row -->
 			</div>
 			<br>
 			<br>
 		</div><!-- greywrap -->
-		
+
 		<!-- ==== SECTION DIVIDER3 -->
 		<section class="section-divider textdivider divider3">
 			<div class="container">
 			</div><!-- container -->
 		</section><!-- section -->
-		
+
 		<!-- ==== BLOG ==== -->
 		<div class="container" id="blog" name="blog">
 		<br>
@@ -409,7 +416,7 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 				<br>
 				<br>
 			</div><!-- /row -->
-			
+
 			<div class="row">
 				<div class="col-lg-6 blog-bg">
 					<div class="col-lg-4 centered">
@@ -425,7 +432,7 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 						<br>
 					</div>
 				</div><!-- /col -->
-				
+
 				<div class="col-lg-6 blog-bg">
 					<div class="col-lg-4 centered">
 					<br>
@@ -445,13 +452,13 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 			<br>
 		</div><!-- /container -->
 
-		
+
 		<!-- ==== SECTION DIVIDER6 ==== -->
 		<section class="section-divider textdivider divider6">
 			<div class="container">
 			</div><!-- container -->
 		</section><!-- section -->
-		
+
 		<div class="container" id="contact" name="contact">
 		<div class="col-lg-8">
 			 <div class="container">
@@ -503,7 +510,7 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 			                </div>
 			            </div>
 			        </div>
-				</div><!-- col -->		
+				</div><!-- col -->
 		</div><!-- container -->
 
 		<div id="footerwrap">
@@ -521,7 +528,7 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-		
+
 
 	<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="assets/js/retina.js"></script>
