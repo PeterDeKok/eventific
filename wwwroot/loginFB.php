@@ -34,7 +34,7 @@ use Facebook\HttpClients\FacebookHttpable;
 use Facebook\GraphUser;
 
     //Set Facebook session
-    FacebookSession::setDefaultApplication( '608927005878535','3322412829577633697ed1fdbc6f8c34' );
+    FacebookSession::setDefaultApplication( '1566837836863936','9059340985ad4edf67f1b7c68ade6735' );
     //Login helper
     $helper = new FacebookRedirectLoginHelper('http://eventific.peterdekok.nl/loginFB.php' );
 
