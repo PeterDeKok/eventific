@@ -92,15 +92,15 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 			<li> <a href="index.php#team" class="smoothScroll"> Team</a></li>
 			<li> <a href="index.php#blog" class="smoothScroll"> Stories</a></li>
 			<li> <a href="index.php#contact" class="smoothScroll"> Contact</a></li>
-      <li role="presentation" class="divider"></li>
-      <?php
-        if ($logged=='in') {
-      ?>
-      <li><a href="/profile.php"> My Profile</a></li>
-      <li><a href="/redirect.php?action=logout">Log out</a></li>
-      <?php 
-        }
-      ?>
+	      <li role="presentation" class="divider"></li>
+	      <?php
+	        if ($logged=='in') {
+	      ?>
+	      <li><a href="/profile.php"> My Profile</a></li>
+	      <li><a href="/redirect.php?action=logout">Log out</a></li>
+	      <?php 
+	        }
+	      ?>
 		  </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -138,7 +138,6 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
                 <tr><td>No session set</td></tr>  
               <?php } ?>
               <tr><td><input type="submit" value="Register" /> </td></tr>
-
               </table>
               </form>
               <?php } ?>

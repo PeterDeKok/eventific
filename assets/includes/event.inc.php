@@ -88,6 +88,7 @@ if((isset($_POST['name'])) && (isset($_POST['time'])) && (isset($_POST['duration
                 echo '<script>window.location = "/profile.php";</script>';
             }
         } else {
+
             echo "<script> alert('Query Error (check database');</script>";
         }
 
