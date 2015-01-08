@@ -265,7 +265,199 @@ function fbDatabaseEntry($name, $id, $email, $mysqli) {
 
         }
     }
-
 }
 
+function existingEvents($mysqli, $logintype) {
+    if (($logintype == "FB") || ($logintype == "Both")) {
+        $fbid = $_SESSION['id']; 
+        if ($stmt = $mysqli->prepare("SELECT id
+            FROM members
+           WHERE fbid = ?
+            LIMIT 1")) {
+            $stmt->bind_param('i', $fbid); 
+            $stmt->execute();    // Execute the prepared query.
+            $stmt->store_result();
+            // get variables from result.
+            $stmt->bind_result($creator_id);
+            $stmt->fetch();
+            $stmt->close();
+            if (!(isset($creator_id))) {
+                header("Location: /redirect.php?action=errorSession");
+                exit;
+            }
+        }
+    } elseif ($logintype == "Default")  {
+        $username = $_SESSION['username'];
+        if ($stmt = $mysqli->prepare("SELECT id
+            FROM members
+           WHERE username = ?
+            LIMIT 1")) {
+            $stmt->bind_param('s', $username); 
+            $stmt->execute();    // Execute the prepared query.
+            $stmt->store_result();
+            // get variables from result.
+            $stmt->bind_result($creator_id);
+            $stmt->fetch();
+            $stmt->close();
+            if (!(isset($creator_id))) {
+                header("Location: /redirect.php?action=errorSession");
+                exit;
+            }
+        }
+    }
+
+    $prep_stmt = "SELECT id, name FROM events WHERE creator_id = ?";
+    $stmt = $mysqli->prepare($prep_stmt);
+ 
+   // check existing email  
+    if ($stmt) {
+        $stmt->bind_param('i', $creator_id);
+        $stmt->execute();
+        $stmt->bind_result($id, $name);
+        $stmt->store_result();
+ 
+        if ($stmt->num_rows > 0) {
+            // A user with this email address already exists
+            while ($stmt->fetch()) {
+                echo "<a class=\"black\" href=\"".$_SERVER['PHP_SELF']."?edit=".$id."\">".$name."</a><br />";
+            }
+            $stmt->close();
+        }
+         //   $stmt->close();
+    } else {
+        header("Location: /redirect.php?action=errorSession");
+        exit;
+    }
+}
+
+function getEditForm($mysqli) {
+    if((isset($_GET['edit'])) && is_numeric($_GET['edit'])) {
+        $id = $_GET['edit'];
+        $prep_stmt = "SELECT name, description, start, duration, location FROM events WHERE id = ? LIMIT 1";
+        $stmt = $mysqli->prepare($prep_stmt);
+        
+        if ($stmt) {
+            $stmt->bind_param('i', $id);
+            $stmt->execute();
+            $stmt->bind_result($name, $description, $start, $duration, $location);
+            $stmt->store_result();
+            $stmt->fetch();
+            $stmt->close();
+
+            $start = str_replace(" ", "T", $start);
+
+            echo "<h1 class=\"centered\">EDIT AN EVENT</h1>
+                  <form action=\"".esc_url($_SERVER['PHP_SELF'])."\" 
+                            method=\"post\" 
+                            name=\"event_form\"
+                            id=\"eventform\"
+                            role=\"form\"
+                            class=\"eventform\">
+                  <table>
+                    <tr><td>Event name: <br /><input type='text' name='name' id='name' value=\"".$name."\"/></td></tr>
+                    <tr><td>Start time: <br /><input type=\"datetime-local\" value=\"".$start."\" name=\"time\"></td></tr>
+                    <tr><td>Duration: <br /><input type=\"text\" name=\"duration\" id=\"duration\" value=\"".$duration."\"/></td></tr>
+                    <tr><td>Location: <br /><input type=\"text\" name=\"location\" id=\"location\" value=\"".$location."\"/></td></tr> 
+                    <tr><td>Description: <br /><textarea name=\"description\" id=\"description\">".$description."</textarea></td></tr>
+                    <input type=\"hidden\" name=\"editID\" value=\"".$_GET['edit']."\">";
+                  if (isset($_SESSION['login_type'])) { 
+                    if (($_SESSION['login_type']=="FB") || ($_SESSION['login_type']=="Both")) {
+                    echo "<input type=\"hidden\" name=\"logintype\" value=\"FB\">";    
+                  } else {
+                    echo "<input type=\"hidden\" name=\"logintype\" value=\"Default\">";  
+                     } 
+                  } else { 
+                    echo "<input type=\"hidden\" name=\"logintype\" value=\"non\">
+                    <tr><td>No session set</td></tr>";  
+                  }
+                  echo "<tr><td><input type=\"submit\" value=\"Update\" /> </td></tr>
+                  </table>
+                  </form>";
+        } else {
+            echo "<h1>No event to edit</h1>";
+        }
+    }
+}
+
+function getEvents($mysqli) {
+    if(isset($_GET['event'])) {
+        $eventID = $_GET['event'];
+        $logintype = $_SESSION['login_type'];
+        if (($logintype == "FB") || ($logintype == "Both")) {
+            $fbid = $_SESSION['id']; 
+            if ($stmt = $mysqli->prepare("SELECT id
+                FROM members
+               WHERE fbid = ?
+                LIMIT 1")) {
+                $stmt->bind_param('i', $fbid); 
+                $stmt->execute();    // Execute the prepared query.
+                $stmt->store_result();
+                // get variables from result.
+                $stmt->bind_result($userID);
+                $stmt->fetch();
+                $stmt->close();
+                if (!(isset($userID))) {
+                    header("Location: /redirect.php?action=errorSession");
+                    exit;
+                }
+            }
+        } elseif ($logintype == "Default")  {
+            $username = $_SESSION['username'];
+            if ($stmt = $mysqli->prepare("SELECT id
+                FROM members
+               WHERE username = ?
+                LIMIT 1")) {
+                $stmt->bind_param('s', $username); 
+                $stmt->execute();    // Execute the prepared query.
+                $stmt->store_result();
+                // get variables from result.
+                $stmt->bind_result($userID);
+                $stmt->fetch();
+                $stmt->close();
+                if (!(isset($userID))) {
+                    header("Location: /redirect.php?action=errorSession");
+                    exit;
+                }
+            }
+        } else {
+            header('Refresh: 2; URL=attendevent.php');        
+            echo 'Seems like you\'re not logged in..';
+        }
+        //DOUBLE CHECKING???
+        if ($insert_stmt = $mysqli->prepare("INSERT INTO attendees (event_id, creator_id) VALUES (?, ?)")) {
+            $insert_stmt->bind_param('ii', $eventID, $userID);
+            // Execute the prepared query.
+            if (!$insert_stmt->execute()) {
+                echo "<script> alert('Query Error (check database)');</script>";
+            } else {
+                echo "<script> alert('Success! You are now attending this event.');</script>";
+                header("Location: /attendevent.php");
+            }
+        }
+    } else {
+        $prep_stmt = "SELECT id, name, description FROM events";
+        $stmt = $mysqli->prepare($prep_stmt);
+     
+       // check existing email  
+        if ($stmt) {
+            $stmt->execute();
+            $stmt->bind_result($id, $name, $description);
+            $stmt->store_result();
+     
+            if ($stmt->num_rows > 0) {
+                // A user with this email address already exists
+                while ($stmt->fetch()) {
+                    echo "<p>".$name."<br />";
+                    echo $description."<br />
+                    <a class=\"black\" href=\"".$_SERVER['PHP_SELF']."?event=".$id."\">ATTEND</a></p>";
+                }
+                $stmt->close();
+            }
+             //   $stmt->close();
+        } else {
+            header("Location: /redirect.php?action=errorSession");
+            exit;
+        }
+    }
+}
 ?>

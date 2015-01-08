@@ -31,68 +31,153 @@ if((isset($_POST['name'])) && (isset($_POST['time'])) && (isset($_POST['duration
     $logintype = $_POST['logintype'];
     $description = $_POST['description'];
 
-    //GET ID
-    if ($logintype == "FB") {
-        $fbid = $_SESSION['id']; 
-        if ($stmt = $mysqli->prepare("SELECT id
-            FROM members
-           WHERE fbid = ?
-            LIMIT 1")) {
-            $stmt->bind_param('i', $fbid); 
-            $stmt->execute();    // Execute the prepared query.
-            $stmt->store_result();
-            // get variables from result.
-            $stmt->bind_result($creator_id);
-            $stmt->fetch();
-            $stmt->close();
-            if (!(isset($creator_id))) {
-                header("Location: /redirect.php?action=errorSession");
-                exit;
-            }
-        }
-    } elseif ($logintype == "Default")  {
-        $username = $_SESSION['username'];
-        if ($stmt = $mysqli->prepare("SELECT id
-            FROM members
-           WHERE username = ?
-            LIMIT 1")) {
-            $stmt->bind_param('s', $username); 
-            $stmt->execute();    // Execute the prepared query.
-            $stmt->store_result();
-            // get variables from result.
-            $stmt->bind_result($creator_id);
-            $stmt->fetch();
-            $stmt->close();
-            if (!(isset($creator_id))) {
-                header("Location: /redirect.php?action=errorSession");
-                exit;
-            }
-        }
-    } else {
-        header("Location: /redirect.php?action=errorSession");
+    if ((strlen($name) < 2) || (strlen($time) < 2) || (strlen($duration) <= 1) || (strlen($location) < 2) || (strlen($logintype) <= 2) || (strlen($description) < 2)) {
+        header('Refresh: 2; URL=addevent.php'); 
+        echo "Form not valid";  
         exit;
     }
+    //CREATE NEW
+    if (!(isset($_POST['editID']))) {
 
-    //Pic url
-    if (!(isset($pic_url))) {
-        $pic_url = "none";
-    }
-
-     if ($insert_stmt = $mysqli->prepare("INSERT INTO events (creator_id, name, description, start, duration, location, pic_url) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
-            $insert_stmt->bind_param('isssiss', $creator_id, $name, $description, $time, $duration, $location, $pic_url);
-            // Execute the prepared query.
-            if (!$insert_stmt->execute()) {
-                echo "<script> alert('Registration failed! ".$name."Try to sign up again');</script>";
-                echo '<script>window.location = "/addevent.php";</script>';
+        //GET ID
+        if ($logintype == "FB") {
+            $fbid = $_SESSION['id']; 
+            if ($stmt = $mysqli->prepare("SELECT id
+                FROM members
+               WHERE fbid = ?
+                LIMIT 1")) {
+                $stmt->bind_param('i', $fbid); 
+                $stmt->execute();    // Execute the prepared query.
+                $stmt->store_result();
+                // get variables from result.
+                $stmt->bind_result($creator_id);
+                $stmt->fetch();
+                $stmt->close();
+                if (!(isset($creator_id))) {
+                    header("Location: /redirect.php?action=errorSession");
+                    exit;
+                }
             }
-            else {
-                echo "<script> alert('Event created!');</script>";
-                echo '<script>window.location = "/profile.php";</script>';
+        } elseif ($logintype == "Default")  {
+            $username = $_SESSION['username'];
+            if ($stmt = $mysqli->prepare("SELECT id
+                FROM members
+               WHERE username = ?
+                LIMIT 1")) {
+                $stmt->bind_param('s', $username); 
+                $stmt->execute();    // Execute the prepared query.
+                $stmt->store_result();
+                // get variables from result.
+                $stmt->bind_result($creator_id);
+                $stmt->fetch();
+                $stmt->close();
+                if (!(isset($creator_id))) {
+                    header("Location: /redirect.php?action=errorSession");
+                    exit;
+                }
             }
         } else {
-
-            echo "<script> alert('Query Error (check database');</script>";
+            header("Location: /redirect.php?action=errorSession");
+            exit;
         }
 
+        //Pic url
+        if (!(isset($pic_url))) {
+            $pic_url = "none";
+        }
+
+         if ($insert_stmt = $mysqli->prepare("INSERT INTO events (creator_id, name, description, start, duration, location, pic_url) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
+                $insert_stmt->bind_param('isssiss', $creator_id, $name, $description, $time, $duration, $location, $pic_url);
+                // Execute the prepared query.
+                if (!$insert_stmt->execute()) {
+                    echo "<script> alert('Registration failed! ".$name."Try to sign up again');</script>";
+                    echo '<script>window.location = "/addevent.php";</script>';
+                }
+                else {
+                    //$stmt->close();
+                    echo "<script> alert('Event created!');</script>";
+                    echo '<script>window.location = "/profile.php";</script>';
+                }
+        } else {
+            echo "<script> alert('Query Error (check database');</script>";
+            $stmt->close();
+        }
+    //EDIT
+    } else {
+        $editID = $_POST['editID'];
+        
+        //GET ID
+        if ($logintype == "FB") {
+            $fbid = $_SESSION['id']; 
+            if ($stmt = $mysqli->prepare("SELECT id
+                FROM members
+               WHERE fbid = ?
+                LIMIT 1")) {
+                $stmt->bind_param('i', $fbid); 
+                $stmt->execute();    // Execute the prepared query.
+                $stmt->store_result();
+                // get variables from result.
+                $stmt->bind_result($creator_id);
+                $stmt->fetch();
+                $stmt->close();
+                if (!(isset($creator_id))) {
+                    header("Location: /redirect.php?action=errorSession");
+                    exit;
+                }
+            }
+        } elseif ($logintype == "Default")  {
+            $username = $_SESSION['username'];
+            if ($stmt = $mysqli->prepare("SELECT id
+                FROM members
+               WHERE username = ?
+                LIMIT 1")) {
+                $stmt->bind_param('s', $username); 
+                $stmt->execute();    // Execute the prepared query.
+                $stmt->store_result();
+                // get variables from result.
+                $stmt->bind_result($creator_id);
+                $stmt->fetch();
+                $stmt->close();
+                if (!(isset($creator_id))) {
+                    header("Location: /redirect.php?action=errorSession");
+                    exit;
+                }
+            }
+        } else {
+            header("Location: /redirect.php?action=errorSession");
+            exit;
+        }
+
+        $prep_stmt = "SELECT id, creator_id FROM events WHERE id = ? AND creator_id = ? LIMIT 1";
+        $stmt = $mysqli->prepare($prep_stmt);
+        $stmt->bind_param('ii', $editID, $creator_id);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($id, $creator_id);
+        $stmt->fetch();
+        if ($stmt->num_rows == 1) {
+            $stmt->close();
+            $prep_stmt = "UPDATE events SET name=?, description=?, start=?, duration=?, location=? WHERE id=?";
+            $stmt = $mysqli->prepare($prep_stmt);
+
+            if ($stmt) {
+                $stmt->bind_param('sssisi', $name, $description, $time, $duration, $location, $editID);
+                if ($stmt->execute()) {
+                    $stmt->close();
+                    header("Location: /addevent.php");
+                    exit;
+                } else {
+                    echo "<script> alert('Query Error (check database)');</script>";
+                    $stmt->close();
+                }
+            } else {
+                echo "<script> alert('Query Error (check database)');</script>";
+                $stmt->close();
+            }
+        } else {
+            header('Refresh: 2; URL=addevent.php');        
+            echo 'Not authorized.';
+        }
+    }
 }
 ?>

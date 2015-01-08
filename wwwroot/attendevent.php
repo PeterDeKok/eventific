@@ -13,8 +13,13 @@ require_once($root . '/assets/includes/classes/MysqliDb.class.php');
 require_once($root . '/assets/includes/classes/session.class.php');
 
 require_once($root . '/assets/includes/db_connect.php');
-require_once($root . '/assets/includes/event.inc.php');
 require_once($root . '/assets/includes/functions.php');
+
+// Prepare Session
+$custom_session = new session(SESS_HOST, SESS_USER, SESS_PASSWORD, SESS_DATABASE);
+// Start Session: true for https, false for http !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+$custom_session->start_session('_s', false);
+ 
 
 if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSION['valid'])))) {
     $logged = 'in';
@@ -76,76 +81,43 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
   
   	<div id="navbar-main">
       <!-- Fixed navbar -->
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon icon-shield" style="font-size:30px; color:#3498db;"></span>
-          </button>
-          <a class="navbar-brand hidden-xs hidden-sm" href="index.php#home"><span class="icon icon-lamp" style="font-size:18px; color:#3498db;"></span></a>
+      <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="icon icon-shield" style="font-size:30px; color:#3498db;"></span>
+            </button>
+            <a class="navbar-brand hidden-xs hidden-sm" href="index.php#home"><span class="icon icon-lamp" style="font-size:18px; color:#3498db;"></span></a>
+          </div>
+          <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li><a href="index.php#home" class="smoothScroll">Home</a></li>
+  			<li> <a href="index.php#about" class="smoothScroll"> About Us</a></li>
+  			<li> <a href="index.php#services" class="smoothScroll"> E-ticketing</a></li>
+  			<li> <a href="index.php#team" class="smoothScroll"> Team</a></li>
+  			<li> <a href="index.php#blog" class="smoothScroll"> Stories</a></li>
+  			<li> <a href="index.php#contact" class="smoothScroll"> Contact</a></li>
+  	      <li role="presentation" class="divider"></li>
+  	      <?php
+  	        if ($logged=='in') {
+  	      ?>
+  	      <li><a href="/profile.php"> My Profile</a></li>
+  	      <li><a href="/redirect.php?action=logout">Log out</a></li>
+  	      <?php 
+  	        }
+  	      ?>
+  		  </ul>
+          </div><!--/.nav-collapse -->
         </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="index.php#home" class="smoothScroll">Home</a></li>
-			<li> <a href="index.php#about" class="smoothScroll"> About Us</a></li>
-			<li> <a href="index.php#services" class="smoothScroll"> E-ticketing</a></li>
-			<li> <a href="index.php#team" class="smoothScroll"> Team</a></li>
-			<li> <a href="index.php#blog" class="smoothScroll"> Stories</a></li>
-			<li> <a href="index.php#contact" class="smoothScroll"> Contact</a></li>
-	      <li role="presentation" class="divider"></li>
-	      <?php
-	        if ($logged=='in') {
-	      ?>
-	      <li><a href="/profile.php"> My Profile</a></li>
-	      <li><a href="/redirect.php?action=logout">Log out</a></li>
-	      <?php 
-	        }
-	      ?>
-		  </ul>
-        </div><!--/.nav-collapse -->
       </div>
-    </div>
     </div>  
 	
 	<div class="container" id="about" name="about">
 			<div class="row white"> 
           <div class="row">
             <div class="col-lg-6 text-center eventcreate">
-              <!-- EDIT AN EVENT -->
-              <?php if(isset($_GET['edit'])) {
-              getEditForm($mysqli);
-              //Create an event -->  
-              } else { ?>
-              <h1 class="centered">CREATE AN EVENT</h1>
-              <form action="<?php echo esc_url($_SERVER['PHP_SELF']); ?>" 
-                        method="post" 
-                        name="event_form"
-                        id="eventform"
-                        role="form"
-                        class="eventform">
-              <table>
-              <tr><td>Event name: <br /><input type='text' name='name' id='name' placeholder="name"/></td></tr>
-              <tr><td>Start time: <br /><input type="datetime-local" value="2015-01-14T20:00" name="time"></td></tr>
-              <tr><td>Duration: <br /><input type="text" name="duration" id="duration" placeholder="duration (minutes)"/></td></tr>
-              <tr><td>Location: <br /><input type="text" name="location" id="location" placeholder="location"/></td></tr> 
-              <tr><td>Description: <br /><textarea name="description" id="description">Description</textarea></td></tr>
-              <?php if (isset($_SESSION['login_type'])) { 
-                if (($_SESSION['login_type']=="FB") || ($_SESSION['login_type']=="Both")) {  ?>
-                <input type="hidden" name="logintype" value="FB">    
-              <?php  } else { ?>
-                <input type="hidden" name="logintype" value="Default">  
-              <?php } 
-              } else { ?>
-                <input type="hidden" name="logintype" value="non">
-                <tr><td>No session set</td></tr>  
-              <?php } ?>
-              <tr><td><input type="submit" value="Create" /> </td></tr>
-              </table>
-              </form>
-              <?php 
-              existingEvents($mysqli, $_SESSION['login_type']);
-              } 
-              ?>
+            <h1>Attend an event!</h1>
+            <?php getEvents($mysqli); ?>
             </div>
           </div>
       </div>
