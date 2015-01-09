@@ -27,8 +27,9 @@ $(document).ready(function () {
 				$('#responselist').html('Loading...');
 			},
 			success: function(data) {
+				console.log(data)
 				$('#soundcloudWrapper #sc_response').html(
-					'<div class="playlist_item row" data-id="'+data.data.id+'">'+
+					'<div class="playlist_item row" data-id="'+data.data[0].id+'">'+
 					'	<div class="col-xs-3">'+
 					'		<div class="playlist_artwork">'+
 					'			<img src="'+sc_artwork+'" />'+
@@ -36,13 +37,14 @@ $(document).ready(function () {
 					'	</div>'+
 					'	<div class="col-xs-9">'+
 					'		<div class="title">'+sc_title+'</div>'+
-					'		<div class="tracks">'+sc_type+' FIX AJAX!</div>'+
+					'		<div class="tracks">'+sc_type+'</div>'+
 					'	</div>'+
 					'</div>'+
 					'<div class="collapse playlist_item_more row" id="collapseSCPlaylistsMoreOptions'+sc_id+'">'+
 					'	<a class="btn btn-primary pull-right btn-xs" href="'+sc_permalink_url+'">More info</a>'+
 					'</div>'
 				);
+				$('#eventform #soundcloud_id').val(data.data[0].id);
 		  },
 			error: function(data) {
 				console.log(data);

@@ -343,6 +343,18 @@ function getEditForm($mysqli) {
             $stmt->store_result();
             $stmt->fetch();
             $stmt->close();
+						
+						$db = new MysqliDb(HOST, USER, PASSWORD, DATABASE);
+						
+						$db->where('event_id', $id);
+						$db->orderBy('addedAt', 'Desc');
+						$SC_object = $db->get('soundcloud', 1);
+
+						if($db->count > 0) {
+							$soundcloud_id = $SC_object[0]['id'];
+						} else {
+							$soundcloud_id = '';
+						}
 
             $start = str_replace(" ", "T", $start);
 
@@ -359,6 +371,7 @@ function getEditForm($mysqli) {
                     <tr><td>Duration: <br /><input type=\"text\" name=\"duration\" id=\"duration\" value=\"".$duration."\"/></td></tr>
                     <tr><td>Location: <br /><input type=\"text\" name=\"location\" id=\"location\" value=\"".$location."\"/></td></tr> 
                     <tr><td>Description: <br /><textarea name=\"description\" id=\"description\">".$description."</textarea></td></tr>
+										<input type=\"hidden\" name=\"soundcloud_id\" value=\"".$soundcloud_id."\">  
                     <input type=\"hidden\" name=\"editID\" value=\"".$_GET['edit']."\">";
                   if (isset($_SESSION['login_type'])) { 
                     if (($_SESSION['login_type']=="FB") || ($_SESSION['login_type']=="Both")) {

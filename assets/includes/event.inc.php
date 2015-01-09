@@ -30,12 +30,16 @@ if((isset($_POST['name'])) && (isset($_POST['time'])) && (isset($_POST['duration
     $location = $_POST['location'];
     $logintype = $_POST['logintype'];
     $description = $_POST['description'];
+		$soundcloud_id = $_POST['soundcloud_id'];
 
     if ((strlen($name) < 2) || (strlen($time) < 2) || (strlen($duration) <= 1) || (strlen($location) < 2) || (strlen($logintype) <= 2) || (strlen($description) < 2)) {
         header('Refresh: 2; URL=addevent.php'); 
         echo "Form not valid";  
         exit;
     }
+		
+		$db = new MysqliDb(HOST, USER, PASSWORD, DATABASE);
+		
     //CREATE NEW
     if (!(isset($_POST['editID']))) {
 
@@ -95,8 +99,19 @@ if((isset($_POST['name'])) && (isset($_POST['time'])) && (isset($_POST['duration
                 }
                 else {
                     //$stmt->close();
+										if($soundcloud_id) {
+											$db_data = Array (
+										    'event_id' => $mysqli->insert_id
+											);
+											$db->where('id', $soundcloud_id);
+											if($db->update('soundcloud', $db_data)) {
+												echo "success";
+											} else {
+												echo "failed somehow";
+											}
+										}
                     echo "<script> alert('Event created!');</script>";
-                    echo '<script>window.location = "/profile.php";</script>';
+                    //echo '<script>window.location = "/profile.php";</script>';
                 }
         } else {
             echo "<script> alert('Query Error (check database');</script>";
@@ -164,6 +179,17 @@ if((isset($_POST['name'])) && (isset($_POST['time'])) && (isset($_POST['duration
                 $stmt->bind_param('sssisi', $name, $description, $time, $duration, $location, $editID);
                 if ($stmt->execute()) {
                     $stmt->close();
+										if($soundcloud_id) {
+											$db_data = Array (
+										    'event_id' => $editID
+											);
+											$db->where('id', $soundcloud_id);
+											if($db->update('soundcloud', $db_data)) {
+												echo "success";
+											} else {
+												echo "failed somehow";
+											}
+										}
                     header("Location: /addevent.php");
                     exit;
                 } else {

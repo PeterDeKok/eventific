@@ -11,6 +11,7 @@ if(DEBUG) {
 
 require_once($root . '/assets/includes/classes/MysqliDb.class.php');
 require_once($root . '/assets/includes/classes/session.class.php');
+require_once($root . '/assets/includes/classes/Soundcloud.php');
 
 require_once($root . '/assets/includes/db_connect.php');
 require_once($root . '/assets/includes/event.inc.php');
@@ -38,6 +39,84 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
     header("Location: /index.php");
     exit;
 }
+
+// Create Database object
+$db = new MysqliDb(HOST, USER, PASSWORD, DATABASE);
+
+// Create soundcloud client object with app credentials
+$SC_client = new Services_Soundcloud('7b37fcac8f86d7d4111380375eee3911', '0e126e7ae1f33f743579e42899ffa764', 'http://eventific.mac/soundcloud.php');
+$SC_client->setCurlOptions(array(CURLOPT_FOLLOWLOCATION => 1));
+
+if($logged == 'in') {
+	if(isset($_GET['code'])){
+		try {
+			$SC_access_token = $SC_client->accessToken($_GET['code']);
+			$SC_token = $SC_access_token['access_token'];
+			$_SESSION['sc_token'] = $SC_token;
+		} catch(Services_Soundcloud_invalid_Http_Response_Code_Exception $e) {
+			exit($$e->getMessage());
+		}
+		try {
+			$SC_client->setAccessToken($SC_token);
+		} catch(Services_Soundcloud_Invalid_Http_Response_Code_Exception $e) {
+			exit($e->getMessage());
+		}
+		$SC_current_user = json_decode($SC_client->get('me'));
+		
+		$data = Array (
+		    'sctoken' => $SC_token,
+				'scuser' => $SC_current_user->id,
+				'scusername' => $SC_current_user->username,
+				'scpermalink_url' => $SC_current_user->permalink_url,
+				'scavatar_url' => $SC_current_user->avatar_url
+		);
+		$db->where('id', $_SESSION['user_id']);
+		if (!$db->update('members', $data))
+		    exit('update failed: ' . $db->getLastError());
+		
+	} else {
+		$db->where('id', $_SESSION['user_id']);
+		$sc_response = $db->getOne('members', 'scuser, sctoken, scusername, scpermalink_url, scavatar_url');
+		if($db->count > 0 && $sc_response['scuser'] && $sc_response['scusername'] && $sc_response['sctoken'] && $sc_response['scpermalink_url'] && $sc_response['scavatar_url']) {
+			$_SESSION['SC'] = array(
+				'userid' => $sc_response['scuser'],
+				'username' => $sc_response['scusername'],
+				'token' => $sc_response['sctoken']
+			);
+			$SC_current_user = new stdClass();
+			$SC_current_user->id = $sc_response['scuser'];
+			$SC_current_user->username = $sc_response['scusername'];
+			$SC_current_user->token = $sc_response['sctoken'];
+			$SC_current_user->permalink_url = $sc_response['scpermalink_url'];
+			$SC_current_user->avatar_url = $sc_response['scavatar_url'];
+			try {
+				$SC_client->setAccessToken($SC_current_user->token);
+			} catch(Services_Soundcloud_Invalid_Http_Response_Code_Exception $e) {
+				$SC_current_user = NULL;
+				exit($e->getMessage());
+			}
+		}
+	}
+	
+	if(!isset($SC_current_user)){
+		$data = Array (
+		    'sctoken' => NULL,
+				'scuser' => NULL,
+				'scusername' => NULL,
+				'scpermalink_url' => NULL,
+				'scavatar_url' => NULL
+		);
+		$db->where('id', $_SESSION['user_id']);
+		if (!$db->update('members', $data))
+		    exit('update failed: ' . $db->getLastError());
+	} else {
+		$SC_playlists = json_decode($SC_client->get('users/'.$SC_current_user->id.'/playlists')); // 49023114 (Martin Pieck)
+	}
+	
+	$SC_event_id = "temp_id";
+	
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -107,7 +186,9 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
     </div>
     </div>  
 	
-	<div class="container" id="about" name="about">
+	
+	<div id="greywrap">
+		<div class="container" id="about" name="about">
 			<div class="row white"> 
           <div class="row">
             <div class="col-lg-6 text-center eventcreate">
@@ -129,6 +210,7 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
               <tr><td>Duration: <br /><input type="text" name="duration" id="duration" placeholder="duration (minutes)"/></td></tr>
               <tr><td>Location: <br /><input type="text" name="location" id="location" placeholder="location"/></td></tr> 
               <tr><td>Description: <br /><textarea name="description" id="description">Description</textarea></td></tr>
+							<input type="hidden" name="soundcloud_id" id="soundcloud_id" value="">
               <?php if (isset($_SESSION['login_type'])) { 
                 if (($_SESSION['login_type']=="FB") || ($_SESSION['login_type']=="Both")) {  ?>
                 <input type="hidden" name="logintype" value="FB">    
@@ -147,9 +229,120 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
               } 
               ?>
             </div>
+						<div class="col-lg-offset-1 col-lg-5">
+							<div class="row">
+								<div class="col-lg-offset-3 col-lg-9">
+									<h2 class="centered">Soundcloud</h2>
+								</div>
+							</div>
+					
+					
+							<div id="soundcloudWrapper">
+								<?php if(isset($SC_current_user)){ ?>
+									<div class="avatar pull-left"><img src="<?php echo $SC_current_user->avatar_url; ?>" /></div>
+									User: <a href="<?php echo $SC_current_user->permalink_url; ?>"><?php echo $SC_current_user->username; ?></a>
+									<BR /><BR />
+									<div class="col-md-9 pull-right">
+										<form id="sc_search" method="post" name="sc_search" action="assets/includes/SC_search.php" data-success="" data-event-id="<?php echo $SC_event_id; ?>" data-member-id="<?php echo $_SESSION['user_id']; ?>">
+											<div class="form-group">
+												<label>Search track:</label>
+												<input name="soundcloudTrack" type="text" class="form-control">
+											</div>
+											<div class="form-group text-center">
+												<button type="submit" class="btn btn-primary">Search</button>
+											</div>
+										</form>
+							
+										<div id="sc_response"><?php
+											if(isset($_GET['edit'])) {
+												$db = new MysqliDb(HOST, USER, PASSWORD, DATABASE);
+						
+												$db->where('event_id', $_GET['edit']);
+												$db->orderBy('addedAt', 'Desc');
+												$SC_object = $db->get('soundcloud', 1);
+												
+												if($db->count) {
+													$response_html = '';
+													$response_html .= '<div class="playlist_item row" data-id="'.$SC_object[0]['id'].'">';
+													$response_html .= '	<div class="col-xs-3">';
+													$response_html .= '		<div class="playlist_artwork">';
+													$response_html .= '			<img src="'.$SC_object[0]['artwork_url'].'" />';
+													$response_html .= '		</div>';
+													$response_html .= '	</div>';
+													$response_html .= '	<div class="col-xs-9">';
+													$response_html .= '		<div class="title">'.$SC_object[0]['title'].'</div>';
+													$response_html .= '		<div class="tracks">'.$SC_object[0]['type'].'</div>';
+													$response_html .= '	</div>';
+													$response_html .= '</div>';
+													$response_html .= '<div class="collapse playlist_item_more row" id="collapseSCPlaylistsMoreOptions'.$SC_object[0]['sc_id'].'">';
+													$response_html .= '	<a class="btn btn-primary pull-right btn-xs" href="'.$SC_object[0]['permalink_url'].'">More info</a>';
+													$response_html .= '</div>';
+													echo $response_html;
+												}
+											}
+										?></div>
+	
+										<div id="sc_user_playlists">
+											<BR />
+											<label>Playlists:</label>
+											<?php
+											foreach($SC_playlists as $value){
+												?>
+												<div class="playlist_item row" data-id="<?php echo $value->id; ?>" data-permalink_url="<?php echo $value->permalink_url; ?>">
+													<div class="col-xs-3">
+														<div class="playlist_artwork">
+															<?php 
+																if($value->artwork_url) {
+																	$sc_artwork = $value->artwork_url;
+																} else {
+																	$sc_artwork = $value->tracks[0]->artwork_url;
+																}
+															?>
+															<img src="<?php echo $sc_artwork; ?>" />
+														</div>
+													</div>
+													<div class="col-xs-9">
+														<div class="title"><?php echo $value->title; ?></div>
+														<?php
+														$hours = floor(($value->duration/1000) / 3600);
+														$mins = floor((($value->duration/1000) - ($hours * 3600)) / 60);
+														$secs = floor(($value->duration/1000) % 60);
+														?>
+														<div class="tracks"><?php echo count($value->tracks); ?>&nbsp;tracks, <?php echo $hours . 'h ' . $mins . 'm ' . $secs . 's '; ?></div>
+													</div>
+												</div>
+												<div class="collapse playlist_item_more row" id="collapseSCPlaylistsMoreOptions<?php echo $value->id ?>">
+													<a class="btn btn-primary pull-right btn-xs use" data-id="<?php echo $value->id; ?>" data-artwork="<?php echo $sc_artwork; ?>" data-title="<?php echo $value->title; ?>" data-type="playlists" data-member-id="<?php echo $_SESSION['user_id']; ?>" data-event-id="<?php echo $SC_event_id; ?>" data-permalink-url="<?php echo $value->permalink_url; ?>" href="#">Use</a><a class="btn btn-primary pull-right btn-xs" href="<?php echo $value->permalink_url; ?>">More info</a>
+												</div>
+												<?php
+												echo "<script>console.log(".json_encode($value).")</script>";
+											}
+											?>
+										</div>
+										<?php
+											if(isset($_GET['edit']) && $db->count) {
+												$response_html = '';
+												$response_html .= '<script>';
+												$response_html .= '$("#soundcloudWrapper #sc_user_playlists").hide();';
+												$response_html .= '$("#soundcloudWrapper #sc_search").hide();';
+												$response_html .= '</script>';
+												echo $response_html;
+											}
+										?>
+									</div>
+								<?php } else { ?>
+									<a class="btn btn-primary" target="_blank" href="<?php echo $SC_client->getAuthorizeUrl(array('scope' => 'non-expiring')); ?>">
+										<span class="icon icon-soundcloud"></span>
+										<span>Connect with Soundcloud</span>
+									</a>
+								<?php } ?>
+							</div>
+				
+						</div><!-- col -->
           </div>
       </div>
   </div>
+	</div>
 
   <div id="footerwrap">
     <div class="container">
@@ -165,5 +358,6 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 	<script type="text/javascript" src="assets/js/jquery.easing.1.3.js"></script>
   <script type="text/javascript" src="assets/js/smoothscroll.js"></script>
 	<script type="text/javascript" src="assets/js/jquery-func.js"></script>
+	<script type="text/javascript" src="assets/js/soundcloud.js"></script>
   </body>
 </html>
