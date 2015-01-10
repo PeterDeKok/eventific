@@ -309,7 +309,6 @@ function existingEvents($mysqli, $logintype) {
     $prep_stmt = "SELECT id, name FROM events WHERE creator_id = ?";
     $stmt = $mysqli->prepare($prep_stmt);
  
-   // check existing email  
     if ($stmt) {
         $stmt->bind_param('i', $creator_id);
         $stmt->execute();
@@ -317,7 +316,6 @@ function existingEvents($mysqli, $logintype) {
         $stmt->store_result();
  
         if ($stmt->num_rows > 0) {
-            // A user with this email address already exists
             while ($stmt->fetch()) {
                 echo "<a class=\"black\" href=\"".$_SERVER['PHP_SELF']."?edit=".$id."\">".$name."</a><br />";
             }
@@ -436,29 +434,44 @@ function getEvents($mysqli) {
             header('Refresh: 2; URL=attendevent.php');        
             echo 'Seems like you\'re not logged in..';
         }
-        //DOUBLE CHECKING???
-        if ($insert_stmt = $mysqli->prepare("INSERT INTO attendees (event_id, creator_id) VALUES (?, ?)")) {
-            $insert_stmt->bind_param('ii', $eventID, $userID);
-            // Execute the prepared query.
-            if (!$insert_stmt->execute()) {
-                echo "<script> alert('Query Error (check database)');</script>";
+        
+        $prep_stmt = "SELECT event_id, creator_id FROM attendees WHERE event_id = ? AND creator_id = ?";
+        $stmt = $mysqli->prepare($prep_stmt);
+        if ($stmt) {
+            $stmt->bind_param('ii', $eventID, $userID);
+            $stmt->execute();
+            $stmt->bind_result($eventID, $userID);
+            $stmt->store_result();
+            if ($stmt->num_rows > 0) {
+                header('Refresh: 2; URL=attendevent.php');        
+                echo 'Already attended this event';
             } else {
-                echo "<script> alert('Success! You are now attending this event.');</script>";
-                header("Location: /attendevent.php");
+                $stmt->close();
+                if ($insert_stmt = $mysqli->prepare("INSERT INTO attendees (event_id, creator_id) VALUES (?, ?)")) {
+                    $insert_stmt->bind_param('ii', $eventID, $userID);
+                    // Execute the prepared query.
+                    if (!$insert_stmt->execute()) {
+                        echo "<script> alert('Query Error (check database)');</script>";
+                    } else {
+                        header('Refresh: 2; URL=attendevent.php');        
+                        echo 'You are now attending this event!';
+                    }
+                }
             }
+        } else {
+            header('Refresh: 2; URL=attendevent.php');        
+            echo 'Something went wrong.. Going back.';
         }
     } else {
         $prep_stmt = "SELECT id, name, description FROM events";
         $stmt = $mysqli->prepare($prep_stmt);
-     
-       // check existing email  
+       
         if ($stmt) {
             $stmt->execute();
             $stmt->bind_result($id, $name, $description);
             $stmt->store_result();
      
             if ($stmt->num_rows > 0) {
-                // A user with this email address already exists
                 while ($stmt->fetch()) {
                     echo "<p>".$name."<br />";
                     echo $description."<br />
