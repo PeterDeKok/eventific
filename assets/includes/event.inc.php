@@ -111,7 +111,7 @@ if((isset($_POST['name'])) && (isset($_POST['time'])) && (isset($_POST['duration
 											}
 										}
                     echo "<script> alert('Event created!');</script>";
-                    //echo '<script>window.location = "/profile.php";</script>';
+                    echo '<script>window.location = "/event.php?event='.$mysqli->insert_id.'";</script>';
                 }
         } else {
             echo "<script> alert('Query Error (check database');</script>";
@@ -190,7 +190,7 @@ if((isset($_POST['name'])) && (isset($_POST['time'])) && (isset($_POST['duration
 												echo "failed somehow";
 											}
 										}
-                    header("Location: /addevent.php");
+                    header("Location: /event.php?event=".$editID);
                     exit;
                 } else {
                     echo "<script> alert('Query Error (check database)');</script>";

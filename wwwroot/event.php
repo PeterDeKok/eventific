@@ -53,6 +53,8 @@ if($logged == 'in') {
 	
 	if(isset($_GET['event'])) {
 		$SC_event_id = $_GET['event'];
+	} else {
+		header("Location: /index.php");
 	}
 	
 	$db->where('event_id', $SC_event_id);
@@ -204,6 +206,9 @@ if (isset($_GET['event']) && is_numeric($_GET['event'])) {
 					<div class="col-lg-offset-1 col-lg-11">
 						<p><?php echo getEventInfo($mysqli, $eventID, "description"); ?></p>
 						<a href="#" class="btn btn-primary">Buy tickets</a>
+						<?php if(1==1) {?>
+						<a href="/addevent?edit=<?php echo 20; ?>" class="btn btn-primary pull-right">Edit (Change this location)</a>
+						<?php } // endif?>
 					</div>
 				</div>
 			</div>

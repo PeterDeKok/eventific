@@ -328,9 +328,9 @@ function existingEvents($mysqli, $logintype) {
     }
 }
 
-function getEditForm($mysqli) {
-    if((isset($_GET['edit'])) && is_numeric($_GET['edit'])) {
-        $id = $_GET['edit'];
+function getEditForm($mysqli, $editEvent = false) {
+    if((isset($editEvent)) && is_numeric($editEvent)) {
+        $id = $editEvent;
         $prep_stmt = "SELECT name, description, start, duration, location FROM events WHERE id = ? LIMIT 1";
         $stmt = $mysqli->prepare($prep_stmt);
         
@@ -355,37 +355,18 @@ function getEditForm($mysqli) {
 						}
 
             $start = str_replace(" ", "T", $start);
-
-            echo "<h1 class=\"centered\">EDIT AN EVENT</h1>
-                  <form action=\"".esc_url($_SERVER['PHP_SELF'])."\" 
-                            method=\"post\" 
-                            name=\"event_form\"
-                            id=\"eventform\"
-                            role=\"form\"
-                            class=\"eventform\">
-                  <table>
-                    <tr><td>Event name: <br /><input type='text' name='name' id='name' value=\"".$name."\"/></td></tr>
-                    <tr><td>Start time: <br /><input type=\"datetime-local\" value=\"".$start."\" name=\"time\"></td></tr>
-                    <tr><td>Duration: <br /><input type=\"text\" name=\"duration\" id=\"duration\" value=\"".$duration."\"/></td></tr>
-                    <tr><td>Location: <br /><input type=\"text\" name=\"location\" id=\"location\" value=\"".$location."\"/></td></tr> 
-                    <tr><td>Description: <br /><textarea name=\"description\" id=\"description\">".$description."</textarea></td></tr>
-										<input type=\"hidden\" name=\"soundcloud_id\" value=\"".$soundcloud_id."\">  
-                    <input type=\"hidden\" name=\"editID\" value=\"".$_GET['edit']."\">";
-                  if (isset($_SESSION['login_type'])) { 
-                    if (($_SESSION['login_type']=="FB") || ($_SESSION['login_type']=="Both")) {
-                    echo "<input type=\"hidden\" name=\"logintype\" value=\"FB\">";    
-                  } else {
-                    echo "<input type=\"hidden\" name=\"logintype\" value=\"Default\">";  
-                     } 
-                  } else { 
-                    echo "<input type=\"hidden\" name=\"logintype\" value=\"non\">
-                    <tr><td>No session set</td></tr>";  
-                  }
-                  echo "<tr><td><input type=\"submit\" value=\"Update\" /> </td></tr>
-                  </table>
-                  </form>";
+						
+						return array(
+							'id' 						=> $id,
+							'name' 					=> $name,
+							'description' 	=> $description,
+							'start' 				=> $start,
+							'duration' 			=> $duration,
+							'location' 			=> $location,
+							'soundcloud_id' => $soundcloud_id
+						);
         } else {
-            echo "<h1>No event to edit</h1>";
+            return false;
         }
     }
 }
