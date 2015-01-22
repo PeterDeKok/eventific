@@ -106,11 +106,13 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 	      </div>
 	    </div>  							      
 				
-		<div id="headerwrap" id="home" name="home">
+		<div id="headerwrap" name="profile">
 			<p>Welcome to your Eventific account <?php echo $_SESSION['username']; ?></p>
-	    </div><!-- /headerwrap -->
-			<div id="greywrap">
-
+			<p>&nbsp;</p>
+			<div class="container"></div>
+	  </div><!-- /headerwrap -->
+		<div id="greywrap">
+		
 			<div class="row">
 				<div class="col-lg-4 callout">
 					<a href="/addevent.php"><span class="icon icon-plus"></span></a>
@@ -145,9 +147,10 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 					<a href="attendevent.php"><span class="icon icon-search"></span></a>
 					<h2 class="text-center">Search events</h2>
 				</div><!-- col-lg-4 -->	
-			</div>	
-			<hr>
-		<div class="container" id="services" name="services">
+			</div>
+			<br>
+		</div><!-- container -->
+		<div class="container" id="events" name="services">
 			<div class="row">
 				<br>
 				<div class="col-lg-6">
@@ -160,9 +163,7 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 				</div><!-- col -->
 			</div><!-- row -->
 		</div><!-- container -->
-		<br>
-	</div><!-- container -->
-			<div id="footerwrap">
+		<div id="footerwrap">
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-4">
@@ -171,7 +172,7 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 						<span class="icon icon-mobile"></span> +31 101 101 101 <br/>
 					</div>
 					<div class="col-lg-4">
-						<h4></a>EVENTIFIC - Copyright 2014  ©</h4>
+						<h4>EVENTIFIC - Copyright 2014  ©</h4>
 					</div>
 					<div class="col-lg-4">
 						<span class="icon icon-envelop"></span> <a href="#"> project@name.com</a> <br/>

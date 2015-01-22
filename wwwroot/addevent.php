@@ -423,9 +423,6 @@ if($logged == 'in') {
             </div>
           </div>
       	</form>
-  			<?php 
-    			existingEvents($mysqli, $_SESSION['login_type']);
-      	?>
       </div>
 			<div class="col-lg-offset-1 col-lg-5">
 			
