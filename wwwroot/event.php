@@ -15,6 +15,7 @@ require_once($root . '/assets/includes/classes/Soundcloud.php');
 
 require_once($root . '/assets/includes/db_connect.php');
 require_once($root . '/assets/includes/functions.php');
+require_once($root . '/assets/includes/event_functions.php');
 require_once($root . '/assets/includes/register.inc.php');
 
 // Prepare Session
@@ -60,10 +61,11 @@ if($logged == 'in') {
 	
 	if($SC_object) {
 		$SC_embed_url = "https%3A//api.soundcloud.com/".$SC_object[0]['type']."/".$SC_object[0]['sc_id'];
-	}
-		
+	}	
 }
-
+if (isset($_GET['event']) && is_numeric($_GET['event'])) {
+	$eventID = $_GET['event'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -137,7 +139,7 @@ if($logged == 'in') {
 	    </div>  
 				
 		<div id="headerwrap" id="home" name="home">
-			<p>&nbsp;Event name</p>
+			<p><?php echo getEventInfo($mysqli, $eventID, "name"); ?></p>
 			<p>&nbsp;</p>
 			<div class="container">
 				<div class="row">
@@ -161,19 +163,19 @@ if($logged == 'in') {
 						<table>
 							<tr>
 								<th>Name</th>
-								<td>Eventname</td>
+								<td><?php echo getEventInfo($mysqli, $eventID, "name"); ?></td>
 							</tr>
 							<tr>
 								<th>Date</th>
-								<td>01-23-4567</td>
+								<td><?php echo getEventInfo($mysqli, $eventID, "date"); ?></td>
 							</tr>
 							<tr>
 								<th>Time</th>
-								<td>01:23 - 45:67</td>
+								<td><?php echo getEventInfo($mysqli, $eventID, "time"); ?></td>
 							</tr>
 							<tr>
 								<th>Organisation</th>
-								<td>Company/Person</td>
+								<td><?php echo getEventInfo($mysqli, $eventID, "creator"); ?></td>
 							</tr>
 						</table>
 					</div>
@@ -181,26 +183,26 @@ if($logged == 'in') {
 						<table>
 							<tr>
 								<th>Location</th>
-								<td>Klokgebouw, Eindhoven</td>
+								<td><?php echo getEventInfo($mysqli, $eventID, "location"); ?></td>
 							</tr>
 							<tr>
 								<th>Address</th>
-								<td>Blastreet 123</td>
+								<td>Nog niet in database</td>
 							</tr>
 							<tr>
 								<th></th>
-								<td>1234 AB Eindhoven</td>
+								<td>Nog niet in database</td>
 							</tr>
 							<tr>
 								<th>Price</th>
-								<td>&euro; 123,45</td>
+								<td>&euro; Nog niet in database</td>
 							</tr>
 						</table>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-lg-offset-1 col-lg-11">
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+						<p><?php echo getEventInfo($mysqli, $eventID, "description"); ?></p>
 						<a href="#" class="btn btn-primary">Buy tickets</a>
 					</div>
 				</div>
