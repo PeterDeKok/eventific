@@ -196,38 +196,41 @@ if($logged == 'in') {
               <?php if(isset($_GET['edit'])) {
               getEditForm($mysqli);
               //Create an event -->  
-              } else { ?>
-              <h1 class="centered">CREATE AN EVENT</h1>
-              <form action="<?php echo esc_url($_SERVER['PHP_SELF']); ?>" 
-                        method="post" 
-                        name="event_form"
-                        id="eventform"
-                        role="form"
-                        class="eventform">
-              <table>
-              <tr><td>Event name: <br /><input type='text' name='name' id='name' placeholder="name"/></td></tr>
-              <tr><td>Start time: <br /><input type="datetime-local" value="2015-01-14T20:00" name="time"></td></tr>
-              <tr><td>Duration: <br /><input type="text" name="duration" id="duration" placeholder="duration (minutes)"/></td></tr>
-              <tr><td>Location: <br /><input type="text" name="location" id="location" placeholder="location"/></td></tr> 
-              <tr><td>Description: <br /><textarea name="description" id="description">Description</textarea></td></tr>
-							<input type="hidden" name="soundcloud_id" id="soundcloud_id" value="">
-              <?php if (isset($_SESSION['login_type'])) { 
-                if (($_SESSION['login_type']=="FB") || ($_SESSION['login_type']=="Both")) {  ?>
-                <input type="hidden" name="logintype" value="FB">    
-              <?php  } else { ?>
-                <input type="hidden" name="logintype" value="Default">  
-              <?php } 
-              } else { ?>
-                <input type="hidden" name="logintype" value="non">
-                <tr><td>No session set</td></tr>  
-              <?php } ?>
-              <tr><td><input type="submit" value="Create" /> </td></tr>
-              </table>
-              </form>
-              <?php 
-              existingEvents($mysqli, $_SESSION['login_type']);
-              } 
-              ?>
+              } else {
+								?>
+	              <h1 class="centered">CREATE AN EVENT</h1>
+	              <form action="<?php echo esc_url($_SERVER['PHP_SELF']); ?>" 
+	                        method="post" 
+	                        name="event_form"
+	                        id="eventform"
+	                        role="form"
+	                        class="eventform">
+		              <table>
+			              <tr><td>Event name: <br /><input type='text' name='name' id='name' placeholder="name"/></td></tr>
+			              <tr><td>Start time: <br /><input type="datetime-local" value="2015-01-14T20:00" name="time"></td></tr>
+			              <tr><td>Duration: <br /><input type="text" name="duration" id="duration" placeholder="duration (minutes)"/></td></tr>
+			              <tr><td>Location: <br /><input type="text" name="location" id="location" placeholder="location"/></td></tr> 
+			              <tr><td>Description: <br /><textarea name="description" id="description">Description</textarea></td></tr>
+										<input type="hidden" name="soundcloud_id" id="soundcloud_id" value="">
+			              <?php
+											if (isset($_SESSION['login_type'])) { 
+			                	if (($_SESSION['login_type']=="FB") || ($_SESSION['login_type']=="Both")) {
+													echo '<input type="hidden" name="logintype" value="FB">';
+			                	} else {
+													echo '<input type="hidden" name="logintype" value="Default">';
+			              		} 
+			              	} else {
+			              		echo '<input type="hidden" name="logintype" value="non">';
+			                	echo '<tr><td>No session set</td></tr>';
+			              	}
+										?>
+		              	<tr><td><input type="submit" value="Create" /> </td></tr>
+	              	</table>
+              	</form>
+          			<?php 
+          			existingEvents($mysqli, $_SESSION['login_type']);
+          		}
+            ?>
             </div>
 						<div class="col-lg-offset-1 col-lg-5">
 							<div class="row">

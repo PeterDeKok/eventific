@@ -44,18 +44,23 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 $db = new MysqliDb(HOST, USER, PASSWORD, DATABASE);
 
 // Create soundcloud client object with app credentials
-$SC_client = new Services_Soundcloud('7b37fcac8f86d7d4111380375eee3911', '0e126e7ae1f33f743579e42899ffa764', 'http://eventific.mac/profile_soundcloud_test.php');
+$SC_client = new Services_Soundcloud('7b37fcac8f86d7d4111380375eee3911', '0e126e7ae1f33f743579e42899ffa764', 'http://eventific.peterdekok.nl/soundcloud.php');
 $SC_client->setCurlOptions(array(CURLOPT_FOLLOWLOCATION => 1));
 
 if($logged == 'in') {
-	$SC_event_id = 9999999;
+	$SC_event_id = false;
+	
+	if(isset($_GET['event'])) {
+		$SC_event_id = $_GET['event'];
+	}
 	
 	$db->where('event_id', $SC_event_id);
 	$db->orderBy('addedAt', 'Desc');
 	$SC_object = $db->get('soundcloud', 1);
-	var_dump($SC_object[0]);
 	
-	$SC_embed_url = "https%3A//api.soundcloud.com/".$SC_object[0]['type']."/".$SC_object[0]['sc_id'];
+	if($SC_object) {
+		$SC_embed_url = "https%3A//api.soundcloud.com/".$SC_object[0]['type']."/".$SC_object[0]['sc_id'];
+	}
 		
 }
 
@@ -130,42 +135,10 @@ if($logged == 'in') {
 	          </div>
 	      </div>
 	    </div>  
-		 <!-- MODAL SHOW THE PORTFOLIO IMAGE. In this demo, all links point to this modal. You should create
-							      a modal for each of your projects. -->
-							      
-		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title">User details</h4>
-					</div>
-					<div class="modal-body">
-						<p><img class="img-responsive" src="http://placehold.it/600x400" alt=""></p>
-						<form action="/upload.php" method="post" enctype="multipart/form-data">
-							<p><b>Upload new</b></p>
-							<input type="file" name="fileToUpload" id="fileToUpload" >
-							<input type="submit" value="Upload Image" name="submit">
-						</form>
-						<ul>
-							<li>Username: <strong><?php echo $_SESSION['username']; ?></strong></li>
-							<li>E-mail: <strong></strong></li>
-							<li>Phone: <strong></strong></li>
-							<li>Location: <strong></strong></li>
-						</ul>
-						<p><b><a href="#">Edit details</a></b></p>
-						<p><b><a href="#">Change password</a></b></p>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					</div>
-				</div><!-- /.modal-content -->
-			</div><!-- /.modal-dialog -->
-		</div><!-- /.modal -->
 				
 		<div id="headerwrap" id="home" name="home">
-			<p>Welcome to your Eventific account <?php echo $_SESSION['username']; ?></p>
-			<p>Login type: <?php echo $_SESSION['login_type']; ?></p>
+			<p>&nbsp;Event name</p>
+			<p>&nbsp;</p>
 			<div class="container">
 				<div class="row">
 				<div class="col-lg-offset-2 col-lg-8">
@@ -180,56 +153,67 @@ if($logged == 'in') {
 				</div><!-- /col -->					
 				</div><!-- row -->
 			</div>
-	    </div><!-- /headerwrap -->
-			<div id="greywrap">
-
-			<div class="row">
-				<div class="col-lg-4 callout">
-					<a href="#"><span class="icon icon-plus"></span></a>
-					<h2 class="text-center">Create an event</h2>
+	  </div><!-- /headerwrap -->
+		<div id="greywrap">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-offset-1 col-lg-5">
+						<table>
+							<tr>
+								<th>Name</th>
+								<td>Eventname</td>
+							</tr>
+							<tr>
+								<th>Date</th>
+								<td>01-23-4567</td>
+							</tr>
+							<tr>
+								<th>Time</th>
+								<td>01:23 - 45:67</td>
+							</tr>
+							<tr>
+								<th>Organisation</th>
+								<td>Company/Person</td>
+							</tr>
+						</table>
+					</div>
+					<div class="col-lg-offset-1 col-lg-5">
+						<table>
+							<tr>
+								<th>Location</th>
+								<td>Klokgebouw, Eindhoven</td>
+							</tr>
+							<tr>
+								<th>Address</th>
+								<td>Blastreet 123</td>
+							</tr>
+							<tr>
+								<th></th>
+								<td>1234 AB Eindhoven</td>
+							</tr>
+							<tr>
+								<th>Price</th>
+								<td>&euro; 123,45</td>
+							</tr>
+						</table>
+					</div>
 				</div>
-				<?php
-					if ((!isset($_SESSION['FB']))) { 
-				?>
-				<div class="col-lg-4 callout">
-					<a href="/loginFB.php"><span class="icon icon-facebook"></span></a>
-					<h2 class="text-center">Link a Facebook account</h2>
-				</div><!-- col-lg-4 -->	
-				<?php
-					} else {
-				?>
-				<div class="col-lg-4 callout">
-					<h2 class="text-center">Facebook account</h2>
-					<p>Name: <?php echo $_SESSION['username']; ?><br />
-					ID: <?php echo $_SESSION['id']; ?></p>
-					<?php
-					$friends = $_SESSION['user_friends'];
-					echo "Friends: <br />";
-					foreach ($friends as $i => $row) {
-                        echo $row['name'] ."</p>";
-                    }
-					?>
-				</div><!-- col-lg-4 -->	
-				<?php
-					}
-				?>
-				<div class="col-lg-4 callout">
-					<a href="#"><span class="icon icon-star"></span></a>
-					<h2 class="text-center">Favorite spots</h2>
-				</div><!-- col-lg-4 -->	
-			</div>	
-			<hr>
-		<div class="container" id="services" name="services">
+				<div class="row">
+					<div class="col-lg-offset-1 col-lg-11">
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+						<a href="#" class="btn btn-primary">Buy tickets</a>
+					</div>
+				</div>
+			</div>
+		</div> <!-- /greywrap -->
+		
+		<div class="container">
+			<br />
 			<div class="row">
-				<br>
 				<?php if(count($SC_object)) {?>
 				<div class="col-lg-offset-1 col-lg-5">
-					<div class="row">
-						<div class="col-lg-12">
-							<h2 class="centered">Soundcloud</h2>
-						</div>
-					</div>
-						
+					<h2 class="centered">Soundcloud</h2>
+					<hr />
 					<div id="soundcloudWrapper">
 						<iframe width="100%" height="450" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=<?php echo $SC_embed_url; ?>&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true">
 						</iframe>
@@ -238,36 +222,40 @@ if($logged == 'in') {
 					
 				</div><!-- col -->
 				<?php }//endif ?>
+				
 				<div class="col-lg-5">
-					<div class="row">
-						<div class="col-lg-offset-3 col-lg-9">
-							<h2 class="centered">Spotify</h2>
-						</div>
+					<h2 class="centered">Statistics</h2>
+					<hr />
+					<div>
+						Statistics
 					</div>
-					<!--<img class="img-responsive" src="http://placehold.it/845x480" alt="">-->
 				</div><!-- col -->
+				
 			</div><!-- row -->
-		</div><!-- container -->
-		<div class="container" id="services" name="services">
+		</div>
+			
+		<!-- ==== SECTION DIVIDER1 -->
+		<section class="section-divider textdivider divider1">
+			<div class="container">
+			</div><!-- container -->
+		</section><!-- section -->
+		
+		<div class="container">
+			<br />
 			<div class="row">
-				<br>
-				<div class="col-lg-offset-2 col-lg-8">
-					<h2 class="centered">Hosted events</h2>
-					<img class="img-responsive" src="http://placehold.it/845x480" alt="">
-				</div><!-- col -->
-			</div><!-- row -->
+				<div class="col-lg-offset-1 col-lg-10">
+					<h2 class="centered">Location</h2>
+					<hr />
+					<div class="embed-responsive googlemaps">
+						<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d79568.85424888934!2d5.4515104!3d51.448485549999994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2snl!4v1421925577174" class="embed-responsive-item"></iframe>
+					</div>
+				</div>
+			</div>
+			
+			<br />
+			<br />
+			
 		</div><!-- container -->
-		<div class="container" id="services" name="services">
-			<div class="row">
-				<br>
-				<div class="col-lg-offset-2 col-lg-8">
-					<h2 class="centered">Interesting events</h2>
-					<img class="img-responsive" src="http://placehold.it/845x480" alt="">
-				</div><!-- col -->
-			</div><!-- row -->
-		</div><!-- container -->
-		<br>
-	</div><!-- container -->
 			<div id="footerwrap">
 			<div class="container">
 						<span class="icon icon-home"></span> TU Eindhoven<br/>
