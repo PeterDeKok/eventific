@@ -424,50 +424,69 @@ function getEvents($mysqli) {
             $stmt->bind_result($eventID, $userID);
             $stmt->store_result();
             if ($stmt->num_rows > 0) {
-                header('Refresh: 2; URL=attendevent.php');        
-                echo 'Already attended this event';
+                header('Refresh: 2; URL=/event.php?event='.$eventID);        
+                echo 'Already attending this event';
             } else {
                 $stmt->close();
                 if ($insert_stmt = $mysqli->prepare("INSERT INTO attendees (event_id, creator_id) VALUES (?, ?)")) {
                     $insert_stmt->bind_param('ii', $eventID, $userID);
                     // Execute the prepared query.
                     if (!$insert_stmt->execute()) {
-                        echo "<script> alert('Query Error (check database)');</script>";
+                      echo "<script> alert('Query Error (check database)');</script>";
                     } else {
-                        header('Refresh: 2; URL=attendevent.php');        
-                        echo 'You are now attending this event!';
+                      header('Refresh: 2; URL=/event.php?event='.$eventID);        
+                      echo 'You are now attending this event!';
+						          exit();
                     }
                 }
             }
         } else {
-            header('Refresh: 2; URL=attendevent.php');        
-            echo 'Something went wrong.. Going back.';
+          header('Refresh: 2; URL=/index.php');        
+          echo 'Something went wrong.. Going back.';
+          exit();
         }
     } else {
-        $prep_stmt = "SELECT id, name, description FROM events";
+        $prep_stmt = "SELECT id, name, description, location, start FROM events";
         $stmt = $mysqli->prepare($prep_stmt);
-       
+				
         if ($stmt) {
-            $stmt->execute();
-            $stmt->bind_result($id, $name, $description);
-            $stmt->store_result();
-     
-            if ($stmt->num_rows > 0) {
-                while ($stmt->fetch()) {
-                    //Already attended
-                    if(attendedEvent($mysqli, $id, $userID)) {    
-                    } else {
-                        echo "<p>".$name."<br />";
-                        echo $description."<br />
-                        <a class=\"black\" href=\"".$_SERVER['PHP_SELF']."?event=".$id."\">ATTEND</a></p>";
-                    }
-                }
-                $stmt->close();
+          $stmt->execute();
+          $stmt->bind_result($id, $name, $description, $location, $start);
+          $stmt->store_result();
+					
+					$events = array('attending' => array(), 'notAttending' => array());
+					
+          if ($stmt->num_rows > 0) {
+            while ($stmt->fetch()) {
+              //Already attended
+              if(attendedEvent($mysqli, $id, $userID)) {
+								// Events attending by user
+								$events['attending'][] = array(
+									'id'					=> $id,
+									'name' 				=> $name,
+									'description' => $description,
+									'location' 		=> $location,
+									'start' 			=> $start
+								);
+              } else {
+								// Events not attending by user
+								$events['notAttending'][] = array(
+									'id'					=> $id,
+									'name' 				=> $name,
+									'description' => $description,
+									'location' 		=> $location,
+									'start' 			=> $start
+								);
+							}
             }
-             //   $stmt->close();
+            $stmt->close();
+          }
+					return $events;
+					// $stmt->close();
         } else {
-            header("Location: /redirect.php?action=errorSession");
-            exit;
+          header('Refresh: 2; URL=/index.php');        
+          echo 'Something went wrong.. Going back.';
+          exit();
         }
     }
 }
@@ -488,7 +507,7 @@ function attendedEvent($mysqli, $eventID, $userID) {
                 return false;
             }
         } else {
-            header('Refresh: 2; URL=attendevent.php');        
+            header('Refresh: 2; URL=/index.php');        
             echo 'Something went wrong.. Going back.';
         }
 }

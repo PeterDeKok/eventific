@@ -44,6 +44,12 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
     exit;
 }
 ?>
+<br /><br />
+<?php
+if($logged == 'in') {
+	$events = getEvents($mysqli);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -92,50 +98,67 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
               <li><a href="index.php#home" class="smoothScroll">Home</a></li>
-  			<li> <a href="index.php#about" class="smoothScroll"> About Us</a></li>
-  			<li> <a href="index.php#services" class="smoothScroll"> E-ticketing</a></li>
-  			<li> <a href="index.php#team" class="smoothScroll"> Team</a></li>
-  			<li> <a href="index.php#blog" class="smoothScroll"> Stories</a></li>
-  			<li> <a href="index.php#contact" class="smoothScroll"> Contact</a></li>
-  	      <li role="presentation" class="divider"></li>
-  	      <?php
-  	        if ($logged=='in') {
-  	      ?>
-  	      <li><a href="/profile.php"> My Profile</a></li>
-  	      <li><a href="/redirect.php?action=logout">Log out</a></li>
-  	      <?php 
-  	        }
-  	      ?>
-  		  </ul>
+			  			<li> <a href="index.php#about" class="smoothScroll"> About Us</a></li>
+			  			<li> <a href="index.php#services" class="smoothScroll"> E-ticketing</a></li>
+			  			<li> <a href="index.php#team" class="smoothScroll"> Team</a></li>
+			  			<li> <a href="index.php#blog" class="smoothScroll"> Stories</a></li>
+			  			<li> <a href="index.php#contact" class="smoothScroll"> Contact</a></li>
+		  	      <li role="presentation" class="divider"></li>
+		  	      <?php
+		  	        if ($logged=='in') {
+		  	      ?>
+		  	      <li><a href="/profile.php"> My Profile</a></li>
+		  	      <li><a href="/redirect.php?action=logout">Log out</a></li>
+		  	      <?php 
+		  	        }
+		  	      ?>
+		  		  </ul>
           </div><!--/.nav-collapse -->
         </div>
       </div>
-    </div>  
-	
-	<div class="container" id="about" name="about">
-			<div class="row white"> 
-          <div class="row">
-            <div class="col-lg-6 text-center eventcreate">
-            <h1>Attend an event!</h1>
-            <?php getEvents($mysqli); ?>
-            </div>
-          </div>
-      </div>
-  </div>
+    </div> 
+		<div class="container" id="about" name="about">
+				<div class="row white"> 
+	          <div class="row">
+	            <div class="col-lg-6 text-center eventcreate">
+	            <h1>Attend an event!</h1>
+						
+							<?php
+							foreach($events['notAttending'] as $key => $value) {
+								echo '<p><a href="/event.php?event='.$value['id'].'">'.$value['name'].'</a><br />';
+								echo $value['description'] . '</p>';
+							}
+							?>
+						
+	            </div>
+	            <div class="col-lg-6 text-center eventcreate">
+	            <h1>Attending events!</h1>
+						
+							<?php
+							foreach($events['attending'] as $key => $value) {
+								echo '<p><a href="/event.php?event='.$value['id'].'">'.$value['name'].'</a><br />';
+								echo $value['description'] . '</p>';
+							}
+							?>
+						
+	            </div>
+	          </div>
+	      </div>
+	  </div>
 
-  <div id="footerwrap">
-    <div class="container">
-      <span class="icon icon-home"></span> TU Eindhoven<br/>
-      <h4></a>Eventific - Copyright 2014  ©</h4>
-    </div>
-  </div>
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-	<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="assets/js/retina.js"></script>
-	<script type="text/javascript" src="assets/js/jquery.easing.1.3.js"></script>
-  <script type="text/javascript" src="assets/js/smoothscroll.js"></script>
-	<script type="text/javascript" src="assets/js/jquery-func.js"></script>
+	  <div id="footerwrap">
+	    <div class="container">
+	      <span class="icon icon-home"></span> TU Eindhoven<br/>
+	      <h4></a>Eventific - Copyright 2014  ©</h4>
+	    </div>
+	  </div>
+	    <!-- Bootstrap core JavaScript
+	    ================================================== -->
+	    <!-- Placed at the end of the document so the pages load faster -->
+		<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="assets/js/retina.js"></script>
+		<script type="text/javascript" src="assets/js/jquery.easing.1.3.js"></script>
+	  <script type="text/javascript" src="assets/js/smoothscroll.js"></script>
+		<script type="text/javascript" src="assets/js/jquery-func.js"></script>
   </body>
 </html>
