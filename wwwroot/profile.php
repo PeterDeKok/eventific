@@ -149,7 +149,7 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 				</div><!-- col-lg-4 -->	
 			</div>
 			<br>
-		</div><!-- container -->
+		</div><!-- /greywrap -->
 		<div class="container" id="events" name="services">
 			<div class="row">
 				<br>

@@ -43,9 +43,7 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
     header("Location: /index.php");
     exit;
 }
-?>
-<br /><br />
-<?php
+
 if($logged == 'in') {
 	$events = getEvents($mysqli);
 }
@@ -117,34 +115,56 @@ if($logged == 'in') {
         </div>
       </div>
     </div> 
-		<div class="container" id="about" name="about">
-				<div class="row white"> 
-	          <div class="row">
-	            <div class="col-lg-6 text-center eventcreate">
-	            <h1>Attend an event!</h1>
-						
-							<?php
-							foreach($events['notAttending'] as $key => $value) {
-								echo '<p><a href="/event.php?event='.$value['id'].'">'.$value['name'].'</a><br />';
-								echo $value['description'] . '</p>';
-							}
-							?>
-						
-	            </div>
-	            <div class="col-lg-6 text-center eventcreate">
-	            <h1>Attending events!</h1>
-						
-							<?php
-							foreach($events['attending'] as $key => $value) {
-								echo '<p><a href="/event.php?event='.$value['id'].'">'.$value['name'].'</a><br />';
-								echo $value['description'] . '</p>';
-							}
-							?>
-						
-	            </div>
-	          </div>
-	      </div>
-	  </div>
+		
+		<div id="headerwrap" name="profile">
+			<p>Welcome to your Eventific account <?php echo $_SESSION['username']; ?></p>
+			<p>&nbsp;</p>
+			<div class="container"></div>
+	  </div><!-- /headerwrap -->
+		
+		<div id="greywrap">
+			<div class="container attendingItems">
+				<h1 class="centered">ATTENDING EVENTS</h1>
+				<hr />
+        <div class="row">
+					<?php
+					if($events['attendEvent'] && $events['attendEvent'] > 0){
+						echo '<div class="col-lg-12">Your attending event '.$events['attendEvent'].' now.</div>';
+					} else if($events['attendEvent'] < 0) {
+						echo '<div class="col-lg-12">Your are already attending event '.$events['attendEvent']*(-1).'.</div>';
+					} else if(is_array($events['attending']) && count($events['attending'])){
+						foreach($events['attending'] as $key => $value) {
+							echo '<div class="col-lg-3 attendingItem"><div><div class="attendingImage"></div>';
+							echo '<span><a href="/event.php?event='.$value['id'].'">'.$value['name'].'</a></span>';
+							echo '</div></div>';
+						}
+					} else {
+						echo '<div class="col-lg-12"><h2>You are not attending events yet.</h></div>';
+					}
+					?>
+        </div>
+		  </div>
+			<br>
+		</div><!-- /greywrap -->
+		
+		<div class="container attendingItems">
+			<h1 class="centered">DISCOVER EVENTS</h1>
+			<hr />
+      <div class="row">
+				<?php
+				if(is_array($events['notAttending']) && count($events['notAttending'])){
+					foreach($events['notAttending'] as $key => $value) {
+						echo '<div class="col-lg-3 attendingItem"><div class="row"><div class="col-xs-2 attendingImage"></div><div class="col-xs-10 attendingInfo">';
+						echo '<a href="/event.php?event='.$value['id'].'">'.$value['name'].'</a><br />';
+						echo '</div></div></div>';
+					}
+				} else {
+					echo '<div class="col-lg-12"><h2>There are no events you can attend right now.</h></div>';
+				}
+				?>
+      </div>
+			<br>
+		</div>
 
 	  <div id="footerwrap">
 	    <div class="container">

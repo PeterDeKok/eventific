@@ -413,6 +413,8 @@ function getEvents($mysqli) {
         header('Refresh: 2; URL=attendevent.php');        
         echo 'Seems like you\'re not logged in..';
     }  
+		
+		$events = array('attending' => array(), 'notAttending' => array(), 'attendEvent' => false);
     
     if(isset($_GET['event'])) {
         $eventID = $_GET['event'];   
@@ -424,8 +426,9 @@ function getEvents($mysqli) {
             $stmt->bind_result($eventID, $userID);
             $stmt->store_result();
             if ($stmt->num_rows > 0) {
+								$events['attendEvent'] = (-1)*$eventID;
                 header('Refresh: 2; URL=/event.php?event='.$eventID);        
-                echo 'Already attending this event';
+                return $events;
             } else {
                 $stmt->close();
                 if ($insert_stmt = $mysqli->prepare("INSERT INTO attendees (event_id, creator_id) VALUES (?, ?)")) {
@@ -434,14 +437,15 @@ function getEvents($mysqli) {
                     if (!$insert_stmt->execute()) {
                       echo "<script> alert('Query Error (check database)');</script>";
                     } else {
+											$events['attendEvent'] = $eventID;
                       header('Refresh: 2; URL=/event.php?event='.$eventID);        
-                      echo 'You are now attending this event!';
+											return $events;
 						          exit();
                     }
                 }
             }
         } else {
-          header('Refresh: 2; URL=/index.php');        
+          header('Refresh: 0; URL=/index.php');        
           echo 'Something went wrong.. Going back.';
           exit();
         }
@@ -454,7 +458,7 @@ function getEvents($mysqli) {
           $stmt->bind_result($id, $name, $description, $location, $start);
           $stmt->store_result();
 					
-					$events = array('attending' => array(), 'notAttending' => array());
+					
 					
           if ($stmt->num_rows > 0) {
             while ($stmt->fetch()) {

@@ -72,5 +72,8 @@ Logged In!
 <?php
 }
 ?>
+<?php
+phpinfo();
+?>
 </body>
 </html>
