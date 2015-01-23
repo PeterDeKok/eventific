@@ -41,7 +41,7 @@ if((isset($_POST['name'])) && (isset($_POST['time'])) && (isset($_POST['duration
 		$db = new MysqliDb(HOST, USER, PASSWORD, DATABASE);
 		
     //CREATE NEW
-    if (!(isset($_POST['editID']))) {
+    if (!(isset($_POST['editID'])) || (strlen($_POST['editID'])<1)) {
 
         //GET ID
         if ($logintype == "FB") {

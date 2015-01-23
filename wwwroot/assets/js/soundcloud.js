@@ -123,7 +123,6 @@ $(document).ready(function () {
 						'	</div>'
 					);
 					if(value.id != '') {
-						alert('hoi')
 						$('#soundcloudWrapper #sc_response').append(
 							'	<div class="playlist_item_more no-bg row" id="collapseSCPlaylistsMoreOptions'+value.id+'">'+
 							'		<a class="btn btn-primary pull-right btn-xs use" data-id="'+value.id+'" data-artwork="'+value.artwork_url+'" data-title="'+value.title+'" data-type="tracks" data-member-id="'+value.member_id+'" data-event-id="'+value.event_id+'" data-permalink-url="'+value.permalink_url+'" href="#">Use</a><a class="btn btn-primary pull-right btn-xs" href="'+value.permalink_url+'">More info</a>'+

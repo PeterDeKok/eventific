@@ -58,7 +58,8 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 
     <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
-
+		
+		<script>var DEBUG = true;</script>
     <script src="assets/js/jquery.min.js"></script>
 	<script type="text/javascript" src="assets/js/modernizr.custom.js"></script>
 	<script type="text/javascript" src="assets/js/forms.js"></script>
