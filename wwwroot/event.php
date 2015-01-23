@@ -67,6 +67,7 @@ if($logged == 'in') {
 }
 if (isset($_GET['event']) && is_numeric($_GET['event'])) {
 	$eventID = $_GET['event'];
+	$eventInfo = getEventInfo($mysqli, $eventID);
 }
 ?>
 <!DOCTYPE html>
@@ -141,7 +142,7 @@ if (isset($_GET['event']) && is_numeric($_GET['event'])) {
 	    </div>  
 				
 		<div id="headerwrap" id="home" name="home">
-			<p><?php echo getEventInfo($mysqli, $eventID, "name"); ?></p>
+			<p><?php echo $eventInfo['name']; ?></p>
 			<p>&nbsp;</p>
 			<div class="container">
 				<div class="row">
@@ -165,19 +166,19 @@ if (isset($_GET['event']) && is_numeric($_GET['event'])) {
 						<table>
 							<tr>
 								<th>Name</th>
-								<td><?php echo getEventInfo($mysqli, $eventID, "name"); ?></td>
+								<td><?php echo $eventInfo['name']; ?></td>
 							</tr>
 							<tr>
 								<th>Date</th>
-								<td><?php echo getEventInfo($mysqli, $eventID, "date"); ?></td>
+								<td><?php echo $eventInfo['date']; ?></td>
 							</tr>
 							<tr>
 								<th>Time</th>
-								<td><?php echo getEventInfo($mysqli, $eventID, "time"); ?></td>
+								<td><?php echo $eventInfo['time']; ?></td>
 							</tr>
 							<tr>
 								<th>Organisation</th>
-								<td><?php echo getEventInfo($mysqli, $eventID, "creator"); ?></td>
+								<td><?php echo $eventInfo['creator']; ?></td>
 							</tr>
 						</table>
 					</div>
@@ -185,7 +186,7 @@ if (isset($_GET['event']) && is_numeric($_GET['event'])) {
 						<table>
 							<tr>
 								<th>Location</th>
-								<td><?php echo getEventInfo($mysqli, $eventID, "location"); ?></td>
+								<td><?php echo $eventInfo['location']; ?></td>
 							</tr>
 							<tr>
 								<th>Address</th>
@@ -204,10 +205,10 @@ if (isset($_GET['event']) && is_numeric($_GET['event'])) {
 				</div>
 				<div class="row">
 					<div class="col-lg-offset-1 col-lg-11">
-						<p><?php echo getEventInfo($mysqli, $eventID, "description"); ?></p>
+						<p><?php echo $eventInfo['description']; ?></p>
 						<a href="#" class="btn btn-primary">Buy tickets</a>
-						<?php if(1==1) {?>
-						<a href="/addevent?edit=<?php echo 20; ?>" class="btn btn-primary pull-right">Edit (Change this location)</a>
+						<?php echo ownerOfEvent($mysqli, $eventID); if(ownerOfEvent($mysqli, $eventID)) {?>
+						<a href="/addevent.php?edit=<?php echo $eventInfo['id']; ?>" class="btn btn-primary pull-right">Edit (Change this location)</a>
 						<?php } // endif?>
 					</div>
 				</div>

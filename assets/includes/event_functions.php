@@ -13,131 +13,27 @@ require_once($root . '/assets/includes/classes/session.class.php');
 require_once($root . '/assets/includes/db_connect.php');
 require_once($root . '/assets/includes/functions.php');
 
-function getEventInfo($mysqli, $eventID, $info) {
-    switch ($info) {
-        case "name":
-            if ($stmt = $mysqli->prepare("SELECT name
-                FROM events
+function getEventInfo($mysqli, $eventID) {
+    if ($stmt = $mysqli->prepare("SELECT id, name, start, location, description, creator_id
+        FROM events
+        WHERE id = ?
+        LIMIT 1")) {
+        $stmt->bind_param('i', $eventID); 
+        $stmt->execute();    // Execute the prepared query.
+        $stmt->store_result();
+        // get variables from result.
+        $stmt->bind_result($eventID, $eventName, $eventTime, $eventLocation, $eventDescription, $eventCreatorID);
+        $stmt->fetch();
+        $stmt->close();
+        if (!(isset($eventName))) {
+            header("Location: /err.php?page=create&err=dbError");
+            exit;
+        } else {
+            if ($stmt = $mysqli->prepare("SELECT username
+                FROM members
                 WHERE id = ?
                 LIMIT 1")) {
-                $stmt->bind_param('i', $eventID); 
-                $stmt->execute();    // Execute the prepared query.
-                $stmt->store_result();
-                // get variables from result.
-                $stmt->bind_result($eventName);
-                $stmt->fetch();
-                $stmt->close();
-                if (!(isset($eventName))) {
-                    header("Location: /err.php?page=create&err=dbError");
-                    exit;
-                } else {
-                    return $eventName;
-                }
-            } else {
-                header("Location: /err.php?page=create&err=dbError");
-                exit;
-            }
-        break;
-        case "date":
-            if ($stmt = $mysqli->prepare("SELECT start
-                FROM events
-                WHERE id = ?
-                LIMIT 1")) {
-                $stmt->bind_param('i', $eventID); 
-                $stmt->execute();    // Execute the prepared query.
-                $stmt->store_result();
-                // get variables from result.
-                $stmt->bind_result($startTime);
-                $stmt->fetch();
-                $stmt->close();
-                if (!(isset($startTime))) {
-                    header("Location: /err.php?page=create&err=dbError");
-                    exit;
-                } else {
-                    $explode = explode(" ", $startTime);
-                    return $explode[0];
-                }
-            } else {
-                header("Location: /err.php?page=create&err=dbError");
-                exit;
-            }
-        break;
-        case "time":
-            if ($stmt = $mysqli->prepare("SELECT start
-                FROM events
-                WHERE id = ?
-                LIMIT 1")) {
-                $stmt->bind_param('i', $eventID); 
-                $stmt->execute();    // Execute the prepared query.
-                $stmt->store_result();
-                // get variables from result.
-                $stmt->bind_result($startTime);
-                $stmt->fetch();
-                $stmt->close();
-                if (!(isset($startTime))) {
-                    header("Location: /err.php?page=create&err=dbError");
-                    exit;
-                } else {
-                    $explode = explode(" ", $startTime);
-                    return $explode[1];
-                }
-            } else {
-                header("Location: /err.php?page=create&err=dbError");
-                exit;
-            }
-        break;
-        case "location":
-            if ($stmt = $mysqli->prepare("SELECT location
-                FROM events
-                WHERE id = ?
-                LIMIT 1")) {
-                $stmt->bind_param('i', $eventID); 
-                $stmt->execute();    // Execute the prepared query.
-                $stmt->store_result();
-                // get variables from result.
-                $stmt->bind_result($eventLocation);
-                $stmt->fetch();
-                $stmt->close();
-                if (!(isset($eventLocation))) {
-                    header("Location: /err.php?page=create&err=dbError");
-                    exit;
-                } else {
-                    return $eventLocation;
-                }
-            } else {
-                header("Location: /err.php?page=create&err=dbError");
-                exit;
-            }
-        break;
-        case "description":
-            if ($stmt = $mysqli->prepare("SELECT description
-                FROM events
-                WHERE id = ?
-                LIMIT 1")) {
-                $stmt->bind_param('i', $eventID); 
-                $stmt->execute();    // Execute the prepared query.
-                $stmt->store_result();
-                // get variables from result.
-                $stmt->bind_result($eventDescription);
-                $stmt->fetch();
-                $stmt->close();
-                if (!(isset($eventDescription))) {
-                    header("Location: /err.php?page=create&err=dbError");
-                    exit;
-                } else {
-                    return $eventDescription;
-                }
-            } else {
-                header("Location: /err.php?page=create&err=dbError");
-                exit;
-            }
-        break;
-        case "creator":
-            if ($stmt = $mysqli->prepare("SELECT creator_id
-                FROM events
-                WHERE id = ?
-                LIMIT 1")) {
-                $stmt->bind_param('i', $eventID); 
+                $stmt->bind_param('i', $eventCreatorID); 
                 $stmt->execute();    // Execute the prepared query.
                 $stmt->store_result();
                 // get variables from result.
@@ -147,34 +43,88 @@ function getEventInfo($mysqli, $eventID, $info) {
                 if (!(isset($eventCreator))) {
                     header("Location: /err.php?page=create&err=dbError");
                     exit;
-                } else {
-                    if ($stmt = $mysqli->prepare("SELECT username
-                        FROM members
-                        WHERE id = ?
-                        LIMIT 1")) {
-                        $stmt->bind_param('i', $eventCreator); 
-                        $stmt->execute();    // Execute the prepared query.
-                        $stmt->store_result();
-                        // get variables from result.
-                        $stmt->bind_result($username);
-                        $stmt->fetch();
-                        $stmt->close();
-                        if (!(isset($username))) {
-                            header("Location: /err.php?page=create&err=dbError");
-                            exit;
-                        } else {
-                            return $username;
-                        }
-                    } else {
-                        header("Location: /err.php?page=create&err=dbError");
-                        exit;
-                    }
-                }
+                } 
             } else {
                 header("Location: /err.php?page=create&err=dbError");
                 exit;
             }
-        break;
+
+            $explode = explode(" ", $eventTime);
+
+            return array(
+                'id'            => $eventID,
+                'name'          => $eventName,
+                'description'   => $eventDescription,
+                'start'         => $eventTime,
+                'location'      => $eventLocation,
+                'date'          => $explode[0],
+                'time'          => $explode[1],
+                'creator'       => $eventCreator
+            );
+        }
+    } else {
+        header("Location: /err.php?page=create&err=dbError");
+        exit;
+    }
+}
+
+function ownerOfEvent($mysqli, $eventID) {
+    $logintype = $_SESSION['login_type'];
+    if (($logintype == "FB") || ($logintype == "Both")) {
+        $fbid = $_SESSION['id']; 
+        if ($stmt = $mysqli->prepare("SELECT id
+            FROM members
+            WHERE fbid = ?
+            LIMIT 1")) {
+            $stmt->bind_param('i', $fbid); 
+            $stmt->execute();    // Execute the prepared query.
+            $stmt->store_result();
+            // get variables from result.
+            $stmt->bind_result($userID);
+            $stmt->fetch();
+            $stmt->close();
+            if (!(isset($userID))) {
+                header("Location: /redirect.php?action=errorSession");
+                exit;
+            }
+        }
+    } elseif ($logintype == "Default")  {
+        $username = $_SESSION['username'];
+        if ($stmt = $mysqli->prepare("SELECT id
+            FROM members
+            WHERE username = ?
+            LIMIT 1")) {
+            $stmt->bind_param('s', $username); 
+            $stmt->execute();    // Execute the prepared query.
+            $stmt->store_result();
+            // get variables from result.
+            $stmt->bind_result($userID);
+            $stmt->fetch();
+            $stmt->close();
+            if (!(isset($userID))) {
+                header("Location: /redirect.php?action=errorSession");
+                exit;
+            }
+        }
+    } else {
+        header('Refresh: 2; URL=attendevent.php');        
+        echo 'Seems like you\'re not logged in..';
+    } 
+
+    if ($stmt = $mysqli->prepare("SELECT id, creator_id
+        FROM events
+        WHERE id = ? AND creator_id = ?
+        LIMIT 1")) {
+        $stmt->bind_param('ii', $eventID, $userID); 
+        $stmt->execute();    // Execute the prepared query.
+        $stmt->store_result();
+        if ($stmt->num_rows==1) {
+            $stmt->close();
+            return true;
+        } else {
+            $stmt->close();
+            return false;
+         }
     }
 }
 ?>
