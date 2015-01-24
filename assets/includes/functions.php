@@ -670,4 +670,80 @@ function hostedEvent($mysqli, $eventID, $userID) {
             echo 'Something went wrong.. Going back.';
         }
 }
+
+function uploadImage($formname, $upload_dir) {
+	$newFileName = 'event_'.md5(time()) . '.jpg';
+	$i = 0;
+	//Сheck that we have a file
+	if((!empty($_FILES[$formname])) && ($_FILES[$formname]['error'] == 0)) {
+		if (file_exists($upload_dir) && is_writable($upload_dir)) {
+		  //Check if the file is JPEG image and it's size is less than 350Kb
+		  $filename = basename($_FILES[$formname]['name']);
+		  $ext = strtolower(pathinfo($filename,PATHINFO_EXTENSION));
+			$finfo = new finfo(FILEINFO_MIME_TYPE);
+		  if ((($ext == "jpg") || ($ext == "jpeg")) && ($_FILES[$formname]["type"] == "image/jpeg") && ($_FILES[$formname]["size"] < 2000000) && (false !== $ext = array_search($finfo->file($_FILES[$formname]['tmp_name']), array('jpg' => 'image/jpeg', 'png' => 'image/png', 'gif' => 'image/gif'), true))) {
+				// Original temporary path of file
+				$src_file = $_FILES[$formname]["tmp_name"];
+		    // Determine the path to which we want to save this file
+		    $newname = $upload_dir . $newFileName;
+				// Temp path of file
+				$tempFileName = $newname.'_temp';
+				$img_quality = 100;
+				
+		    //Check if the file with the same name is already exists on the server
+		    if ((!file_exists($newname)) && (!file_exists($tempFileName))) {
+					
+		      //Attempt to move the uploaded file to it's new place
+	        if ((move_uploaded_file($src_file,$tempFileName))) {
+						// Recreate image to remove all maliscious data
+						$im = imagecreatefromstring(file_get_contents($tempFileName));
+						$im_w = imagesx($im);
+						$im_h = imagesy($im);
+						$tn = imagecreatetruecolor($im_w, $im_h);
+						imagecopyresampled ( $tn , $im, 0, 0, 0, 0, $im_w, $im_h, $im_w, $im_h );
+						if(imagejpeg($tn,$newname,$img_quality)) {
+							array_map('unlink', glob($upload_dir."*.jpg_temp"));
+			      
+							//It's done! The file has been saved
+							return $newFileName;
+						}
+	        }
+	      }
+		  }
+		}
+	}
+	array_map('unlink', glob($upload_dir."*.jpg_temp"));
+	return false;
+}
+
+function getImage($path, $img) {
+	$path = '../assets/userUploadFiles/events/';
+	$img = 'event_ee3a974e464f71ab55dd2a2b380f9c1e.jpg';
+	$imgName = basename($img);
+ 
+	// Construct the actual image path.
+	$imgPath = $path . $imgName;
+ 
+	// Make sure the file exists
+	if(!file_exists($imgPath) || !is_file($imgPath)) {
+	    header('HTTP/1.0 404 Not Found');
+	    die('The file does not exist');
+	}
+ 
+	// Make sure the file is an image
+	$imgData = getimagesize($imgPath);
+	if(!$imgData) {
+	    header('HTTP/1.0 403 Forbidden');
+	    die('The file you requested is not an image.');
+	}
+ 
+	// Set the appropriate content-type
+	// and provide the content-length.
+	//header('Content-type: ' . $imgData['mime']);
+	//header('Content-length: ' . filesize($imgPath));
+ 
+	// Print the image data
+	return 'data:image/gif;base64,'.base64_encode(file_get_contents($imgPath));
+}
+
 ?>

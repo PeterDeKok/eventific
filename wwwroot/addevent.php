@@ -365,7 +365,7 @@ if($logged == 'in') {
 					}
 				?>
 				
-        <form action="<?php echo esc_url($_SERVER['PHP_SELF']); ?>" method="post" name="event_form" id="eventform" role="form" class="eventform" validate>
+        <form action="<?php echo esc_url($_SERVER['PHP_SELF']); ?>" method="post" name="event_form" id="eventform" role="form" class="eventform" enctype="multipart/form-data" validate>
 					<div class="row control-group">
 						<div class="form-group col-xs-12">
 							<label>Event name</label>
@@ -398,6 +398,13 @@ if($logged == 'in') {
 						<div class="form-group col-xs-12">
 							<label>Description</label>
 							<textarea name="description" id="description" class="form-control" placeholder="Description" required data-validation-required-message="A description is required"><?php echo $editEventData['description']; ?></textarea>
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<div class="row control-group">
+						<div class="form-group col-xs-12">
+							<label>Picture</label>
+							<input type="file" name="fileEvent" id="fileEvent" class="form-control" placeholder="Picture" />
 							<p class="help-block text-danger"></p>
 						</div>
 					</div>

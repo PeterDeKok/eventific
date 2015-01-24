@@ -141,7 +141,7 @@ if (isset($_GET['event']) && is_numeric($_GET['event'])) {
 	      </div>
 	    </div>  
 				
-		<div id="headerwrap" id="home" name="home">
+		<div id="headerwrap" name="event">
 			<p><?php echo $eventInfo['name']; ?></p>
 			<p>&nbsp;</p>
 			<div class="container">
@@ -149,7 +149,12 @@ if (isset($_GET['event']) && is_numeric($_GET['event'])) {
 				<div class="col-lg-offset-2 col-lg-8">
 			    	<div class="grid mask">
 						<figure>
-							<img class="img-responsive" src="http://placehold.it/600x400" alt="">
+							<?php if(isset($eventInfo['pic_url']) && (strlen($eventInfo['pic_url']) > 4) && ($eventInfo['pic_url'] != 'none')) {
+								//echo '<img class="img-responsive eventImage" src="/getImage.php?path=event&amp;image='.$eventInfo['pic_url'].'" alt="">';
+								?>
+								<script>$('#headerwrap').css('background-image', 'url("<?php echo '/getImage.php?path=event&image='.$eventInfo['pic_url'];?>")');</script>
+								<?php
+							}?>
 							<figcaption>
 								<a data-toggle="modal" href="#myModal" class="btn btn-primary btn-lg">Edit profile</a>
 							</figcaption><!-- /figcaption -->

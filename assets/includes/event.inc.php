@@ -31,6 +31,10 @@ if((isset($_POST['name'])) && (isset($_POST['time'])) && (isset($_POST['duration
     $logintype = $_POST['logintype'];
     $description = $_POST['description'];
 		$soundcloud_id = $_POST['soundcloud_id'];
+		$picture = false;
+		if(isset($_FILES['fileEvent'])) {
+			$picture = $_FILES['fileEvent'];
+		}
 
     if ((strlen($name) < 2) || (strlen($time) < 2) || (strlen($duration) <= 1) || (strlen($location) < 2) || (strlen($logintype) <= 2) || (strlen($description) < 2)) {
         header('Refresh: 2; URL=addevent.php'); 
@@ -84,7 +88,12 @@ if((isset($_POST['name'])) && (isset($_POST['time'])) && (isset($_POST['duration
             header("Location: /redirect.php?action=errorSession");
             exit;
         }
-
+				
+				if($picture) {
+					$uploadedImage = uploadImage('fileEvent', $root.'/assets/userUploadFiles/events/');
+					if($uploadedImage) $pic_url = $uploadedImage;
+				}
+				
         //Pic url
         if (!(isset($pic_url))) {
             $pic_url = "none";
@@ -98,10 +107,11 @@ if((isset($_POST['name'])) && (isset($_POST['time'])) && (isset($_POST['duration
                     echo '<script>window.location = "/addevent.php";</script>';
                 }
                 else {
+									$eventID = $mysqli->insert_id;
                     //$stmt->close();
 										if($soundcloud_id) {
 											$db_data = Array (
-										    'event_id' => $mysqli->insert_id
+										    'event_id' => $eventID
 											);
 											$db->where('id', $soundcloud_id);
 											if($db->update('soundcloud', $db_data)) {
@@ -110,8 +120,9 @@ if((isset($_POST['name'])) && (isset($_POST['time'])) && (isset($_POST['duration
 												echo "failed somehow";
 											}
 										}
+										
                     echo "<script> alert('Event created!');</script>";
-                    echo '<script>window.location = "/event.php?event='.$mysqli->insert_id.'";</script>';
+                    echo '<script>window.location = "/event.php?event='.$eventID.'";</script>';
                 }
         } else {
             echo "<script> alert('Query Error (check database');</script>";
@@ -172,11 +183,20 @@ if((isset($_POST['name'])) && (isset($_POST['time'])) && (isset($_POST['duration
         $stmt->fetch();
         if ($stmt->num_rows == 1) {
             $stmt->close();
-            $prep_stmt = "UPDATE events SET name=?, description=?, start=?, duration=?, location=? WHERE id=?";
+						if($picture) {
+							$uploadedImage = uploadImage('fileEvent', $root.'/assets/userUploadFiles/events/');
+							if($uploadedImage) $pic_url = $uploadedImage;
+						}
+				
+		        //Pic url
+		        if (!(isset($pic_url))) {
+		            $pic_url = "none";
+		        }
+            $prep_stmt = "UPDATE events SET name=?, description=?, start=?, duration=?, location=?, pic_url=? WHERE id=?";
             $stmt = $mysqli->prepare($prep_stmt);
 
             if ($stmt) {
-                $stmt->bind_param('sssisi', $name, $description, $time, $duration, $location, $editID);
+                $stmt->bind_param('sssissi', $name, $description, $time, $duration, $location, $pic_url, $editID);
                 if ($stmt->execute()) {
                     $stmt->close();
 										if($soundcloud_id) {

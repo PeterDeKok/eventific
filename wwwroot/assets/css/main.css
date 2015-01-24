@@ -315,6 +315,9 @@ a:after {
 #headerwrap[name=profile] {
 	min-height: 400px;
 }
+#headerwrap[name=event] {
+	min-height: 400px;
+}
 
 #greywrap {
 	background: #f5f5f5;
@@ -1133,4 +1136,8 @@ input:-moz-placeholder {
 	background: red;
 	float: left;
 	margin-right: 1em;
+}
+
+.eventImage {
+	max-height: 300px;
 }
