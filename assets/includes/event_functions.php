@@ -14,7 +14,7 @@ require_once($root . '/assets/includes/db_connect.php');
 require_once($root . '/assets/includes/functions.php');
 
 function getEventInfo($mysqli, $eventID) {
-    if ($stmt = $mysqli->prepare("SELECT id, name, start, location, description, creator_id, pic_url
+    if ($stmt = $mysqli->prepare("SELECT id, name, start, location, address, zipcode, price, max_people, description, creator_id, pic_url
         FROM events
         WHERE id = ?
         LIMIT 1")) {
@@ -22,7 +22,7 @@ function getEventInfo($mysqli, $eventID) {
         $stmt->execute();    // Execute the prepared query.
         $stmt->store_result();
         // get variables from result.
-        $stmt->bind_result($eventID, $eventName, $eventTime, $eventLocation, $eventDescription, $eventCreatorID, $pic_url);
+        $stmt->bind_result($eventID, $eventName, $eventTime, $eventLocation, $eventAddress, $eventZipcode, $eventPrice, $eventMaxPeople, $eventDescription, $eventCreatorID, $pic_url);
         $stmt->fetch();
         $stmt->close();
         if (!(isset($eventName))) {
@@ -51,6 +51,19 @@ function getEventInfo($mysqli, $eventID) {
 
             $explode = explode(" ", $eventTime);
 
+            if (is_null($eventAddress)) {
+                $eventAddress = "Unknown";
+            }
+            if (is_null($eventZipcode)) {
+                $eventZipcode = "Unknown";
+            }
+            if (is_null($eventMaxPeople)) {
+                $eventMaxPeople = "Unlimited";
+            }
+            if (is_null($eventPrice)) {
+                $eventPrice = "00,00";
+            }            
+
             return array(
                 'id'            => $eventID,
                 'name'          => $eventName,
@@ -60,7 +73,11 @@ function getEventInfo($mysqli, $eventID) {
                 'date'          => $explode[0],
                 'time'          => $explode[1],
                 'creator'       => $eventCreator,
-                'pic_url'       => $pic_url
+                'pic_url'       => $pic_url,
+                'zipcode'       => $eventZipcode,
+                'address'       => $eventAddress,
+                'maxpeople'     => $eventMaxPeople,
+                'price'         => $eventPrice
             );
         }
     } else {

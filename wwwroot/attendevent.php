@@ -166,7 +166,7 @@ if($logged == 'in') {
 					foreach($events['notAttending'] as $key => $value) {
 						echo '<div class="col-md-4 discoverItem" id="discoverItem'.$value['id'].'"><div class="grid mask"><figure class="embed-responsive embed-responsive-16by9">';
 						echo '<a href="/event.php?event='.$value['id'].'"><div class="discoverImage embed-responsive-item"></div></a>';
-						echo '<figcaption><h5>'.$value['name'].'</h5><a href="#myModal" class="btn btn-primary btn-lg">Buy ticket</a></figcaption>';
+						echo '<figcaption><h5>'.$value['name'].'</h5><a data-toggle="modal" href="#payModal'.$value['id'].'" class="btn btn-primary btn-lg">Buy ticket</a></figcaption>';
 						echo '</figure></div><!-- /grid-mask --></div><!-- /col -->';
 						
 						if(isset($value['pic_url']) && (strlen($value['pic_url']) > 4) && ($value['pic_url'] != 'none')) {?>
@@ -174,6 +174,29 @@ if($logged == 'in') {
 						<?php } else { ?>
 							<script>$('#discoverItem<?php echo $value['id']; ?> .discoverImage').css('background-image', 'url("<?php echo '/getImage.php?path=event&image=event_default.jpg'?>")');</script>
 						<?php }
+
+						//MODALS
+						echo "<div class=\"modal fade\" id=\"payModal".$value['id']."\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"payModalLabel\" aria-hidden=\"true\">
+						<div class=\"modal-dialog\">
+							<div class=\"modal-content\">
+								<div class=\"modal-header\">
+									<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>
+									<h4 class=\"modal-title\">Payment dummy</h4>
+								</div>
+								<div class=\"modal-body\">
+									<p><img class=\"img-responsive\" src=\"/assets/img/payments.jpg\" alt=\"\"></p>
+									<p>Here will be the links to iDEAL, PAyPal etc. For now, we just include a \"Payment succes\" and \"Payment fail\" option to give the indication of how they would look like.</p>
+									 <form method=\"post\" name=\"pay_form\" id=\"pay_form\" role=\"form\" class=\"pay_form\">
+									 	<input type=\"button\" class=\"btn btn-succes\" onclick=\"submitForm('/assets/includes/eticket.php?action=succes&event=".$value['id']."')\" value=\"Succes\" />
+									 	<input type=\"button\" class=\"btn btn-danger\" onclick=\"submitForm('/assets/includes/eticket.php?action=fail')\" value=\"Fail\" />
+									 </form>
+								</div>
+								<div class=\"modal-footer\">
+									<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>
+								</div>
+							</div><!-- /.modal-content -->
+						</div><!-- /.modal-dialog -->
+					</div><!-- /.modal -->";
 					}
 				} else {
 					echo '<div class="col-lg-12"><h2>There are no events you can attend right now.</h></div>';
@@ -197,5 +220,12 @@ if($logged == 'in') {
 		<script type="text/javascript" src="assets/js/jquery.easing.1.3.js"></script>
 	  <script type="text/javascript" src="assets/js/smoothscroll.js"></script>
 		<script type="text/javascript" src="assets/js/jquery-func.js"></script>
+		<script type="text/javascript">
+	    function submitForm(action)
+	    {
+	        document.getElementById('pay_form').action = action;
+	        document.getElementById('pay_form').submit();
+	    }
+		</script>
   </body>
 </html>

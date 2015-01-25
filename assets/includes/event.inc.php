@@ -22,7 +22,7 @@ $custom_session->start_session('_s', false);
  
 $error_msg = "";
 
-if((isset($_POST['name'])) && (isset($_POST['time'])) && (isset($_POST['duration'])) && (isset($_POST['location'])) && (isset($_POST['logintype'])) && (isset($_POST['description']))) { 
+if((isset($_POST['name'])) && (isset($_POST['time'])) && (isset($_POST['duration'])) && (isset($_POST['location'])) && (isset($_POST['logintype'])) && (isset($_POST['description'])) && (isset($_POST['address'])) && (isset($_POST['zipcode'])) && (isset($_POST['price'])) && (isset($_POST['amount']))) { 
     //VALIDATE STUFF?
     $name = $_POST['name'];
     $time = $_POST['time'];
@@ -30,6 +30,10 @@ if((isset($_POST['name'])) && (isset($_POST['time'])) && (isset($_POST['duration
     $location = $_POST['location'];
     $logintype = $_POST['logintype'];
     $description = $_POST['description'];
+    $price = $_POST['price'];
+    $address = $_POST['address'];
+    $maxAmount = $_POST['amount'];
+    $zipcode = $_POST['zipcode'];
 		$soundcloud_id = $_POST['soundcloud_id'];
 		$picture = false;
 		if(isset($_FILES['fileEvent'])) {
@@ -99,8 +103,8 @@ if((isset($_POST['name'])) && (isset($_POST['time'])) && (isset($_POST['duration
             $pic_url = "none";
         }
 
-         if ($insert_stmt = $mysqli->prepare("INSERT INTO events (creator_id, name, description, start, duration, location, pic_url) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
-                $insert_stmt->bind_param('isssiss', $creator_id, $name, $description, $time, $duration, $location, $pic_url);
+         if ($insert_stmt = $mysqli->prepare("INSERT INTO events (creator_id, name, description, start, duration, location, address, zipcode, price, max_people, pic_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+                $insert_stmt->bind_param('isssissssss', $creator_id, $name, $description, $time, $duration, $location, $address, $zipcode, $price, $maxAmount, $pic_url);
                 // Execute the prepared query.
                 if (!$insert_stmt->execute()) {
                     echo "<script> alert('Registration failed! ".$name."Try to sign up again');</script>";
@@ -192,11 +196,11 @@ if((isset($_POST['name'])) && (isset($_POST['time'])) && (isset($_POST['duration
 		        if (!(isset($pic_url))) {
 		            $pic_url = "none";
 		        }
-            $prep_stmt = "UPDATE events SET name=?, description=?, start=?, duration=?, location=?, pic_url=? WHERE id=?";
+            $prep_stmt = "UPDATE events SET name=?, description=?, start=?, duration=?, location=?, address=?, zipcode=?, price=?, max_people=?, pic_url=? WHERE id=?";
             $stmt = $mysqli->prepare($prep_stmt);
 
             if ($stmt) {
-                $stmt->bind_param('sssissi', $name, $description, $time, $duration, $location, $pic_url, $editID);
+                $stmt->bind_param('sssissssssi', $name, $description, $time, $duration, $location, $address, $zipcode, $price, $maxAmount, $pic_url, $editID);
                 if ($stmt->execute()) {
                     $stmt->close();
 										if($soundcloud_id) {

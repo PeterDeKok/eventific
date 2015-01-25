@@ -143,25 +143,54 @@ $pdf->AddPage();
 
 if ($eventInfo['pic_url'] == "none") {
 	$eventInfo['pic_url'] = '';
-}
+} /* else {
+    $img = file_get_contents('/getImage.php?path=event&image='.$eventInfo['pic_url']);
+    $pdf->Image('@' . $img);
+} */ 
 
 $html = <<<EOD
 <h1>Your E-Ticket to {$eventInfo['name']}</h1>
-<p>Description: <br />
-{$eventInfo['description']}</p>
-<p>Location: <br />
-{$eventInfo['location']}</p>
-<p>Start: <br />
-{$eventInfo['start']}</p>
-<p>Date: <br />
-{$eventInfo['date']}</p>
-<p>Time: <br />
-{$eventInfo['time']}</p>
-<p>Creator: <br />
-{$eventInfo['creator']}</p>
-<p>Picture: <br />
-<img src="{$eventInfo['pic_url']}" alt=""></p>
-
+<table>
+    <tr>
+        <th>Name</th>
+        <td>{$eventInfo['name']}</td>
+    </tr>
+    <tr>
+        <th>Date</th>
+        <td>{$eventInfo['date']}</td>
+    </tr>
+    <tr>
+        <th>Time</th>
+        <td>{$eventInfo['time']}</td>
+    </tr>
+    <tr>
+        <th>Organisation</th>
+        <td>{$eventInfo['creator']}</td>
+    </tr>
+</table>
+<table>
+    <tr>
+        <th>Location</th>
+        <td>{$eventInfo['location']}</td>
+    </tr>
+    <tr>
+        <th>Address</th>
+        <td>{$eventInfo['address']}</td>
+    </tr>
+    <tr>
+        <th></th>
+        <td>{$eventInfo['zipcode']}</td>
+    </tr>
+    <tr>
+        <th>Price</th>
+        <td>&euro; {$eventInfo['price']}</td>
+    </tr>
+    <tr>
+        <th>Max amount of people</th>
+        <td>{$eventInfo['maxpeople']}</td>
+    </tr>
+</table>
+<p>{$eventInfo['description']}</p>
 EOD;
 
 // Print text using writeHTMLCell()
@@ -182,18 +211,54 @@ $style = array(
 
  // Create a random salt
  $random_salt = hash('sha512', uniqid(mt_rand(1, mt_getrandmax()), true));
-// Create salted userid +eventid
+// Create salted userid + eventid
 $QRcode = hash('sha512', $userID . $eventID . $random_salt);
 
+$prep_stmt = "SELECT user_id, event_id FROM etickets WHERE user_id = ? AND event_id = ?";
+$stmt = $mysqli->prepare($prep_stmt);
+if ($stmt) {
+    $stmt->bind_param('ii', $userID, $eventID);
+    $stmt->execute();
+    $stmt->bind_result($userID, $eventID);
+    $stmt->store_result();
+    if ($stmt->num_rows > 0) {
+        $stmt->close();
+            echo "<script> alert('Already got an e-ticket!');</script>";
+            echo '<script>window.location = "/profile.php";</script>';
+    } else {
+        $stmt->close();
+        if ($insert_stmt = $mysqli->prepare("INSERT INTO attendees (event_id, creator_id) VALUES (?, ?)")) {
+            $insert_stmt->bind_param('ii', $eventID, $userID);
+            // Execute the prepared query.
+            if (!$insert_stmt->execute()) {
+                $insert_stmt->close();
+                echo "<script> alert('Already got an e-ticket');</script>";
+                echo '<script>window.location = "/profile.php";</script>';
+            }
+            else {
+                $insert_stmt->close();
+                if ($insert_stmt = $mysqli->prepare("INSERT INTO etickets (user_id, event_id, code) VALUES (?, ?, ?)")) {
+                    $insert_stmt->bind_param('iis', $userID, $eventID, $QRcode);
+                    // Execute the prepared query.
+                    if (!$insert_stmt->execute()) {
+                        echo "<script> alert('Creating a PDF failed..');</script>";
+                        echo '<script>window.location = "/profile.php";</script>';
+                    }
+                    else {
+                        // QRCODE,Q : QR-CODE Better error correction
+                        $pdf->write2DBarcode($QRcode, 'QRCODE,Q', 140, 200, 50, 50, $style, 'N');
+                        $pdf->Text(140, 195, 'PERSONAL CODE');
 
-// QRCODE,Q : QR-CODE Better error correction
-$pdf->write2DBarcode($QRcode, 'QRCODE,Q', 140, 200, 50, 50, $style, 'N');
-$pdf->Text(140, 195, 'PERSONAL CODE');
-
-// -------------------------------------------------------------------
-//Close and output PDF document
-$pdf->Output('e-ticket.pdf', 'I');
-
-//============================================================+
-// END OF FILE
-//============================================================+
+                        // -------------------------------------------------------------------
+                        //Close and output PDF document
+                        $pdf->Output('e-ticket.pdf', 'I');
+                    }
+                }
+            }
+        }
+    }
+} else {
+    header('Refresh: 2; URL=/index.php');        
+    echo 'Something went wrong.. Going back.';
+}
+?>
