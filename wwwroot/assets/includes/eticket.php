@@ -43,7 +43,7 @@ if (isset($_GET['action'])) {
 		echo "Fail...";
 		exit;
 	} elseif ($_GET['action'] !== "succes") {
-		echo "Fail...";
+		echo "Payment failed..";
 		exit;
 	} elseif (isset($_GET['event']) && is_numeric($_GET['event'])) {
 		$eventID = $_GET['event'];
@@ -140,13 +140,6 @@ $pdf->SetFont('helvetica', '', 11);
 
 // add a page
 $pdf->AddPage();
-
-if ($eventInfo['pic_url'] == "none") {
-	$eventInfo['pic_url'] = '';
-} /* else {
-    $img = file_get_contents('/getImage.php?path=event&image='.$eventInfo['pic_url']);
-    $pdf->Image('@' . $img);
-} */ 
 
 $html = <<<EOD
 <h1>Your E-Ticket to {$eventInfo['name']}</h1>

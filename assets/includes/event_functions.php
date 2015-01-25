@@ -14,7 +14,7 @@ require_once($root . '/assets/includes/db_connect.php');
 require_once($root . '/assets/includes/functions.php');
 
 function getEventInfo($mysqli, $eventID) {
-    if ($stmt = $mysqli->prepare("SELECT id, name, start, location, address, zipcode, price, max_people, description, creator_id, pic_url
+    if ($stmt = $mysqli->prepare("SELECT id, name, start, duration, location, address, zipcode, price, max_people, description, creator_id, pic_url
         FROM events
         WHERE id = ?
         LIMIT 1")) {
@@ -22,7 +22,7 @@ function getEventInfo($mysqli, $eventID) {
         $stmt->execute();    // Execute the prepared query.
         $stmt->store_result();
         // get variables from result.
-        $stmt->bind_result($eventID, $eventName, $eventTime, $eventLocation, $eventAddress, $eventZipcode, $eventPrice, $eventMaxPeople, $eventDescription, $eventCreatorID, $pic_url);
+        $stmt->bind_result($eventID, $eventName, $eventTime, $eventDuration, $eventLocation, $eventAddress, $eventZipcode, $eventPrice, $eventMaxPeople, $eventDescription, $eventCreatorID, $pic_url);
         $stmt->fetch();
         $stmt->close();
         if (!(isset($eventName))) {
@@ -77,7 +77,8 @@ function getEventInfo($mysqli, $eventID) {
                 'zipcode'       => $eventZipcode,
                 'address'       => $eventAddress,
                 'maxpeople'     => $eventMaxPeople,
-                'price'         => $eventPrice
+                'price'         => $eventPrice,
+                'duration'      => $eventDuration
             );
         }
     } else {
@@ -143,6 +144,37 @@ function ownerOfEvent($mysqli, $eventID) {
             $stmt->close();
             return false;
          }
+    }
+}
+
+function eventStatistics($mysqli, $eventID, $time, $date) {
+    $now = new DateTime();
+    $future_date = new DateTime($date . " " . $time);
+    $interval = $future_date->diff($now);
+
+    if ($stmt = $mysqli->prepare("SELECT event_id
+        FROM attendees
+        WHERE event_id = ?")) {
+        $stmt->bind_param('i', $eventID); 
+        $stmt->execute();    // Execute the prepared query.
+        $stmt->store_result();
+        // get variables from result.
+        $stmt->fetch();
+        $row_cnt = $stmt->num_rows();
+        $stmt->close();
+        if (!(isset($row_cnt))) {
+            header("Location: /redirect.php?action=errorSession");
+            exit;
+        } else {
+
+            return array(
+                'attendees'            => $row_cnt,
+                'timeleft'             => $interval->format("%d days, %h hours, %i minutes")
+            );
+        }
+    } else {
+        header("Location: /redirect.php?action=errorSession");
+        exit;
     }
 }
 ?>
