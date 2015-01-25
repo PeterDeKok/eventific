@@ -155,6 +155,8 @@ if($logged == 'in') {
 		</div><!-- /greywrap -->
 		
 		<div class="container discoverItems">
+			<br />
+			<br />
 			<h1 class="centered">DISCOVER EVENTS</h1>
 			<hr />
 			<br />

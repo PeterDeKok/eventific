@@ -200,7 +200,7 @@ if (isset($_GET['event']) && is_numeric($_GET['event'])) {
 						<p><?php echo $eventInfo['description']; ?></p>
 						<a data-toggle="modal" href="#payModal" class="btn btn-primary btn-lg">Buy Tickets</a>
 						<?php if(ownerOfEvent($mysqli, $eventID)) {?>
-						<a href="/addevent.php?edit=<?php echo $eventInfo['id']; ?>" class="btn btn-primary pull-right">Edit (Change this location)</a>
+						<a href="/addevent.php?edit=<?php echo $eventInfo['id']; ?>" class="btn btn-primary pull-right">Edit</a>
 						<?php } // endif?>
 					</div>
 				</div>
