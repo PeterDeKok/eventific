@@ -360,7 +360,11 @@ if($logged == 'in') {
 							'start' 				=> '',
 							'duration' 			=> '',
 							'location' 			=> '',
-							'soundcloud_id' => ''
+							'soundcloud_id' => '',
+							'price'			=> '',
+							'zipcode'		=> '',
+							'maxpeople'		=>	'',
+							'address'		=> ''
 						);
 					}
 				?>
@@ -391,6 +395,34 @@ if($logged == 'in') {
 						<div class="form-group col-xs-12">
 							<label>Location</label>
 							<input type="text" name="location" id="location" class="form-control" placeholder="Location" value="<?php echo $editEventData['location']; ?>" required data-validation-required-message="A location is required" />
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<div class="row control-group">
+						<div class="form-group col-xs-12">
+							<label>Address</label>
+							<input type="text" name="address" id="address" class="form-control" placeholder="Address" value="<?php echo $editEventData['location']; ?>" required data-validation-required-message="A address is required" />
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<div class="row control-group">
+						<div class="form-group col-xs-12">
+							<label>Zipcode</label>
+							<input type="text" name="zipcode" id="zipcode" class="form-control" placeholder="1111AA" value="<?php echo $editEventData['zipcode']; ?>" required data-validation-required-message="A zipcode is required" />
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<div class="row control-group">
+						<div class="form-group col-xs-12">
+							<label>Price</label>
+							<input type="text" name="price" id="price" class="form-control" placeholder="00.00" value="<?php echo $editEventData['price']; ?>" required data-validation-required-message="A price is required" />
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<div class="row control-group">
+						<div class="form-group col-xs-12">
+							<label>Max amount of people</label>
+							<input type="text" name="amount" id="amount" class="form-control" placeholder="1000" value="<?php echo $editEventData['maxpeople']; ?>" required data-validation-required-message="A max amount is required" />
 							<p class="help-block text-danger"></p>
 						</div>
 					</div>

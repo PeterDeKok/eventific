@@ -182,15 +182,19 @@ if (isset($_GET['event']) && is_numeric($_GET['event'])) {
 							</tr>
 							<tr>
 								<th>Address</th>
-								<td>Nog niet in database</td>
+								<td><?php echo $eventInfo['address']; ?></td>
 							</tr>
 							<tr>
 								<th></th>
-								<td>Nog niet in database</td>
+								<td><?php echo $eventInfo['zipcode']; ?></td>
 							</tr>
 							<tr>
 								<th>Price</th>
-								<td>&euro; Nog niet in database</td>
+								<td>&euro; <?php echo $eventInfo['price']; ?></td>
+							</tr>
+							<tr>
+								<th>Max amount of people</th>
+								<td><?php echo $eventInfo['maxpeople']; ?></td>
 							</tr>
 						</table>
 					</div>
@@ -299,7 +303,7 @@ if (isset($_GET['event']) && is_numeric($_GET['event'])) {
   	<script type="text/javascript" src="assets/js/smoothscroll.js"></script>
 	<script type="text/javascript" src="assets/js/jquery-func.js"></script>
 	<script type="text/javascript" src="assets/js/soundcloud.js"></script>
-			<script type="text/javascript">
+	<script type="text/javascript">
     function submitForm(action)
     {
         document.getElementById('pay_form').action = action;
