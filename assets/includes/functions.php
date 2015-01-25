@@ -450,12 +450,12 @@ function getEvents($mysqli) {
           exit();
         }
     } else {
-        $prep_stmt = "SELECT id, name, description, location, start FROM events";
+        $prep_stmt = "SELECT id, name, description, location, start, pic_url FROM events";
         $stmt = $mysqli->prepare($prep_stmt);
 				
         if ($stmt) {
           $stmt->execute();
-          $stmt->bind_result($id, $name, $description, $location, $start);
+          $stmt->bind_result($id, $name, $description, $location, $start, $pic_url);
           $stmt->store_result();
 					
 					
@@ -470,7 +470,8 @@ function getEvents($mysqli) {
 									'name' 				=> $name,
 									'description' => $description,
 									'location' 		=> $location,
-									'start' 			=> $start
+									'start' 			=> $start,
+									'pic_url' 		=> $pic_url
 								);
               } else {
 								// Events not attending by user
@@ -479,7 +480,8 @@ function getEvents($mysqli) {
 									'name' 				=> $name,
 									'description' => $description,
 									'location' 		=> $location,
-									'start' 			=> $start
+									'start' 			=> $start,
+									'pic_url' 		=> $pic_url
 								);
 							}
             }
@@ -726,15 +728,13 @@ function getImage($path, $img) {
  
 	// Make sure the file exists
 	if(!file_exists($imgPath) || !is_file($imgPath)) {
-	    header('HTTP/1.0 404 Not Found');
-	    die('The file does not exist');
+	    return false;
 	}
  
 	// Make sure the file is an image
 	$imgData = getimagesize($imgPath);
 	if(!$imgData) {
-	    header('HTTP/1.0 403 Forbidden');
-	    die('The file you requested is not an image.');
+	    return false;
 	}
  
 	// Set the appropriate content-type

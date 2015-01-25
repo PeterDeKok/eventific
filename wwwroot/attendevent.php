@@ -126,6 +126,7 @@ if($logged == 'in') {
 			<div class="container attendingItems">
 				<h1 class="centered">ATTENDING EVENTS</h1>
 				<hr />
+				<br />
         <div class="row">
 					<?php
 					if($events['attendEvent'] && $events['attendEvent'] > 0){
@@ -134,9 +135,15 @@ if($logged == 'in') {
 						echo '<div class="col-lg-12">Your are already attending event '.$events['attendEvent']*(-1).'.</div>';
 					} else if(is_array($events['attending']) && count($events['attending'])){
 						foreach($events['attending'] as $key => $value) {
-							echo '<div class="col-lg-3 attendingItem"><div><div class="attendingImage"></div>';
+							echo '<div class="col-lg-3 attendingItem" id="attendingItem'.$value['id'].'"><div><div class="attendingImage"></div>';
 							echo '<span><a href="/event.php?event='.$value['id'].'">'.$value['name'].'</a></span>';
 							echo '</div></div>';
+							
+							if(isset($value['pic_url']) && (strlen($value['pic_url']) > 4) && ($value['pic_url'] != 'none')) {?>
+								<script>$('#attendingItem<?php echo $value['id']; ?> .attendingImage').css('background-image', 'url("<?php echo '/getImage.php?path=event&image='.$value['pic_url'];?>")');</script>
+							<?php } else { ?>
+								<script>$('#attendingItem<?php echo $value['id']; ?> .attendingImage').css('background-image', 'url("<?php echo '/getImage.php?path=event&image=event_default.jpg'?>")');</script>
+							<?php }
 						}
 					} else {
 						echo '<div class="col-lg-12"><h2>You are not attending events yet.</h></div>';
@@ -147,16 +154,24 @@ if($logged == 'in') {
 			<br>
 		</div><!-- /greywrap -->
 		
-		<div class="container attendingItems">
+		<div class="container discoverItems">
 			<h1 class="centered">DISCOVER EVENTS</h1>
 			<hr />
+			<br />
       <div class="row">
 				<?php
 				if(is_array($events['notAttending']) && count($events['notAttending'])){
 					foreach($events['notAttending'] as $key => $value) {
-						echo '<div class="col-lg-3 attendingItem"><div class="row"><div class="col-xs-2 attendingImage"></div><div class="col-xs-10 attendingInfo">';
-						echo '<a href="/event.php?event='.$value['id'].'">'.$value['name'].'</a><br />';
-						echo '</div></div></div>';
+						echo '<div class="col-md-4 discoverItem" id="discoverItem'.$value['id'].'"><div class="grid mask"><figure class="embed-responsive embed-responsive-16by9">';
+						echo '<a href="/event.php?event='.$value['id'].'"><div class="discoverImage embed-responsive-item"></div></a>';
+						echo '<figcaption><h5>'.$value['name'].'</h5><a href="#myModal" class="btn btn-primary btn-lg">Buy ticket</a></figcaption>';
+						echo '</figure></div><!-- /grid-mask --></div><!-- /col -->';
+						
+						if(isset($value['pic_url']) && (strlen($value['pic_url']) > 4) && ($value['pic_url'] != 'none')) {?>
+							<script>$('#discoverItem<?php echo $value['id']; ?> .discoverImage').css('background-image', 'url("<?php echo '/getImage.php?path=event&image='.$value['pic_url'];?>")');</script>
+						<?php } else { ?>
+							<script>$('#discoverItem<?php echo $value['id']; ?> .discoverImage').css('background-image', 'url("<?php echo '/getImage.php?path=event&image=event_default.jpg'?>")');</script>
+						<?php }
 					}
 				} else {
 					echo '<div class="col-lg-12"><h2>There are no events you can attend right now.</h></div>';
