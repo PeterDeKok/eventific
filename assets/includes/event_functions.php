@@ -26,7 +26,7 @@ function getEventInfo($mysqli, $eventID) {
         $stmt->fetch();
         $stmt->close();
         if (!(isset($eventName))) {
-            header("Location: /err.php?page=create&err=dbError");
+            header("Location: /redirect.php?action=errorSession");
             exit;
         } else {
             if ($stmt = $mysqli->prepare("SELECT username
@@ -41,12 +41,12 @@ function getEventInfo($mysqli, $eventID) {
                 $stmt->fetch();
                 $stmt->close();
                 if (!(isset($eventCreator))) {
-                    header("Location: /err.php?page=create&err=dbError");
+                    header("Location: /redirect.php?action=errorSession");
                     exit;
                 } 
             } else {
-                header("Location: /err.php?page=create&err=dbError");
-                exit;
+                    header("Location: /redirect.php?action=errorSession");
+                    exit;
             }
 
             $explode = explode(" ", $eventTime);
@@ -64,7 +64,7 @@ function getEventInfo($mysqli, $eventID) {
             );
         }
     } else {
-        header("Location: /err.php?page=create&err=dbError");
+        header("Location: /redirect.php?action=errorSession");
         exit;
     }
 }

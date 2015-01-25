@@ -17,7 +17,6 @@ require_once($root . '/assets/includes/db_connect.php');
 require_once($root . '/assets/includes/functions.php');
 require_once($root . '/assets/includes/event_functions.php');
 require_once($root . '/assets/includes/register.inc.php');
-
 // Prepare Session
 $custom_session = new session(SESS_HOST, SESS_USER, SESS_PASSWORD, SESS_DATABASE);
 // Start Session: true for https, false for http !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -199,7 +198,7 @@ if (isset($_GET['event']) && is_numeric($_GET['event'])) {
 				<div class="row">
 					<div class="col-lg-offset-1 col-lg-11">
 						<p><?php echo $eventInfo['description']; ?></p>
-						<a href="#" class="btn btn-primary">Buy tickets</a>
+						<a data-toggle="modal" href="#payModal" class="btn btn-primary btn-lg">Buy Tickets</a>
 						<?php if(ownerOfEvent($mysqli, $eventID)) {?>
 						<a href="/addevent.php?edit=<?php echo $eventInfo['id']; ?>" class="btn btn-primary pull-right">Edit (Change this location)</a>
 						<?php } // endif?>
@@ -268,6 +267,28 @@ if (isset($_GET['event']) && is_numeric($_GET['event'])) {
 						<span class="icon icon-facebook"></span> <a href="#"> PROJECTNAME </a> <br/>
 			</div>
 		</div>
+
+		<div class="modal fade" id="payModal" tabindex="-1" role="dialog" aria-labelledby="payModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Payment dummy</h4>
+					</div>
+					<div class="modal-body">
+						<p><img class="img-responsive" src="/assets/img/payments.jpg" alt=""></p>
+						<p>Here will be the links to iDEAL, PAyPal etc. For now, we just include a "Payment succes" and "Payment fail" option to give the indication of how they would look like.</p>
+						 <form method="post" name="pay_form" id="pay_form" role="form" class="pay_form">
+						 	<input type="button" class="btn btn-succes" onclick="submitForm('/assets/includes/eticket.php?action=succes&event=<?php echo $eventInfo['id']; ?>')" value="Succes" />
+						 	<input type="button" class="btn btn-danger" onclick="submitForm('/assets/includes/eticket.php?action=fail')" value="Fail" />
+						 </form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
   <!-- Bootstrap core JavaScript
   ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->	
@@ -275,8 +296,15 @@ if (isset($_GET['event']) && is_numeric($_GET['event'])) {
 	<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="assets/js/retina.js"></script>
 	<script type="text/javascript" src="assets/js/jquery.easing.1.3.js"></script>
-  <script type="text/javascript" src="assets/js/smoothscroll.js"></script>
+  	<script type="text/javascript" src="assets/js/smoothscroll.js"></script>
 	<script type="text/javascript" src="assets/js/jquery-func.js"></script>
 	<script type="text/javascript" src="assets/js/soundcloud.js"></script>
+			<script type="text/javascript">
+    function submitForm(action)
+    {
+        document.getElementById('pay_form').action = action;
+        document.getElementById('pay_form').submit();
+    }
+	</script>
   </body>
 </html>
