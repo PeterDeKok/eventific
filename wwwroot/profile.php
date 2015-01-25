@@ -150,15 +150,54 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 			</div>
 			<br>
 		</div><!-- /greywrap -->
+		
+		<div class="container" id="profile" name="services">
+			<h1 class="centered">Profile</h1>
+			<hr />
+			<br />
+      <div class="row">
+				<div class="col-lg-offset-3 col-lg-3">
+					<div id="profilePicture"></div>
+					<?php if(isset($_SESSION['pic_url']) && (strlen($_SESSION['pic_url']) > 4) && ($_SESSION['pic_url'] != 'none')) { ?>
+						<script>$('#profilePicture').css('background-image', 'url("<?php echo '/getImage.php?path=user&image='.$_SESSION['pic_url'];?>")');</script>
+					<?php } else { ?>
+						<script>$('#profilePicture').css('background-image', 'url("<?php echo '/getImage.php?path=user&image=user_default.jpg'?>")');</script>
+					<?php	}?>
+				</div>
+				<div class="col-lg-6">
+					<table>
+						<tr>
+							<th>Username</th>
+							<td><?php echo $_SESSION['username']; ?></td>
+						</tr>
+						<tr>
+							<th>Email</th>
+							<td><?php echo $_SESSION['email']; ?></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div> <!-- /container	-->
+		
+		<!-- ==== SECTION DIVIDER2 -->
+		<section class="section-divider textdivider divider2">
+			<div class="container">
+			</div><!-- container -->
+		</section><!-- section -->
+		
 		<div class="container" id="events" name="services">
 			<div class="row">
 				<br>
 				<div class="col-lg-6">
 					<h2 class="centered">Attended events</h2>
+					<hr />
+					<br />
 					<?php echo getAttendedEvents($mysqli); ?>
 				</div><!-- col -->
 				<div class="col-lg-6">
 					<h2 class="centered">Hosted events</h2>
+					<hr />
+					<br />
 					<?php echo getHostedEvents($mysqli); ?>
 				</div><!-- col -->
 			</div><!-- row -->

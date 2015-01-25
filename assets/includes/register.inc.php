@@ -33,6 +33,10 @@ if (isset($_POST['username'], $_POST['email'], $_POST['p'])) {
         // If it's not, something really odd has happened
         $error_msg .= '<p class="error">Invalid password configuration.</p>';
     }
+		$picture = false;
+		if(isset($_FILES['fileUser'])) {
+			$picture = $_FILES['fileUser'];
+		}
  
     // Username validity and password validity have been checked client side.
     // This should should be adequate as nobody gains any advantage from
@@ -85,6 +89,15 @@ if (isset($_POST['username'], $_POST['email'], $_POST['p'])) {
     // perform the operation.
  
     if (empty($error_msg)) {
+			if($picture) {
+				$uploadedImage = uploadImage('fileUser', $root.'/assets/userUploadFiles/users/');
+				if($uploadedImage) $pic_url = $uploadedImage;
+			}
+			
+      //Pic url
+      if (!(isset($pic_url))) {
+          $pic_url = "none";
+      }
         // Create a random salt
         $random_salt = hash('sha512', uniqid(mt_rand(1, mt_getrandmax()), true));
  
@@ -92,8 +105,8 @@ if (isset($_POST['username'], $_POST['email'], $_POST['p'])) {
         $password = hash('sha512', $password . $random_salt);
  
         // Insert the new user into the database 
-        if ($insert_stmt = $mysqli->prepare("INSERT INTO members (username, email, password, salt) VALUES (?, ?, ?, ?)")) {
-            $insert_stmt->bind_param('ssss', $username, $email, $password, $random_salt);
+        if ($insert_stmt = $mysqli->prepare("INSERT INTO members (username, email, password, salt, pic_url) VALUES (?, ?, ?, ?, ?)")) {
+            $insert_stmt->bind_param('sssss', $username, $email, $password, $random_salt, $pic_url);
             // Execute the prepared query.
             if (!$insert_stmt->execute()) {
 				echo "<script> alert('Registration failed! ".$username . $password . $email . $random_salt."Try to sign up again');</script>";

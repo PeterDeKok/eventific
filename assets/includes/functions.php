@@ -111,7 +111,7 @@ function login_check($mysqli) {
         // Get the user-agent string of the user.
         $user_browser = $_SERVER['HTTP_USER_AGENT'];
  
-        if ($stmt = $mysqli->prepare("SELECT password 
+        if ($stmt = $mysqli->prepare("SELECT password, email, pic_url 
                                       FROM members 
                                       WHERE id = ? LIMIT 1")) {
             // Bind "$user_id" to parameter. 
@@ -121,12 +121,14 @@ function login_check($mysqli) {
  
             if ($stmt->num_rows == 1) {
                 // If the user exists get variables from result.
-                $stmt->bind_result($password);
+                $stmt->bind_result($password, $email, $pic_url);
                 $stmt->fetch();
                 $login_check = hash('sha512', $password . $user_browser);
  
                 if ($login_check == $login_string) {
                     // Logged In!!!! 
+										$_SESSION['pic_url'] = $pic_url;
+										$_SESSION['email'] = $email;
                     return true;
                 } else {
                     // Not logged in 
@@ -674,7 +676,11 @@ function hostedEvent($mysqli, $eventID, $userID) {
 }
 
 function uploadImage($formname, $upload_dir) {
-	$newFileName = 'event_'.md5(time()) . '.jpg';
+	$prefix = 'delete_';
+	if($formname == 'fileUser') $prefix = 'user_';
+	if($formname == 'fileEvent') $prefix = 'event_';
+	
+	$newFileName = $prefix.md5(time()) . '.jpg';
 	$i = 0;
 	//Сheck that we have a file
 	if((!empty($_FILES[$formname])) && ($_FILES[$formname]['error'] == 0)) {

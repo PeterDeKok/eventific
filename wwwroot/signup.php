@@ -46,11 +46,11 @@ if (login_check($mysqli) == true) {
 
     <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
-    
+    <script>var DEBUG = true;</script>
     <script src="assets/js/jquery.min.js"></script>
-	<script type="text/javascript" src="assets/js/modernizr.custom.js"></script>
-	<script type="text/javascript" src="assets/js/forms.js"></script>
-	<script type="text/javascript" src="assets/js/sha512.js"></script>
+		<script type="text/javascript" src="assets/js/modernizr.custom.js"></script>
+		<script type="text/javascript" src="assets/js/forms.js"></script>
+		<script type="text/javascript" src="assets/js/sha512.js"></script>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="assets/js/html5shiv.js"></script>
@@ -84,76 +84,100 @@ if (login_check($mysqli) == true) {
     </div>
     </div>  
 	
-	<div class="container" id="about" name="about">
-			<div class="row white">
-	<h1 class="centered">REGISTER WITH US</h1>
-			<hr>
-			</div>    
-		      <?php
-		        if (!empty($error_msg)) {
-		            echo $error_msg;
-		        }
+	<div class="container">
+		<div class="row white">
+			<br /><br />
+			<h1 class="centered">SIGN UP FOR AN ACCOUNT</h1>
+			<hr />
+		</div>
+	</div>
+	
+	<div class="container" name="signup">	
+	  <div class="row">
+	    <div class="col-lg-offset-2 col-lg-8 text-center">
+				<?php
+		      if (!empty($error_msg)) {
+		          echo $error_msg;
+		      }
+				?>
+			</div>
+			<div class="col-lg-offset-2 col-lg-8 text-center">
+				<?php if (!($logged=='in')) { ?>
+				
+	      <form action="<?php echo esc_url($_SERVER['PHP_SELF']); ?>" method="post" name="registration_form" id="signup" role="form" class="eventform" enctype="multipart/form-data" validate>
+					<div class="row control-group">
+						<div class="form-group col-xs-12">
+							<label>Username</label>
+							<input type="text" name="username" id="username" class="form-control" placeholder="Username" required data-validation-required-message="A username is required" />
+							<p class="help-block">Usernames may only contain upper and lower case letters, digits and underscores.</p>
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<div class="row control-group">
+						<div class="form-group col-xs-12">
+							<label>Email</label>
+							<input type="text" name="email" id="email" class="form-control" placeholder="Email" required data-validation-required-message="An email address is required" />
+							<p class="help-block">Email addresses must have a valid email format.</p>
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<div class="row control-group">
+						<div class="form-group col-xs-12">
+							<label>Password</label>
+							<input type="password" name="password" id="password" class="form-control" placeholder="Password" required data-validation-required-message="A password is required" />
+							<p class="help-block">Passwords must be at least 6 characters long and contain at least an uppercase letter, a lowercase letter and a digit.</p>
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<div class="row control-group">
+						<div class="form-group col-xs-12">
+							<label>Confirm password</label>
+							<input type="password" name="confirmpwd" id="confirmpwd" class="form-control" placeholder="Conform password" required data-validation-required-message="A password is required" />
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<div class="row control-group">
+						<div class="form-group col-xs-12">
+							<label>Profile picture</label>
+							<input type="file" name="fileUser" id="fileUser" class="form-control" placeholder="Picture" />
+							<p class="help-block">A profile picture needs to be smaller then 2Mb. We recommend a square image.</p>
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+	        <br>
+	        <div id="success"></div>
+	        <div class="row">
+	          <div class="form-group col-xs-12 submit">
+	            <button type="submit" class="btn btn-success btn-lg">Sign Up</button>
+	          </div>
+	        </div>
+	    	</form>
+				<br />
+        <p>Return to the <a href="/index.php">Home page</a>.</p>
+	    </div>
+	  </div>
 
-		        if (!($logged=='in')) {
-		        ?>
-				    <form action="<?php echo esc_url($_SERVER['PHP_SELF']); ?>" 
-                        method="post" 
-                        name="registration_form"
-                        id="signup">
-		        <ul>
-		            <li>Usernames may contain only digits, upper and lower case letters and underscores</li>
-		            <li>Emails must have a valid email format</li>
-		            <li>Passwords must be at least 6 characters long</li>
-		            <li>Passwords must contain
-		                <ul>
-		                    <li>At least one upper case letter (A..Z)</li>
-		                    <li>At least one lower case letter (a..z)</li>
-		                    <li>At least one number (0..9)</li>
-		                </ul>
-		            </li>
-		            <li>Your password and confirmation must match exactly</li>
-		        </ul>		
-                    <div class="inputs">
-                        <table>
-                        <tr><td><input type='text' name='username' id='username' placeholder="Username"/></td></tr>
-                        <tr><td><input type="text" name="email" id="email" placeholder="Email"/></td></tr>
-                        <tr><td><input type="password"
-                                     name="password" 
-                                     id="password" placeholder="Password"/><br></td></tr>
-                        <tr><td><input type="password" 
-                                             name="confirmpwd" 
-                                             id="confirmpwd" placeholder="Password"/></td></tr>
-                         <tr><td>                     
-                         <input type="button" 
-                                           value="Register" 
-                                           onclick="return regformhash(this.form,
-                                                           this.form.username,
-                                                           this.form.email,
-                                                           this.form.password,
-                                                           this.form.confirmpwd);" /> </td></tr>
-
-            		      </table>
-                    </div>
-                    <br />
-                    <p>Return to the <a href="index.php">Home page</a>.</p>
-                  </form>
-                    </div>
-            			     <?php 
-            			    	} else {
-            			    		header('location:index.php');
-            			    	}
-            			    	?>
-            		<div id="footerwrap">
-            			<div class="container">
-            						<span class="icon icon-home"></span> TU Eindhoven<br/>
-            						<span class="icon icon-phone"></span> +31 111 111 111 <br/>
-            						<span class="icon icon-mobile"></span> +31 101 101 101 <br/>
-            						<h4></a>Eventific - Copyright 2014  ©</h4>
-            						<span class="icon icon-envelop"></span> <a href="#"> info@eventific.com</a> <br/>
-            						<span class="icon icon-twitter"></span> <a href="#"> @eventific </a> <br/>
-            						<span class="icon icon-facebook"></span> <a href="#"> Eventific </a> <br/>
-            			</div>
-            		</div>
+	</div><!-- /Container -->
+										
+										
+										
+										
+	<?php 
+		} else {
+			header('location:index.php');
+		}
+	?>
+	<div id="footerwrap">
+		<div class="container">
+					<span class="icon icon-home"></span> TU Eindhoven<br/>
+					<span class="icon icon-phone"></span> +31 111 111 111 <br/>
+					<span class="icon icon-mobile"></span> +31 101 101 101 <br/>
+					<h4></a>Eventific - Copyright 2014  ©</h4>
+					<span class="icon icon-envelop"></span> <a href="#"> info@eventific.com</a> <br/>
+					<span class="icon icon-twitter"></span> <a href="#"> @eventific </a> <br/>
+					<span class="icon icon-facebook"></span> <a href="#"> Eventific </a> <br/>
+		</div>
+	</div>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
