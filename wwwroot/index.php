@@ -94,9 +94,8 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
           <ul class="nav navbar-nav">
             <li><a href="index.php#home" class="smoothScroll">Home</a></li>
 			<li><a href="index.php#about" class="smoothScroll"> About Us</a></li>
-			<li><a href="index.php#services" class="smoothScroll"> E-ticketing</a></li>
+			<li><a href="index.php#portfolio" class="smoothScroll"> Features</a></li>
 			<li><a href="index.php#team" class="smoothScroll"> Team</a></li>
-			<li><a href="index.php#blog" class="smoothScroll"> Stories</a></li>
 			<li><a href="index.php#contact" class="smoothScroll"> Contact</a></li>
 			<li role="presentation" class="divider"></li>
 		  <?php
@@ -141,31 +140,8 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 					<p style="font-size:1.1em">event management.</p><br>
 	  		</header>
 	    </div><!-- /headerwrap -->
-
-		<!-- ==== GREYWRAP ==== -->
-		<div id="greywrap">
-			<div class="row">
-				<div class="col-lg-4 callout">
-					<span class="icon icon-stack"></span>
-					<h2>Easy event management</h2>
-					<p>Everything you need for full planning and control.</p>
-				</div><!-- col-lg-4 -->
-
-				<div class="col-lg-4 callout">
-					<span style="content:url(/assets/img/Ticket-icon.png);"></span>
-					<h2>E-ticket sale and purchase</h2>
-					<p>Creation and trade of e-tickets has never been easier.</p>
-				</div><!-- col-lg-4 -->
-
-				<div class="col-lg-4 callout">
-					<span class="icon icon-mobile"></span>
-					<h2>Scalable</h2>
-					<p>Useable on all devices.</p>
-				</div><!-- col-lg-4 -->
-			</div><!-- row -->
-		</div><!-- greywrap -->
-
-		<!-- ==== ABOUT ==== -->
+		
+		<!-- ==== ABOUT ==== -->		
 		<div class="container" id="about" name="about">
 			<div class="row white">
 			<br>
@@ -177,39 +153,38 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 				</div><!-- col-lg-6 -->
 
 				<div class="col-lg-6">
-					<p>The platform allows for event managers to create e-tickets, track sales, check attendance, list requirements, plan dates and market their event. </p>
-				</div><!-- col-lg-6 -->
-
-				<div class="col-lg-6">
-					<p>Users only looking for events will find Eventific to contain all the needed information on any event. They can search for events and buy their e-tickets on the platform. </p>
+					<p>The platform allows for event managers to create e-tickets, track sales, check attendance, list requirements, plan dates and market their event. <br>
+						Users only looking for events will find Eventific to contain all the needed information on any event. They can search for events and buy their e-tickets on the platform. </p>
 				</div><!-- col-lg-6 -->
 			</div><!-- row -->
-		</div><!-- container -->
+			<!-- ==== GREYWRAP ==== -->
+		<div id="greywrap">
+			<div class="row">	
+				<div class="col-lg-4 callout">
+					<span class="icon icon-stack"></span>
+					<h2>Easy event management</h2>
+					<p>Everything you need for full planning and control.</p>
+				</div><!-- col-lg-4 -->
+				<div class="col-lg-4 callout">
+					<span class="icon icon-ticket"></span>
+					<h2>E-ticket sale and purchase</h2>
+					<p>Creation and trade of e-tickets has never been easier.</p>
+				</div><!-- col-lg-4 -->
 
-		<!-- ==== SECTION DIVIDER1 -->
-		<section class="section-divider textdivider divider1">
-			<div class="container">
-			</div><!-- container -->
-		</section><!-- section -->
-
-
-		<!-- ==== SERVICES ==== -->
-		<div class="container" id="services" name="services">
-			<br>
-
-			<div class="row">
-				<h2 class="centered">USER-FIRST ORIENTED THINKING</h2>
-				<hr>
-				<br>
-				<div class="col-lg-offset-2 col-lg-8">
-					<img class="img-responsive" src="http://placehold.it/845x480" alt="">
-				</div><!-- col -->
+				<div class="col-lg-4 callout">
+					<span class="icon icon-mobile"></span>
+					<h2>Scalable</h2>
+					<p>Useable on all devices.</p>
+				</div><!-- col-lg-4 -->
 			</div><!-- row -->
+		</div><!-- greywrap -->
+		
 		</div><!-- container -->
 
 		<!-- ==== PORTFOLIO ==== -->
 		<div class="container" id="portfolio" name="portfolio">
 		<br>
+		
 			<div class="row">
 				<br>
 				<h1 class="centered">FEATURES</h1>
@@ -217,136 +192,94 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 				<br>
 				<br>
 			</div><!-- /row -->
+
 			<div class="container">
 			<div class="row">
-
-
-						 <!-- MODAL SHOW THE PORTFOLIO IMAGE. In this demo, all links point to this modal. You should create
-						      a modal for each of your projects. -->
-
-						  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-						    <div class="modal-dialog">
-						      <div class="modal-content">
-						        <div class="modal-header">
-						          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						          <h4 class="modal-title">Project Title</h4>
-						        </div>
-						        <div class="modal-body">
-						          <p><img class="img-responsive" src="http://placehold.it/600x400" alt=""></p>
-						          <p>This project was crafted for Some Name corp. Detail here a little about your job requirements and the tools used. Tell about the challenges faced and what you and your team did to solve it.</p>
-						          <p><b><a href="#">Visit Site</a></b></p>
-						        </div>
-						        <div class="modal-footer">
-						          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						        </div>
-						      </div><!-- /.modal-content -->
-						    </div><!-- /.modal-dialog -->
-						  </div><!-- /.modal -->
-
-							<!-- PORTFOLIO IMAGE 1 -->
-				<div class="col-md-4 ">
-			    	<div class="grid mask">
-						<figure>
-							<img class="img-responsive" src="http://placehold.it/600x400" alt="">
-							<figcaption>
-								<h5>DASHBOARD</h5>
-								<a data-toggle="modal" href="#myModal" class="btn btn-primary btn-lg">Take a Look</a>
-							</figcaption><!-- /figcaption -->
-						</figure><!-- /figure -->
-			    	</div><!-- /grid-mask -->
-				</div><!-- /col -->
-
-
 				<!-- PORTFOLIO IMAGE 2 -->
 				<div class="col-md-4">
 			    	<div class="grid mask">
 						<figure>
-							<img class="img-responsive" src="http://placehold.it/600x400" alt="">
+							<img class="img-responsive" src="/assets/img/fb.jpg" alt="">
 							<figcaption>
-								<h5>UI DESIGN</h5>
-								<a data-toggle="modal" href="#myModal" class="btn btn-primary btn-lg">Take a Look</a>
+								<h5>Facebook app</h5>
 							</figcaption><!-- /figcaption -->
 						</figure><!-- /figure -->
 			    	</div><!-- /grid-mask -->
 				</div><!-- /col -->
-
+				<div class="col-md-4 ">
+			    	<div class="grid mask">
+						<figure>
+							<img class="img-responsive" src="/assets/img/sound.jpg	" alt="">
+							<figcaption>
+								<h5>Connect with Soundcloud</h5>
+							</figcaption><!-- /figcaption -->
+						</figure><!-- /figure -->
+			    	</div><!-- /grid-mask -->
+				</div><!-- /col -->
 				<!-- PORTFOLIO IMAGE 3 -->
 				<div class="col-md-4">
 			    	<div class="grid mask">
 						<figure>
-							<img class="img-responsive" src="http://placehold.it/600x400" alt="">
+							<img class="img-responsive" src="/assets/img/secure.jpg" alt="">
 							<figcaption>
-								<h5>ANDROID PAGE</h5>
-								<a data-toggle="modal" href="#myModal" class="btn btn-primary btn-lg">Take a Look</a>
+								<h5>Secure ticketing system</h5>
 							</figcaption><!-- /figcaption -->
 						</figure><!-- /figure -->
 			    	</div><!-- /grid-mask -->
 				</div><!-- /col -->
 			</div><!-- /row -->
-
-				<!-- PORTFOLIO IMAGE 4 -->
+			<br><br>
+			<div id="greywrap">
+		
 			<div class="row">
-				<div class="col-md-4 ">
-			    	<div class="grid mask">
-						<figure>
-							<img class="img-responsive" src="http://placehold.it/600x400" alt="">
-							<figcaption>
-								<h5>PROFILE</h5>
-								<a data-toggle="modal" href="#myModal" class="btn btn-primary btn-lg">Take a Look</a>
-							</figcaption><!-- /figcaption -->
-						</figure><!-- /figure -->
-			    	</div><!-- /grid-mask -->
-				</div><!-- /col -->
-
-				<!-- PORTFOLIO IMAGE 5 -->
-				<div class="col-md-4">
-			    	<div class="grid mask">
-						<figure>
-							<img class="img-responsive" src="http://placehold.it/600x400" alt="">
-							<figcaption>
-								<h5>FACEBOOK APP</h5>
-								<a data-toggle="modal" href="#myModal" class="btn btn-primary btn-lg">Take a Look</a>
-							</figcaption><!-- /figcaption -->
-						</figure><!-- /figure -->
-			    	</div><!-- /grid-mask -->
-				</div><!-- /col -->
-
-				<!-- PORTFOLIO IMAGE 6 -->
-				<div class="col-md-4">
-			    	<div class="grid mask">
-						<figure>
-							<img class="img-responsive" src="http://placehold.it/600x400" alt="">
-							<figcaption>
-								<h5>PHONE MOCKUP</h5>
-								<a data-toggle="modal" href="#myModal" class="btn btn-primary btn-lg">Take a Look</a>
-							</figcaption><!-- /figcaption -->
-						</figure><!-- /figure -->
-			    	</div><!-- /grid-mask -->
-				</div><!-- /col -->
-			</div><!-- /row -->
+				<div class="col-lg-4 callout">
+					<a href="/addevent.php"><span class="icon icon-plus"></span></a>
+					<h2 class="text-center">Create an event</h2>
+				</div>
+				<?php
+					if ((!isset($_SESSION['FB']))) { 
+				?>
+				<div class="col-lg-4 callout">
+					<a href="/loginFB.php"><span class="icon icon-facebook"></span></a>
+					<h2 class="text-center">Link a Facebook account</h2>
+				</div><!-- col-lg-4 -->	
+				<?php
+					} else {
+				?>
+				<div class="col-lg-4 callout">
+					<h2 class="text-center">Facebook account</h2>
+					<p>Name: <?php echo $_SESSION['username']; ?><br />
+					ID: <?php echo $_SESSION['id']; ?><br />
+					<?php
+					$friends = $_SESSION['user_friends'];
+					echo "Friends: <br />";
+					foreach ($friends as $i => $row) {
+                        echo $row['name'];
+                    }
+					?></p>
+				</div><!-- col-lg-4 -->	
+				<?php
+					}
+				?>
+				<div class="col-lg-4 callout">
+					<a href="attendevent.php"><span class="icon icon-search"></span></a>
+					<h2 class="text-center">Search events</h2>
+				</div><!-- col-lg-4 -->	
+			</div>
 			<br>
-			<br>
-		</div><!-- /row -->
+		</div><!-- /greywrap -->
+		
 	</div><!-- /container -->
-
-
-		<!-- ==== SECTION DIVIDER2 -->
-		<section class="section-divider textdivider divider2">
-			<div class="container">
-			</div><!-- container -->
-		</section><!-- section -->
 
 		<!-- ==== TEAM MEMBERS ==== -->
 		<div class="container" id="team" name="team">
 		<br>
 			<div class="row white centered">
-				<h1 class="centered">OUR AWESOME TEAM</h1>
+				<h1 class="centered">OUR TEAM</h1>
 				<hr>
 				<br>
 				<br>
 				<div class="col-lg-3 centered">
-					<img class="img img-circle" src="http://placehold.it/150x150" height="120px" width="120px" alt="">
-					<br>
 					<h4><b>Nick Braat</b></h4>
 					<a href="#" class="icon icon-twitter"></a>
 					<a href="#" class="icon icon-facebook"></a>
@@ -354,8 +287,6 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 				</div><!-- col-lg-3 -->
 
 				<div class="col-lg-3 centered">
-					<img class="img img-circle" src="http://placehold.it/150x150" height="120px" width="120px" alt="">
-					<br>
 					<h4><b>Sanir Pasalic</b></h4>
 					<a href="#" class="icon icon-twitter"></a>
 					<a href="#" class="icon icon-facebook"></a>
@@ -363,8 +294,6 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 				</div><!-- col-lg-3 -->
 
 				<div class="col-lg-3 centered">
-					<img class="img img-circle" src="http://placehold.it/150x150" height="120px" width="120px" alt="">
-					<br>
 					<h4><b>Peter de Kok</b></h4>
 					<a href="#" class="icon icon-twitter"></a>
 					<a href="#" class="icon icon-facebook"></a>
@@ -372,8 +301,6 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 				</div><!-- col-lg-3 -->
 
 				<div class="col-lg-3 centered">
-					<img class="img img-circle" src="http://placehold.it/150x150" height="120px" width="120px" alt="">
-					<br>
 					<h4><b>Yashar Abbasov</b></h4>
 					<a href="#" class="icon icon-twitter"></a>
 					<a href="#" class="icon icon-facebook"></a>
@@ -382,93 +309,13 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 
 			</div><!-- row -->
 		</div><!-- container -->
-
-		<!-- ==== GREYWRAP ==== -->
-		<div id="greywrap">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-8 centered">
-						<img class="img-responsive" src="http://placehold.it/625x375"  align="">
-					</div>
-					<div class="col-lg-4">
-						<h2>Sponsor Us!</h2>
-						<p>Do you want to be part of it?</p>
-						<p><a href="#contact" class="btn btn-success">Contact Us</a></p>
-					</div>
-				</div><!-- row -->
-			</div>
-			<br>
-			<br>
-		</div><!-- greywrap -->
-
-		<!-- ==== SECTION DIVIDER3 -->
-		<section class="section-divider textdivider divider3">
-			<div class="container">
-			</div><!-- container -->
-		</section><!-- section -->
-
-		<!-- ==== BLOG ==== -->
-		<div class="container" id="blog" name="blog">
-		<br>
-			<div class="row">
-				<br>
-				<h1 class="centered">SUCCESS STORIES</h1>
-				<hr>
-				<br>
-				<br>
-			</div><!-- /row -->
-
-			<div class="row">
-				<div class="col-lg-6 blog-bg">
-					<div class="col-lg-4 centered">
-					<br>
-						<p><img class="img img-circle" src="http://placehold.it/150x150" width="60px" height="60px"></p>
-						<h4>John </h4>
-						<h5>Published date/date/date</h5>
-					</div>
-					<div class="col-lg-8 blog-content">
-						<h2>Story 1</h2>
-						<p>A Beautiful Story</p>
-						<p><a href="#" class="icon icon-link"> Read More</a></p>
-						<br>
-					</div>
-				</div><!-- /col -->
-
-				<div class="col-lg-6 blog-bg">
-					<div class="col-lg-4 centered">
-					<br>
-						<p><img class="img img-circle" src="http://placehold.it/150x150" width="60px" height="60px"></p>
-						<h4>Jim</h4>
-						<h5>Published date/date/date</h5>
-					</div>
-					<div class="col-lg-8 blog-content">
-						<h2>Story 2</h2>
-						<p>A Beautiful Story</p>
-						<p><a href="#" class="icon icon-link"> Read More</a></p>
-						<br>
-					</div>
-				</div><!-- /col -->
-			</div><!-- /row -->
-			<br>
-			<br>
-		</div><!-- /container -->
-
-
-		<!-- ==== SECTION DIVIDER6 ==== -->
-		<section class="section-divider textdivider divider6">
-			<div class="container">
-			</div><!-- container -->
-		</section><!-- section -->
-
+		<br><br>
 		<div class="container" id="contact" name="contact">
+			<h1 class="centered">CONTACT US</h1>
+			<hr>
+			<br><br>
 		<div class="col-lg-8">
 			 <div class="container">
-			            <div class="row">
-			                <div class="col-lg-12 text-center">
-			                    <h2>Contact</h2>
-			                    <hr class="star-primary">
-			                </div>
-			            </div>
 			            <div class="row">
 			                <div class="col-lg-8 col-lg-offset-2">
 			                    <form name="sentMessage" id="contactForm" validate>
@@ -514,17 +361,12 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 				</div><!-- col -->
 		</div><!-- container -->
 
-		<div id="footerwrap">
-			<div class="container">
-						<span class="icon icon-home"></span> TU Eindhoven<br/>
-						<span class="icon icon-phone"></span> +31 111 111 111 <br/>
-						<span class="icon icon-mobile"></span> +31 101 101 101 <br/>
-						<h4></a>PROJECTNAME - Copyright 2014  ©</h4>
-						<span class="icon icon-envelop"></span> <a href="#"> project@name.com</a> <br/>
-						<span class="icon icon-twitter"></span> <a href="#"> @projectname </a> <br/>
-						<span class="icon icon-facebook"></span> <a href="#"> PROJECTNAME </a> <br/>
-			</div>
-		</div>
+	<div id="footerwrap">
+    <div class="container">
+      <span class="icon icon-home"></span> TU Eindhoven<br/>
+      <h4></a>Eventific - Copyright 2014  ©</h4>
+    </div>
+  </div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
