@@ -188,7 +188,7 @@ if($logged == 'in') {
 									<p>Here will be the links to iDEAL, PAyPal etc. For now, we just include a \"Payment succes\" and \"Payment fail\" option to give the indication of how they would look like.</p>
 									 <form method=\"post\" name=\"pay_form\" id=\"pay_form\" role=\"form\" class=\"pay_form\">
 									 	<input type=\"button\" class=\"btn btn-succes\" onclick=\"submitForm('/assets/includes/eticket.php?action=succes&event=".$value['id']."')\" value=\"Succes\" />
-									 	<input type=\"button\" class=\"btn btn-danger\" onclick=\"submitForm('/assets/includes/eticket.php?action=fail')\" value=\"Fail\" />
+									 	<input type=\"button\" class=\"btn btn-danger\" onclick=\"showFailModal()\" value=\"Fail\" />
 									 </form>
 								</div>
 								<div class=\"modal-footer\">
@@ -205,7 +205,23 @@ if($logged == 'in') {
       </div>
 			<br>
 		</div>
-
+		<div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="failModal" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Paymeny failed</h4>
+					</div>
+					<div class="modal-body">
+						<p><img class="img-responsive" src="/assets/img/payments.jpg" alt=""></p>
+						<p>Payment failed. Try it again later. No money is transferred from your account.</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
 	  <div id="footerwrap">
 	    <div class="container">
 	      <span class="icon icon-home"></span> TU Eindhoven<br/>
@@ -226,6 +242,10 @@ if($logged == 'in') {
 	        document.getElementById('pay_form').action = action;
 	        document.getElementById('pay_form').submit();
 	    }
+	    function showFailModal() {
+    		$('#payModal').modal('hide');
+    		$('#failModal').modal('show');
+    	}
 		</script>
   </body>
 </html>

@@ -67,6 +67,7 @@ if($logged == 'in') {
 if (isset($_GET['event']) && is_numeric($_GET['event'])) {
 	$eventID = $_GET['event'];
 	$eventInfo = getEventInfo($mysqli, $eventID);
+	$eventStats = eventStatistics($mysqli, $eventID, $eventInfo['date'], $eventInfo['time']);
 }
 ?>
 <!DOCTYPE html>
@@ -169,6 +170,10 @@ if (isset($_GET['event']) && is_numeric($_GET['event'])) {
 								<td><?php echo $eventInfo['time']; ?></td>
 							</tr>
 							<tr>
+								<th>Duration</th>
+								<td><?php echo $eventInfo['duration']; ?> minutes</td>
+							</tr>
+							<tr>
 								<th>Organisation</th>
 								<td><?php echo $eventInfo['creator']; ?></td>
 							</tr>
@@ -231,7 +236,13 @@ if (isset($_GET['event']) && is_numeric($_GET['event'])) {
 					<h2 class="centered">Statistics</h2>
 					<hr />
 					<div>
-						Statistics
+						<div class="col-lg-offset-1 col-lg-8">
+						<table><tr><td>
+						<b>Attendees: </b></td><td><?php echo $eventStats['attendees']; ?>
+						</td></tr><tr><td>
+						<b>Time left: </b></td><td><?php echo $eventStats['timeleft']; ?>
+						</td></tr></table>
+						</div>
 					</div>
 				</div><!-- col -->
 				
@@ -284,7 +295,7 @@ if (isset($_GET['event']) && is_numeric($_GET['event'])) {
 						<p>Here will be the links to iDEAL, PAyPal etc. For now, we just include a "Payment succes" and "Payment fail" option to give the indication of how they would look like.</p>
 						 <form method="post" name="pay_form" id="pay_form" role="form" class="pay_form">
 						 	<input type="button" class="btn btn-succes" onclick="submitForm('/assets/includes/eticket.php?action=succes&event=<?php echo $eventInfo['id']; ?>')" value="Succes" />
-						 	<input type="button" class="btn btn-danger" onclick="submitForm('/assets/includes/eticket.php?action=fail')" value="Fail" />
+						 	<input type="button" class="btn btn-danger" onclick="showFailModal()" value="Fail" />
 						 </form>
 					</div>
 					<div class="modal-footer">
@@ -293,6 +304,24 @@ if (isset($_GET['event']) && is_numeric($_GET['event'])) {
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
+		<div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="failModal" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Paymeny failed</h4>
+					</div>
+					<div class="modal-body">
+						<p><img class="img-responsive" src="/assets/img/payments.jpg" alt=""></p>
+						<p>Payment failed. Try it again later. No money is transferred from your account.</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		
   <!-- Bootstrap core JavaScript
   ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->	
@@ -308,6 +337,10 @@ if (isset($_GET['event']) && is_numeric($_GET['event'])) {
     {
         document.getElementById('pay_form').action = action;
         document.getElementById('pay_form').submit();
+    }
+    function showFailModal() {
+    	$('#payModal').modal('hide');
+    	$('#failModal').modal('show');
     }
 	</script>
   </body>
