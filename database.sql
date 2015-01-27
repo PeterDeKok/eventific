@@ -41,7 +41,39 @@ INSERT INTO `attendees` VALUES (1,2);
 INSERT INTO `attendees` VALUES (2,2);
 INSERT INTO `attendees` VALUES (15,2);
 INSERT INTO `attendees` VALUES (22,2);
+INSERT INTO `attendees` VALUES (23,2);
+INSERT INTO `attendees` VALUES (22,2);
 /*!40000 ALTER TABLE `attendees` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `etickets`
+--
+
+DROP TABLE IF EXISTS `etickets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `etickets` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `event_id` int(11) NOT NULL,
+  `code` varchar(128) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `etickets`
+--
+
+LOCK TABLES `etickets` WRITE;
+/*!40000 ALTER TABLE `etickets` DISABLE KEYS */;
+INSERT INTO `etickets` VALUES (1,1,24,'2dafed123e3231a1c7b33f0a4e4f5673299f6b73305e536e7455791992d0f6bd1522da9e3e68fbf42305be10de09a2f08a04f14030ede2bb50d4113e71433fb3');
+INSERT INTO `etickets` VALUES (2,1,1,'4d01f7752eac4e6f04c98b48520111949d6bde76b53f87587829357ef88731cb385f709914b71471d9b66184fdf078a56eddbc4e283d2032e998c26f03d319d3');
+INSERT INTO `etickets` VALUES (3,1,22,'b648349678bcef133a7a207295b07d34c93c59dcd0b706c698ced07bb3f4b895bca9dd450cc059cba82c1ce2150219df6375a799e79c5a64c1cdd0e928b1a672');
+INSERT INTO `etickets` VALUES (4,2,23,'ad5518d64f55f59b2cea2e035890aebcaeac61ec71b90fdbfc0abf9e9ae3c79186d15d2eafde9afc6daa0ad404014e20498cfd35ae776fed2dc3cda2e2a0c8cd');
+INSERT INTO `etickets` VALUES (5,2,22,'68a5b447238ac7a00f037e9ac750309d226efab303032b3210cbe3d29a1c93f812fef47fb28901c2c970e4701b2ca7a98857fd66be67e86f7d24e254e722a9b3');
+/*!40000 ALTER TABLE `etickets` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -59,9 +91,13 @@ CREATE TABLE `events` (
   `start` datetime NOT NULL,
   `duration` int(100) NOT NULL,
   `location` varchar(100) NOT NULL,
+  `address` varchar(40) DEFAULT NULL,
+  `zipcode` varchar(10) DEFAULT NULL,
+  `price` varchar(10) DEFAULT NULL,
+  `max_people` int(10) DEFAULT NULL,
   `pic_url` varchar(50) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,21 +106,22 @@ CREATE TABLE `events` (
 
 LOCK TABLES `events` WRITE;
 /*!40000 ALTER TABLE `events` DISABLE KEYS */;
-INSERT INTO `events` VALUES (1,1,'Test Event 2.0','Description','2015-12-31 23:59:00',2,'Eindhoven','none');
-INSERT INTO `events` VALUES (2,1,'Test Event 3.0','Description test 2','2015-01-24 21:00:00',360,'Breda','none');
-INSERT INTO `events` VALUES (3,1,'Feestje','Feestje','2015-08-17 20:30:00',240,'Rucphen','none');
-INSERT INTO `events` VALUES (11,1,'Event 4.0','Description','2015-01-14 21:00:00',300,'Best','none');
-INSERT INTO `events` VALUES (12,1,'Event 5.00','Omschrijving','2015-01-14 20:10:00',305,'Beste','none');
-INSERT INTO `events` VALUES (14,3,'Test Event Cas','Description Cas','2015-01-23 00:02:00',340,'Eindhoven Cas','none');
-INSERT INTO `events` VALUES (15,2,'Testing123','Description','2015-01-14 20:00:00',120,'bla','none');
-INSERT INTO `events` VALUES (16,2,'Testing123','Description','2015-01-14 20:00:00',120,'bla','none');
-INSERT INTO `events` VALUES (17,2,'Testing123','Description','2015-01-14 20:00:00',120,'bla','none');
-INSERT INTO `events` VALUES (18,2,'Testblablalblalba','Description','2015-01-14 20:00:00',65,'here','none');
-INSERT INTO `events` VALUES (19,2,'Testblablalblalba','Description','2015-01-14 20:00:00',65,'here','none');
-INSERT INTO `events` VALUES (20,2,'Test23qwerqwer','Description','2015-01-14 20:00:00',45,'452','none');
-INSERT INTO `events` VALUES (21,2,'asdfasdf','asdfasdfasdfasdfasdf','2016-01-01 20:00:00',120,'asdfasdfasdfasdf','none');
-INSERT INTO `events` VALUES (22,2,'Hardwell test event','Hardwell\'s test event, testing a lot more shit and giving it a boost, no idea how much text I still need to type, so just going on and on and on. There is snow outside and lalala on the radio. Just continuing... Barbra Streisand... Oeh food!','2015-01-25 20:03:00',121,'Eindhoven, Lempke','event_b079266b2ee902b33afe3be2a5472ca3.jpg');
-INSERT INTO `events` VALUES (23,2,'Avicci\'s Birthday Bash 2015','Avicci\'s Birthday celebration. Featuring Dan Tyminsk, Hardwell, Gregor Salto, Vato Gonzalez, Partysquad and many many more! Tickets available now. Be there and enjoy!','2015-04-05 20:30:00',360,'Klokgebouw Eindhoven','event_313f04af40ff0131946b7030b71343f9.jpg');
+INSERT INTO `events` VALUES (1,1,'Test Event 2.0','Description','2015-12-31 23:59:00',2,'Eindhoven',NULL,NULL,NULL,NULL,'none');
+INSERT INTO `events` VALUES (2,1,'Test Event 3.0','Description test 2','2015-01-24 21:00:00',360,'Breda',NULL,NULL,NULL,NULL,'none');
+INSERT INTO `events` VALUES (3,1,'Feestje','Feestje','2015-08-17 20:30:00',240,'Rucphen','Rucphen','2222GG','100',555,'none');
+INSERT INTO `events` VALUES (11,1,'Event 4.0','Description','2015-01-14 21:00:00',300,'Best',NULL,NULL,NULL,NULL,'none');
+INSERT INTO `events` VALUES (12,1,'Event 5.00','Omschrijving','2015-01-14 20:10:00',305,'Beste',NULL,NULL,NULL,NULL,'none');
+INSERT INTO `events` VALUES (14,3,'Test Event Cas','Description Cas','2015-01-23 00:02:00',340,'Eindhoven Cas',NULL,NULL,NULL,NULL,'none');
+INSERT INTO `events` VALUES (15,2,'Testing123','Description','2015-01-14 20:00:00',120,'bla',NULL,NULL,NULL,NULL,'none');
+INSERT INTO `events` VALUES (16,2,'Testing123','Description','2015-01-14 20:00:00',120,'bla',NULL,NULL,NULL,NULL,'none');
+INSERT INTO `events` VALUES (17,2,'Testing123','Description','2015-01-14 20:00:00',120,'bla',NULL,NULL,NULL,NULL,'none');
+INSERT INTO `events` VALUES (18,2,'Testblablalblalba','Description','2015-01-14 20:00:00',65,'here',NULL,NULL,NULL,NULL,'none');
+INSERT INTO `events` VALUES (19,2,'Testblablalblalba','Description','2015-01-14 20:00:00',65,'here',NULL,NULL,NULL,NULL,'none');
+INSERT INTO `events` VALUES (20,2,'Test23qwerqwer','Description','2015-01-14 20:00:00',45,'452',NULL,NULL,NULL,NULL,'none');
+INSERT INTO `events` VALUES (21,2,'asdfasdf','asdfasdfasdfasdfasdf','2016-01-01 20:00:00',120,'asdfasdfasdfasdf',NULL,NULL,NULL,NULL,'none');
+INSERT INTO `events` VALUES (22,2,'Hardwell test event','Hardwell\'s test event, testing a lot more shit and giving it a boost, no idea how much text I still need to type, so just going on and on and on. There is snow outside and lalala on the radio. Just continuing... Barbra Streisand... Oeh food!','2015-01-25 20:03:00',121,'Eindhoven, Lempke',NULL,NULL,NULL,NULL,'event_b079266b2ee902b33afe3be2a5472ca3.jpg');
+INSERT INTO `events` VALUES (23,2,'Avicci\'s Birthday Bash 2015','Avicci\'s Birthday celebration. Featuring Dan Tyminsk, Hardwell, Gregor Salto, Vato Gonzalez, Partysquad and many many more! Tickets available now. Be there and enjoy!','2015-04-05 20:30:00',360,'Klokgebouw Eindhoven',NULL,NULL,NULL,NULL,'event_313f04af40ff0131946b7030b71343f9.jpg');
+INSERT INTO `events` VALUES (24,1,'Final test','Hopefully everything works!! ','2015-01-09 11:11:00',1111,'Home','Home','1111TT','4000',4,'none');
 /*!40000 ALTER TABLE `events` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -182,12 +219,12 @@ INSERT INTO `sessions` VALUES ('dni2jr6l7k1ot8lpsgo1afc4d7jqt1edni4ek63l1j68ohar
 INSERT INTO `sessions` VALUES ('fg4fjjbopvq44kjra24tgoe4m2m3i3205ll9ec62ls0oo215sp11s8ajb5ktoo4rhvi6h64vk8ra2p39gj9ledgbog7t2g72drv0om3','1422098659','e8jDBggJttOT9TUocv78vDhEP+HhKzNBSUPHLrIPNQc=','6de1ad55704429d87dbd00eb3b368fd715159b5cd1c221dbd7ce8f97d473d7326883d3f2176d13f8e368ed51189c980d90f2784c6380566263ab45926fa573d9');
 INSERT INTO `sessions` VALUES ('fsnu1mi6nd22h9br6vf5lsu9tk4aohjde27l8hjh0uohdj4sora5bfks6dil1p46tgdn9ehoi1i3hnach7dq4ut2bomjgtrkc4a7ga2','1422097094','DpbYGdKmjSSNQUbxIY18oHLWmzgVC9c1INWuyKtJ1h8=','f6f34b8357216a66f004fdcecca82ca0ab302ad65d1e6d7b91be037c9330b3f270f7d0cc63e8838fc18788bea1aa5214d538a3051d11bf6a05c0d23cea65a069');
 INSERT INTO `sessions` VALUES ('gl1l51acl22el9n37abs9ph0rqsgn8fhgr39d57r2dkkq2v89e7va59ql00e80p5fe7ip51pcnm92k0k4u99v6h2bdid2esvd948to2','1422036799','qvfqRzbTDyGEgV0ZaEDBga7NO/fLXnFldUKj4qFreqmMwhUXARflearb+I8citOdsho1VSvCK91SIuduJMR9TQilhyb+cDCvZ5oWiN7A5+uc299bqiS/ojxYsW6m4AeNJdj1ey6NhisOv8ZIT4OYiHnc6nAZvhQfLGmSQ/sZ79O5UPrWVkt5jjqP4zrE/xcgjv1fx8LTpyDPY09DjbWQwuxaF1a4TlXKcjAKy3dLoNza6lr2vzp35UT+7A32uWHqyCE4iZDlsGlNT9xAOGpGA0NxwIuyOpjgeXfbI96wuJY=','da78701f9baf0425a810ed4177e1f6a330cb0c6c69daf6341a851d394e00bb9748503cea778035995abaf6667033eb44ad5167b43754242d6e08ef9d46c936a9');
-INSERT INTO `sessions` VALUES ('i7etf8kv5lqjqclk49to7gg4e2vntk9f4cvckfl9fa1mcjftlpf201um2sg2a5n5jjlvk5qfq8pns2as0lapsbqa79seo7hhkul9jj3','1422193709','JIWyT2FTotvbOnqXgPpmIbS6+tkUYCJ65P1/ruhVSbxNKI78D/PrR5duXGIS7MVGQ0dBjyPljtxe82z+R8r/YcgSwtI67pItWWj4FxmEAIaGhF8fMhSaRYENPEtuxvSq+UGxlFty2+EScMu5JiE8XBrT6Joxjd0wSc+bH52S5eP+j+yu/ljlak6Ay6KdSWcFTTw4uv9a37UXjPkl3WqKFRA/AGWqdagQUEsHDXXSrjuqS6gYaOz1YHQaSybestb3+bBjBGEiBrAqYjKnxJVKdOy1qCOjvL1jCNQMUlei86WiNs51R8Pw4Mzy/UxQZTukux6oBUdk5vMA9taJ00BuuYo8Fr+s4FcnYmKHgtsa8qovXpjNgB8cTVpr/8CBKWuB57y1cpEVw3KUv/Xupse6Z7E7Hl3cSKH84xze0t8cE5zWztLYB44vSX6ibZa0JE64f37wIkdNJETTH4ypmF/5Xh+C29Z6/Hw0Z5IdXvhZvW5tmQ6zJI/UDxnrXq853yKwKYuhB2GuGyG9f71LWlEZCmz+/oKAGO2iCJ2vyotpglGr/YNqzSFV9DPcRqm59P6RJOJJfVF7ptgho9iwdS2zyg==','80f2dcd4b53b1742250d4e9d1de837842bdc081091d0606792404e8845d2a173a32ae2f76c63c7636905acbaf3f0db02b7f4dfa820b17d499adde065264ca0ce');
 INSERT INTO `sessions` VALUES ('i7q2h82q862ohss6i1v08vk15p64km16opoaq9f82uvqdvf8gr5afn3jg6gm12mg11jeo3sooajctsm18nhb4e57r3tqlv0hemfj4m3','1422087432','86Xlzx69w7dPZm44/WAi8UT6/4p97rFR4WCrUwyFbEMf1/uzq/GLBTMUEGPkkeFP75iUIAdoe0OPqJIlzJL5f9KtxRXqp3qUuyAf5jRcKH4ump8T5Glj1PNS4DuM9wU1fniFrtRvpw6MQCAVPm/8nRLltd00LQbp6krIbF6XjkPkAXGUjxAopzEaYwaVbkt8bhL5iny7QrVsm7NFX1AE3Q/Q1JlG6HIxNAu/wFFr2v8LmgG5S+ENNwxnVOkv8ZYjUiCOopzvLIarvhAXHOng7ftEZNBF+xwmEW9WBYq5n+M=','3eae905af963a9eb9fc6620264635c8fa7ebd5d77713083b04306e037ce0f4266e55c05b9d05d2038fbf4df44b0079bb3d1864dc39caf4eb17aadbb3a688492d');
 INSERT INTO `sessions` VALUES ('idgl4in8v374c4i49tm17unb1kd97p7f7opog3158955iu8mrmhfojec7snln2vahp35a79pgf7io7mcrirehe22bkh4e5abeh4car3','1422101927','ElJWtlGsONWPrlvr14Osb/xsB3f8xSuzdd6MFwVAew7nI5wm5AFHHRNxCUeUixHETr1d/iZ9nXFm7gpEW6t+l4YUFptRBx32WafAeQvvGzHtiHTVM3vgYR+7H3xp1zUSDNQohg7SZcvm0oYP61mf5YgvN0tz32RDS5fwgy7mtDn5YS6p6mZqzMnI0MsfppWqBgYPd09ZqFEljlsnwt20RnwSEXu392Jn1KJ3z9KtPYsQubham7L4eX1lT04Ie/Ap6aFIk/r7+ALKU8kuWZ20S2Ea/FZXlkJc5oCy1KIqvk5NHPa7UfR4aYeLRhg31gqRB56V7tVt/SDUmTeXprbxKFCb9oQyda14N1t8+1Zf0cVCIvlWXA3PUaPw0h86fgQnbkhwvQ4UrvpbzIbex+H54LNp63OOIo84lwozp52jdoonLjaQPDdOCIuZXdImWwPrTZ1hQ2NQAw0JCVS1ZHiLOw==','23c02de7f7ae32bda6c64704a62cf7193d1a687d9751ee5a98e3e93cb24db23f171efa575991e41a38eb9f1d39503285bb18ae63b0e6e4f2242dda952f50482b');
 INSERT INTO `sessions` VALUES ('jkk65jd6b17knpkqm5vo6vaok4867rquscnrhsiib1m4amcb6lisk8n8at4j4asdqs3veg90ibn9q6kmbtmuespoi4ljr66br89ltv3','1422102762','2Gr3TY6ALJWB9SVCF+ghHfcUryTx3cXD+bjfgV0O2pk=','ab5976b390117fb20d7457bf34e76f5d0aa61ee821bd46ee609cd13ebe5dbfbc1b8078cd6e0ffc1f9dc04a15f4a45de98e8a119e7b6aaaab257e54cbeb84bc67');
 INSERT INTO `sessions` VALUES ('k1ad58jomo3f2apkrsjkinsnbga3ibpvjhjs6sqsks66l1bf5a1orej1cvblfg6tibou9oc74pm6eblns4ijeo0efdblmb3bb2b0jj1','1422104561','YUpRTX0rgAVs2z/G9zNABTnSZj09DD/uqvjmGuP3taZ0vvuC5VmGxoJW5cZLxXVydGFANWK3gfuxlt6gDRfN/WmIYvdfx2UniS1AS6JPa1Fq9rq1+xrL1TL85/Unu2i9/wpZMJ8A9ksRraXsNg+kOarlOl/FgZrpTrB5zpsYXbv/vay8QVvMP8CVd7qKFvkn6dvDEFAxqZdh3LTaF2VtNyxkqWUg8hCQnpmgEtYEXSMMps6YcI45zOIiR4kIWMk6C/CuvQc/y05e/2STsC4FEty8B9L8cWUHq195BFELLds=','eb7219f94501bcecbe6d344927e7057ad87246860e3012db50857d57ab92fd7d323fad58323221f75434baef808c2e3281810cafba1043ae3f55f177a0e61d3b');
 INSERT INTO `sessions` VALUES ('l0tlggndgkithlj71vanrde29knfl68m7rb0djtc3htutdj59eh7pkvuse341ouu5td28cugn9gnkonlnbq9533dhk071bnu4jfnud3','1422181563','zJegurEIa5lRzUAQffpDk3uevRtH3KcI3obDHDvrG/BcODANO8W6E3Bj7C1S2Gn9lzo4IMDr3NMiE+P85R/FLP/z694mXx2qhwmYtYjE0WvCI/3ANfGjrc8DeDtIdAsYALhSZnd8ovZ/dkg86sw62kNgOxFQJ9pRw2wxZwFTnCChPmj/qWshOmPKwk18Jw1+jYY0/EEWwTqOWCf2PuJkE2/U4wBofWvNg8PIGQT8tonraNVzTeawyV9aTafXV6bE0RKhB2eJgDSQmpToPZDjeMvp2LPbhJR/NTYhk6i7Qbc=','a6c3abaa1b3d334099880aa18d495545dd653b9f8cd9a42dcb5215843a6f7328ed8ce67cd21a8b8fc332479ce29b09e270295078470103cec45e94f8bb1af05d');
+INSERT INTO `sessions` VALUES ('luu2d50lgncis3aqe5m8ucb1tul577acm2ln4rlg006e85up41tvhj2lpleqdmsd1nhih6o1ctpd6k86hdpd1s5jmi32192f1m4qn33','1422399104','IaBfpEqZo+z1Go4hUs5MEPobmhlK3hAdnJKhPDXXv+2Xcfvlbfua947cDpD5vTgliJropUj1KTLA8hFbnNP89w4H/7A5YjbU/K6i3E6u2ZhIZ4CM85WlD6QHEO8Wg8B174OgSvw9Z9gJiK0kh/vpITkV/+wRJioa15h0PCjArYppfDHaQivqX0X/sHBkD01BPRrn5Kn7VN1rc0UNV8BAyAvAPRtrOcnkkyAE1PmbJ6+RycfKHuspPMWdvXtW6WnDh8pvIuoAFKAVcURTOZrzGBSXuAWXDzKjosZ2x7Rs3RNItmcekAh5t1Hj0L+CtV3wvJTwsW/64ai/gxghCZSotIKqF1jdEi4BExsjoQO5bjoR6HRhNFlQtkvYMM26pfESPkWZ1SrhebHbT8tbtQ4bIaGQp3yEXtt0v7YFVnaVj4o=','ae697752cff042f71e2e5723f66e5dbd4e455c638e60e6b814ef0a10d2ce99e381464a0e57cf18903f68c5c28b9b1029b92018372b33f884c44a54f7f3d87a02');
 INSERT INTO `sessions` VALUES ('mqi45dp8e95ung6gg63gqucfa6aj2eqdt44avkg1b3etp4kg38j7umg6hkrf26hhu79oiti60e9f787a7muel9enmu00hvb9t9nqn82','1422137706','LW5W2B2Cwjvg541LAkHghMoas9lGvlYKHR5nmNxXvv4=','e03cb0ff036e78ad86787d38a47bc35dd99a133805aebbe58162f5031d25c4419af37036f427a8152d0c7e7f2ae33398e7f726164fef646abb0807a1f436fa1c');
 INSERT INTO `sessions` VALUES ('recg4u8kqk1ubaaikdo0c69rt6vindms0jqcutiibublktgjujl1r52si4tcv1rdcf5jbdkd639dq4llt7sjk16qlivts24abdmsor3','1422097977','+d6lL2VDKGPE3EUl8/RUrYZ9PfKfQDg+h3X8mYrnU5E=','de888768f8224fa9440a06e91dce3e1f9a18fa5509dae59e5b9a4346d6bf8e03b81e0f4bc3f5ad612cef1bc0ad3beec9749df1663eec32f54be5b145d1fae771');
 INSERT INTO `sessions` VALUES ('sj7u439hc7b4kbl7qmhqsukol3dts44n6cjifq0tv722bp9b6ie24t3npqp650q4l5fq1cbtttqop10dhvrmefseg66l9r78d7r6ms3','1422181580','/RfiZUpDFq8oNTMSbJiuSauSECzdwmuAcBLvGeYnByFSzDAHYL/BYCbIk0Ii/oMAdkjYY1l04cxBHt6NlZVdcerhGWygrKapbsM7igRvjfbSfzI8/zLYq3PgvUm8Q5KutNMSrY+kMqPr0GEVLZEwDvtlU59Gn8w3Kypq2wrIbxdZE8EXy4k2x+yKVdY/lTRiF6RTSbZPsUDekpRErsOcE1R+YsrLclqPyJ9fQ5/qGWXTIbFNXxBt8GxANdhIqZ/ne+Wsr0vXUaR73Nad2RZeu87/pdiIRsNm/ek6nAKZ+B1VTjgsjsdFGI6fpH5NunuZV7LYDWWlz13NWyMSM+SYew==','f717cdc1c59ad3a216e1b5ea313bd91770bae7b948bfca82d67ff146cc22cd42bf9e825ea257a2f7a82825702f4329eb15a6cda582d0d7bd54bb875ae64a654f');
@@ -249,4 +286,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-01-25 16:30:53
+-- Dump completed on 2015-01-27 23:53:07

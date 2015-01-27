@@ -144,7 +144,6 @@ if (isset($_GET['event']) && is_numeric($_GET['event'])) {
 		<div id="headerwrap" name="event">
 			<p><?php echo $eventInfo['name']; ?></p>
 			<p>&nbsp;</p>
-			<p>INSERT EVENT IMAGE SIZE AND STUFF<br/>important part: 1170 x 300<br/>Margin-top: 50, BleedLeftRight: 2x > 375; (total image should be 1920 x 350)</p>
 			<div class="container"></div>
 	  </div><!-- /headerwrap -->
 		<?php if(isset($eventInfo['pic_url']) && (strlen($eventInfo['pic_url']) > 4) && ($eventInfo['pic_url'] != 'none')) { ?>

@@ -435,8 +435,9 @@ if($logged == 'in') {
 					</div>
 					<div class="row control-group">
 						<div class="form-group col-xs-12">
-							<label>Picture</label>
+							<label>Event picture</label>
 							<input type="file" name="fileEvent" id="fileEvent" class="form-control" placeholder="Picture" />
+							<p class="help-block">The picture should be smaller then 2Mb and the size should be 1920px x 350px.<br />The center part of the image will be visible on most screens. <a href="/assets/img/event_example.jpg">Download example</a></p>
 							<p class="help-block text-danger"></p>
 						</div>
 					</div>
