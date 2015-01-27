@@ -158,6 +158,7 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 				</div><!-- col-lg-6 -->
 			</div><!-- row -->
 			<!-- ==== GREYWRAP ==== -->
+		</div><!-- container -->
 		<div id="greywrap">
 			<div class="row">	
 				<div class="col-lg-4 callout">
@@ -179,8 +180,6 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 			</div><!-- row -->
 		</div><!-- greywrap -->
 		
-		</div><!-- container -->
-
 		<!-- ==== PORTFOLIO ==== -->
 		<div class="container" id="portfolio" name="portfolio">
 		<br>
@@ -193,7 +192,6 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 				<br>
 			</div><!-- /row -->
 
-			<div class="container">
 			<div class="row">
 				<!-- PORTFOLIO IMAGE 2 -->
 				<div class="col-md-4">
@@ -227,10 +225,9 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 						</figure><!-- /figure -->
 			    	</div><!-- /grid-mask -->
 				</div><!-- /col -->
-			</div><!-- /row -->
-			<br><br>
-			<div id="greywrap">
-		
+			</div><!-- /row -->			
+		</div>
+		<div id="greywrap">
 			<div class="row">
 				<div class="col-lg-4 callout">
 					<a href="/addevent.php"><span class="icon icon-plus"></span></a>
@@ -268,9 +265,6 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 			</div>
 			<br>
 		</div><!-- /greywrap -->
-		
-	</div><!-- /container -->
-
 		<!-- ==== TEAM MEMBERS ==== -->
 		<div class="container" id="team" name="team">
 		<br>
@@ -362,11 +356,9 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 		</div><!-- container -->
 
 	<div id="footerwrap">
-    <div class="container">
       <span class="icon icon-home"></span> TU Eindhoven<br/>
       <h4></a>Eventific - Copyright 2014  ©</h4>
-    </div>
-  </div>
+	</div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
