@@ -50,7 +50,7 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
     $logged = 'out';
 }
 
-$SC_client = new Services_Soundcloud('7b37fcac8f86d7d4111380375eee3911', '0e126e7ae1f33f743579e42899ffa764', 'http://eventific.mac/profile_soundcloud_test.php');
+$SC_client = new Services_Soundcloud('7b37fcac8f86d7d4111380375eee3911', '0e126e7ae1f33f743579e42899ffa764', 'http://eventific.peterdekok.nl/soundcloud.php');
 $SC_client->setCurlOptions(array(CURLOPT_FOLLOWLOCATION => 1));
 
 //Process Update
