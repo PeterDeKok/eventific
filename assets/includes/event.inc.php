@@ -40,7 +40,7 @@ if((isset($_POST['name'])) && (isset($_POST['time'])) && (isset($_POST['duration
 			$picture = $_FILES['fileEvent'];
 		}
 
-    if ((strlen($name) < 2) || (strlen($time) < 2) || (strlen($duration) <= 1) || (strlen($location) < 2) || (strlen($logintype) <= 2) || (strlen($description) < 2)) {
+    if ((strlen($name) < 2) || (strlen($time) < 2) || (strlen($duration) <= 1) || (strlen($location) < 2) || (strlen($logintype) < 2) || (strlen($description) < 2)) {
         header('Refresh: 2; URL=addevent.php'); 
         echo "Form not valid";  
         exit;
