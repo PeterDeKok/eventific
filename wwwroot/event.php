@@ -267,6 +267,8 @@ if (isset($_GET['event']) && is_numeric($_GET['event'])) {
 							str_replace('++', '+', str_replace(',', '+', str_replace(' ', '+', $eventInfo['city']))); 
 							?>&key=AIzaSyA82qS4d4_XhndxvAptkAgijcfmQ9xY3AY"></iframe>
 					</div>
+					<br />
+					<div id="map-canvas" class="embed-responsive googlemaps"></div>
 				</div>
 			</div>
 			
@@ -328,6 +330,7 @@ if (isset($_GET['event']) && is_numeric($_GET['event'])) {
   	<script type="text/javascript" src="assets/js/smoothscroll.js"></script>
 	<script type="text/javascript" src="assets/js/jquery-func.js"></script>
 	<script type="text/javascript" src="assets/js/soundcloud.js"></script>
+	<script type="text/javascript" src="assets/js/googlemaps.js"></script>
 	<script type="text/javascript">
     function submitForm(action)
     {
@@ -339,5 +342,8 @@ if (isset($_GET['event']) && is_numeric($_GET['event'])) {
     	$('#failModal').modal('show');
     }
 	</script>
+		<script>
+		var mapsAddress = '<?php echo $eventInfo['address'] . ' ' . $eventInfo['zipcode'] . ' ' . $eventInfo['city'];?>';
+		</script>
   </body>
 </html>
