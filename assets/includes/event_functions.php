@@ -14,7 +14,7 @@ require_once($root . '/assets/includes/db_connect.php');
 require_once($root . '/assets/includes/functions.php');
 
 function getEventInfo($mysqli, $eventID) {
-    if ($stmt = $mysqli->prepare("SELECT id, name, start, duration, location, address, zipcode, price, max_people, description, creator_id, pic_url
+    if ($stmt = $mysqli->prepare("SELECT id, name, start, duration, location, address, zipcode, city, price, max_people, description, creator_id, pic_url
         FROM events
         WHERE id = ?
         LIMIT 1")) {
@@ -22,7 +22,7 @@ function getEventInfo($mysqli, $eventID) {
         $stmt->execute();    // Execute the prepared query.
         $stmt->store_result();
         // get variables from result.
-        $stmt->bind_result($eventID, $eventName, $eventTime, $eventDuration, $eventLocation, $eventAddress, $eventZipcode, $eventPrice, $eventMaxPeople, $eventDescription, $eventCreatorID, $pic_url);
+        $stmt->bind_result($eventID, $eventName, $eventTime, $eventDuration, $eventLocation, $eventAddress, $eventZipcode, $eventCity, $eventPrice, $eventMaxPeople, $eventDescription, $eventCreatorID, $pic_url);
         $stmt->fetch();
         $stmt->close();
         if (!(isset($eventName))) {
@@ -78,7 +78,8 @@ function getEventInfo($mysqli, $eventID) {
                 'address'       => $eventAddress,
                 'maxpeople'     => $eventMaxPeople,
                 'price'         => $eventPrice,
-                'duration'      => $eventDuration
+                'duration'      => $eventDuration,
+                'city'          => $eventCity
             );
         }
     } else {

@@ -157,6 +157,10 @@ $html = <<<EOD
         <td>{$eventInfo['time']}</td>
     </tr>
     <tr>
+        <th>Duration</th>
+        <td>{$eventInfo['duration']}</td>
+    </tr>
+    <tr>
         <th>Organisation</th>
         <td>{$eventInfo['creator']}</td>
     </tr>
@@ -172,7 +176,7 @@ $html = <<<EOD
     </tr>
     <tr>
         <th></th>
-        <td>{$eventInfo['zipcode']}</td>
+        <td>{$eventInfo['zipcode']} {$eventInfo['city']}</td>
     </tr>
     <tr>
         <th>Price</th>

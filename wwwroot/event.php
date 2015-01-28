@@ -190,7 +190,7 @@ if (isset($_GET['event']) && is_numeric($_GET['event'])) {
 							</tr>
 							<tr>
 								<th></th>
-								<td><?php echo $eventInfo['zipcode']; ?></td>
+								<td><?php echo $eventInfo['zipcode'] . " " . $eventInfo['city']; ?></td>
 							</tr>
 							<tr>
 								<th>Price</th>

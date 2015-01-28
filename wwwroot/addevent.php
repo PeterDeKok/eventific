@@ -39,6 +39,48 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
     header("Location: /index.php");
     exit;
 }
+	//Get user ID if FB
+    $logintype = $_SESSION['login_type'];
+    if (($logintype == "FB") || ($logintype == "Both")) {
+        $fbid = $_SESSION['id']; 
+        if ($stmt = $mysqli->prepare("SELECT id
+            FROM members
+            WHERE fbid = ?
+            LIMIT 1")) {
+            $stmt->bind_param('i', $fbid); 
+            $stmt->execute();    // Execute the prepared query.
+            $stmt->store_result();
+            // get variables from result.
+            $stmt->bind_result($userID);
+            $stmt->fetch();
+            $stmt->close();
+            if (!(isset($userID))) {
+                header("Location: /redirect.php?action=errorSession");
+                exit;
+            }
+        }
+    } elseif ($logintype == "Default")  {
+        $username = $_SESSION['username'];
+        if ($stmt = $mysqli->prepare("SELECT id
+            FROM members
+            WHERE username = ?
+            LIMIT 1")) {
+            $stmt->bind_param('s', $username); 
+            $stmt->execute();    // Execute the prepared query.
+            $stmt->store_result();
+            // get variables from result.
+            $stmt->bind_result($userID);
+            $stmt->fetch();
+            $stmt->close();
+            if (!(isset($userID))) {
+                header("Location: /redirect.php?action=errorSession");
+                exit;
+            }
+        }
+    } else {
+        header('Refresh: 2; URL=attendevent.php');        
+        echo 'Seems like you\'re not logged in..';
+    } 
 
 // Create Database object
 $db = new MysqliDb(HOST, USER, PASSWORD, DATABASE);
@@ -70,12 +112,12 @@ if($logged == 'in') {
 				'scpermalink_url' => $SC_current_user->permalink_url,
 				'scavatar_url' => $SC_current_user->avatar_url
 		);
-		$db->where('id', $_SESSION['user_id']);
+		$db->where('id',$userID);
 		if (!$db->update('members', $data))
 		    exit('update failed: ' . $db->getLastError());
 		
 	} else {
-		$db->where('id', $_SESSION['user_id']);
+		$db->where('id', $userID);
 		$sc_response = $db->getOne('members', 'scuser, sctoken, scusername, scpermalink_url, scavatar_url');
 		if($db->count > 0 && $sc_response['scuser'] && $sc_response['scusername'] && $sc_response['sctoken'] && $sc_response['scpermalink_url'] && $sc_response['scavatar_url']) {
 			$_SESSION['SC'] = array(
@@ -106,7 +148,7 @@ if($logged == 'in') {
 				'scpermalink_url' => NULL,
 				'scavatar_url' => NULL
 		);
-		$db->where('id', $_SESSION['user_id']);
+		$db->where('id', $userID);
 		if (!$db->update('members', $data))
 		    exit('update failed: ' . $db->getLastError());
 	} else {
@@ -226,7 +268,7 @@ if($logged == 'in') {
 								User: <a href="<?php echo $SC_current_user->permalink_url; ?>"><?php echo $SC_current_user->username; ?></a>
 								<BR /><BR />
 								<div class="col-md-9 pull-right">
-									<form id="sc_search" method="post" name="sc_search" action="assets/includes/SC_search.php" data-success="" data-event-id="<?php echo $SC_event_id; ?>" data-member-id="<?php echo $_SESSION['user_id']; ?>">
+									<form id="sc_search" method="post" name="sc_search" action="assets/includes/SC_search.php" data-success="" data-event-id="<?php echo $SC_event_id; ?>" data-member-id="<?php echo $userID; ?>">
 										<div class="form-group">
 											<label>Search track:</label>
 											<input name="soundcloudTrack" type="text" class="form-control">
@@ -295,7 +337,7 @@ if($logged == 'in') {
 												</div>
 											</div>
 											<div class="collapse playlist_item_more row" id="collapseSCPlaylistsMoreOptions<?php echo $value->id ?>">
-												<a class="btn btn-primary pull-right btn-xs use" data-id="<?php echo $value->id; ?>" data-artwork="<?php echo $sc_artwork; ?>" data-title="<?php echo $value->title; ?>" data-type="playlists" data-member-id="<?php echo $_SESSION['user_id']; ?>" data-event-id="<?php echo $SC_event_id; ?>" data-permalink-url="<?php echo $value->permalink_url; ?>" href="#">Use</a><a class="btn btn-primary pull-right btn-xs" href="<?php echo $value->permalink_url; ?>">More info</a>
+												<a class="btn btn-primary pull-right btn-xs use" data-id="<?php echo $value->id; ?>" data-artwork="<?php echo $sc_artwork; ?>" data-title="<?php echo $value->title; ?>" data-type="playlists" data-member-id="<?php echo $userID; ?>" data-event-id="<?php echo $SC_event_id; ?>" data-permalink-url="<?php echo $value->permalink_url; ?>" href="#">Use</a><a class="btn btn-primary pull-right btn-xs" href="<?php echo $value->permalink_url; ?>">More info</a>
 											</div>
 											<?php
 											echo "<script>console.log(".json_encode($value).")</script>";
@@ -364,7 +406,8 @@ if($logged == 'in') {
 							'price'			=> '',
 							'zipcode'		=> '',
 							'maxpeople'		=>	'',
-							'address'		=> ''
+							'address'		=> '',
+							'city'			=> ''
 						);
 					}
 				?>
@@ -394,14 +437,14 @@ if($logged == 'in') {
 					<div class="row control-group">
 						<div class="form-group col-xs-12">
 							<label>Location</label>
-							<input type="text" name="location" id="location" class="form-control" placeholder="Location" value="<?php echo $editEventData['location']; ?>" required data-validation-required-message="A location is required" />
+							<input type="text" name="location" id="location" class="form-control" placeholder="Ziggo Dome" value="<?php echo $editEventData['location']; ?>" required data-validation-required-message="A location is required" />
 							<p class="help-block text-danger"></p>
 						</div>
 					</div>
 					<div class="row control-group">
 						<div class="form-group col-xs-12">
 							<label>Address</label>
-							<input type="text" name="address" id="address" class="form-control" placeholder="Address" value="<?php echo $editEventData['location']; ?>" required data-validation-required-message="A address is required" />
+							<input type="text" name="address" id="address" class="form-control" placeholder="Address" value="<?php echo $editEventData['address']; ?>" required data-validation-required-message="A address is required" />
 							<p class="help-block text-danger"></p>
 						</div>
 					</div>
@@ -409,6 +452,13 @@ if($logged == 'in') {
 						<div class="form-group col-xs-12">
 							<label>Zipcode</label>
 							<input type="text" name="zipcode" id="zipcode" class="form-control" placeholder="1111AA" value="<?php echo $editEventData['zipcode']; ?>" required data-validation-required-message="A zipcode is required" />
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<div class="row control-group">
+						<div class="form-group col-xs-12">
+							<label>City</label>
+							<input type="text" name="city" id="city" class="form-control" placeholder="Amsterdan" value="<?php echo $editEventData['city']; ?>" required data-validation-required-message="A city is required" />
 							<p class="help-block text-danger"></p>
 						</div>
 					</div>

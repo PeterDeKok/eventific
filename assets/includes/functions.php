@@ -333,13 +333,13 @@ function existingEvents($mysqli, $logintype) {
 function getEditForm($mysqli, $editEvent = false) {
     if((isset($editEvent)) && is_numeric($editEvent)) {
         $id = $editEvent;
-        $prep_stmt = "SELECT name, description, start, duration, location, address, zipcode, price, max_people FROM events WHERE id = ? LIMIT 1";
+        $prep_stmt = "SELECT name, description, start, duration, location, address, zipcode, city, price, max_people FROM events WHERE id = ? LIMIT 1";
         $stmt = $mysqli->prepare($prep_stmt);
         
         if ($stmt) {
             $stmt->bind_param('i', $id);
             $stmt->execute();
-            $stmt->bind_result($name, $description, $start, $duration, $location, $address, $zipcode, $price, $max_people);
+            $stmt->bind_result($name, $description, $start, $duration, $location, $address, $zipcode, $city, $price, $max_people);
             $stmt->store_result();
             $stmt->fetch();
             $stmt->close();
@@ -369,7 +369,8 @@ function getEditForm($mysqli, $editEvent = false) {
                             'zipcode'       => $zipcode,
                             'address'       => $address,
                             'maxpeople'     => $max_people,
-                            'price'         => $price
+                            'price'         => $price,
+                            'city'          => $city
 						);
         } else {
             return false;
