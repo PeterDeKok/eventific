@@ -274,17 +274,10 @@ if (isset($_GET['event']) && is_numeric($_GET['event'])) {
 			<br />
 			
 		</div><!-- container -->
-			<div id="footerwrap">
-			<div class="container">
-						<span class="icon icon-home"></span> TU Eindhoven<br/>
-						<span class="icon icon-phone"></span> +31 111 111 111 <br/>
-						<span class="icon icon-mobile"></span> +31 101 101 101 <br/>
-						<h4></a>PROJECTNAME - Copyright 2014  ©</h4>
-						<span class="icon icon-envelop"></span> <a href="#"> project@name.com</a> <br/>
-						<span class="icon icon-twitter"></span> <a href="#"> @projectname </a> <br/>
-						<span class="icon icon-facebook"></span> <a href="#"> PROJECTNAME </a> <br/>
-			</div>
-		</div>
+	<div id="footerwrap">
+      <span class="icon icon-home"></span> TU Eindhoven<br/>
+      <h4></a>Eventific - Copyright 2014  ©</h4>
+	</div>
 
 		<div class="modal fade" id="payModal" tabindex="-1" role="dialog" aria-labelledby="payModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
