@@ -168,15 +168,8 @@ if (login_check($mysqli) == true) {
 		}
 	?>
 	<div id="footerwrap">
-		<div class="container">
-					<span class="icon icon-home"></span> TU Eindhoven<br/>
-					<span class="icon icon-phone"></span> +31 111 111 111 <br/>
-					<span class="icon icon-mobile"></span> +31 101 101 101 <br/>
-					<h4></a>Eventific - Copyright 2014  ©</h4>
-					<span class="icon icon-envelop"></span> <a href="#"> info@eventific.com</a> <br/>
-					<span class="icon icon-twitter"></span> <a href="#"> @eventific </a> <br/>
-					<span class="icon icon-facebook"></span> <a href="#"> Eventific </a> <br/>
-		</div>
+      <span class="icon icon-home"></span> TU Eindhoven<br/>
+      <h4></a>Eventific - Copyright 2014  ©</h4>
 	</div>
     <!-- Bootstrap core JavaScript
     ================================================== -->

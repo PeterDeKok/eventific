@@ -180,9 +180,7 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 		</div> <!-- /container	-->
 		
 		<!-- ==== SECTION DIVIDER2 -->
-		<section class="section-divider textdivider divider2">
-			<div class="container">
-			</div><!-- container -->
+		<section class="section-divider textdivider divider1">
 		</section><!-- section -->
 		
 		<div class="container" id="events" name="services">
@@ -202,25 +200,10 @@ if ((login_check($mysqli) == true) && (!(isset($_SESSION['FB']) && isset($_SESSI
 				</div><!-- col -->
 			</div><!-- row -->
 		</div><!-- container -->
-		<div id="footerwrap">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-4">
-						<span class="icon icon-home"></span> TU Eindhoven<br/>
-						<span class="icon icon-phone"></span> +31 111 111 111 <br/>
-						<span class="icon icon-mobile"></span> +31 101 101 101 <br/>
-					</div>
-					<div class="col-lg-4">
-						<h4>EVENTIFIC - Copyright 2014  ©</h4>
-					</div>
-					<div class="col-lg-4">
-						<span class="icon icon-envelop"></span> <a href="#"> project@name.com</a> <br/>
-						<span class="icon icon-twitter"></span> <a href="#"> @projectname </a> <br/>
-						<span class="icon icon-facebook"></span> <a href="#"> PROJECTNAME </a> <br/>
-					</div>
-				</div>
-			</div>
-		</div>
+	<div id="footerwrap">
+      <span class="icon icon-home"></span> TU Eindhoven<br/>
+      <h4></a>Eventific - Copyright 2014  ©</h4>
+	</div>
   <!-- Bootstrap core JavaScript
   ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->	
