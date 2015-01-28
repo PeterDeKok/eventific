@@ -377,7 +377,8 @@ if($logged == 'in') {
 							<div class="addEventTips">
 								<ul>
 									<li>First connect to soundcloud</li>
-									<li>bla</li>
+									<li>Fill in all fields.</li>
+									<li>A picture is optional. <a href="/assets/img/event_example.jpg">Download a template.</a></li>
 								</ul>
 							</div>
 						</div>

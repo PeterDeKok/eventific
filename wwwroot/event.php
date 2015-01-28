@@ -261,7 +261,11 @@ if (isset($_GET['event']) && is_numeric($_GET['event'])) {
 					<h2 class="centered">Location</h2>
 					<hr />
 					<div class="embed-responsive googlemaps">
-						<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d79568.85424888934!2d5.4515104!3d51.448485549999994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2snl!4v1421925577174" class="embed-responsive-item"></iframe>
+						<iframe src="https://www.google.com/maps/embed/v1/search?q=<?php echo 
+							str_replace('++', '+', str_replace(',', '+', str_replace(' ', '+', $eventInfo['address']))) . '+' . 
+							str_replace('++', '+', str_replace(',', '+', str_replace(' ', '+', $eventInfo['zipcode']))) . '+' . 
+							str_replace('++', '+', str_replace(',', '+', str_replace(' ', '+', $eventInfo['city']))); 
+							?>&key=AIzaSyA82qS4d4_XhndxvAptkAgijcfmQ9xY3AY"></iframe>
 					</div>
 				</div>
 			</div>
